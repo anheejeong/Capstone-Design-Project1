@@ -142,18 +142,18 @@ class Header extends React.Component {
       <Navbar className={`d-print-none `}>
         <div className={s.burger}>
           <NavLink
-              onClick={this.toggleSidebar}
-              className={`d-md-none ${s.navItem} text-white`}
-              href="#"
-            >
-              <BurgerIcon className={s.headerIcon} />
-            </NavLink>
+            onClick={this.toggleSidebar}
+            className={`d-md-none ${s.navItem} text-white`}
+            href="#"
+          >
+            <BurgerIcon className={s.headerIcon} />
+          </NavLink>
         </div>
         <div className={`d-print-none ${s.root}`}>
           <UncontrolledAlert
             className={`${s.alert} mr-3 d-lg-down-none animate__animated animate__bounceIn animate__delay-1s`}
           >
-            Check out Light Blue{" "}
+            Check out Setting{" "}
             <button
               className="btn-link"
               onClick={() => this.setState({ settingsOpen: true })}
@@ -167,9 +167,8 @@ class Header extends React.Component {
             isOpen={this.state.searchOpen}
           >
             <InputGroup
-              className={`${s.navbarForm} ${
-                this.state.searchFocused ? s.navbarFormFocused : ""
-              }`}
+              className={`${s.navbarForm} ${this.state.searchFocused ? s.navbarFormFocused : ""
+                }`}
             >
               <InputGroupAddon addonType="prepend" className={s.inputAddon}>
                 <InputGroupText>
