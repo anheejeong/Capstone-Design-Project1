@@ -1,4 +1,5 @@
 import Highcharts from "highcharts";
+import * as echarts from 'echarts';
 import config from "./config";
 const colors = config.chartColors;
 
@@ -13,6 +14,19 @@ let columnColors = [
   colors.pink,
 ];
 let lineColors = [colors.blue, colors.green, colors.orange];
+
+function generateDayWiseTimeSeries(baseval, count, yrange) {
+  var i = 0;
+  var series = [];
+  while (i < count) {
+    var y = Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
+
+    series.push([baseval, y]);
+    baseval += 86400000;
+    i++;
+  }
+  return series;
+}
 
 export const chartData = {
   apex: {
@@ -123,6 +137,68 @@ export const chartData = {
         ],
       },
     },
+    flow: {
+      series: [
+        {
+          name: 'South',
+          data: generateDayWiseTimeSeries(new Date('11 Feb 2017 GMT').getTime(), 20, {
+            min: 10,
+            max: 60
+          })
+        },
+        {
+          name: 'North',
+          data: generateDayWiseTimeSeries(new Date('11 Feb 2017 GMT').getTime(), 20, {
+            min: 10,
+            max: 20
+          })
+        },
+        {
+          name: 'Central',
+          data: generateDayWiseTimeSeries(new Date('11 Feb 2017 GMT').getTime(), 20, {
+            min: 10,
+            max: 15
+          })
+        },
+      ],
+      options: {
+        chart: {
+          type: 'area',
+          height: 350,
+          stacked: true,
+          events: {
+            selection: function (chart, e) {
+              console.log(new Date(e.xaxis.min))
+            }
+          },
+          background: 'none'
+        },
+        colors: ['#cf1228', '#1b5bfa', '#257511'],
+        theme: {
+          mode: 'dark',
+        },
+        dataLabels: {
+          enabled: false
+        },
+        stroke: {
+          curve: 'smooth'
+        },
+        fill: {
+          type: 'gradient',
+          gradient: {
+            opacityFrom: 0.6,
+            opacityTo: 0.8,
+          }
+        },
+        legend: {
+          position: 'top',
+          horizontalAlign: 'left'
+        },
+        xaxis: {
+          type: 'datetime'
+        },
+      },
+    }
   },
   echarts: {
     line: {
