@@ -9,13 +9,14 @@ import { chartData } from './mock';
 import ReactEchartsCore from "echarts-for-react/lib/core";
 import echarts from "echarts/lib/echarts";
 
-import Highcharts from "highcharts";
-import HighchartsReact from "highcharts-react-official";
+import Highcharts from "highcharts/highstock";
+// import HighchartsReact from "highcharts-react-official";
+import PieChart from "highcharts-react-official";
 import exporting from "highcharts/modules/exporting";
 import exportData from "highcharts/modules/export-data";
 
-exporting(Highcharts);
-exportData(Highcharts);
+// exporting(Highcharts);
+// exportData(Highcharts);
 
 // const Typography = () => (
 //   <div>
@@ -95,6 +96,27 @@ class Typography extends React.Component {
                   option={cd.echarts.scatter}
                   opts={initEchartsOptions}
                   style={{ height: 350 }}
+                />
+              </Widget>
+            </Col>
+          </Row>
+          <Row>
+            <Col lg={6} xs={12}>
+              <Widget
+                title={
+                  <h5>
+                    정회원 비회원 <span className="fw-semi-bold">비율</span>
+                  </h5>
+                }
+                close
+                collapse
+              >
+                {/* <HighchartsReact
+                  highcharts={Highcharts}
+                  options={cd.highcharts.pie} /> */}
+                <PieChart
+                  highcharts={Highcharts}
+                  options={cd.highcharts.pie}
                 />
               </Widget>
             </Col>
