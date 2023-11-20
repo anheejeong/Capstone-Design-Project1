@@ -15,6 +15,8 @@ import PieChart from "highcharts-react-official";
 import exporting from "highcharts/modules/exporting";
 import exportData from "highcharts/modules/export-data";
 
+import Map from '../dashboard/components/am4chartMap/am4chartMap'
+
 // exporting(Highcharts);
 // exportData(Highcharts);
 
@@ -101,7 +103,7 @@ class Typography extends React.Component {
             </Col>
           </Row>
           <Row>
-            <Col lg={6} xs={12}>
+            <Col lg={5} xs={12}>
               <Widget
                 title={
                   <h5>
@@ -118,6 +120,17 @@ class Typography extends React.Component {
                   highcharts={Highcharts}
                   options={cd.highcharts.pie}
                 />
+              </Widget>
+            </Col>
+            <Col lg={7}>
+              <Widget className="bg-transparent"
+                title={
+                  <h5>
+                    접속 <span className="fw-semi-bold">국가</span>
+                  </h5>
+                }
+              >
+                <Map />
               </Widget>
             </Col>
           </Row>
