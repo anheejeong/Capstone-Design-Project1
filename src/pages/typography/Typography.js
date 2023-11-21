@@ -41,6 +41,9 @@ class Typography extends React.Component {
     const { cd, initEchartsOptions } = this.state
     return (
       <div className={s.root}>
+        <h2 className="page-title">
+          Analysis - <span className="fw-semi-bold">Users</span>
+        </h2>
         <div>
           {/* <Row> - 어떤 차트 쓸지 몰라서 일단 보류
             <Col lg={12} xs={12}>
