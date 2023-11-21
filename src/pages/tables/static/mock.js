@@ -180,7 +180,6 @@ export const chartData = {
                     // [19.6, 91852, 'Orange Juice'],
                     // [10.6, 101852, 'Lemon Juice'],
                     // [32.7, 20112, 'Walnut Brownie']
-                    [89.3, 18, '기타'],
                     [57.1, 40, '신용카드'],
                     [19.6, 23, '토스']
                 ]
