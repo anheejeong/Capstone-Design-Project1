@@ -64,7 +64,7 @@ class Charts extends React.Component {
     return (
       <div className={s.root}>
         <h1 className="page-title">
-          Visual - <span className="fw-semi-bold">Charts</span>
+          KNU <span className="fw-semi-bold">팀원 소개</span>
         </h1>
         <div>
           <Row>

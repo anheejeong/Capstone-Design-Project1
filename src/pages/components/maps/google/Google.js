@@ -24,7 +24,7 @@ class Maps extends React.Component {
     return (
       <div>
         <h1 className="page-title">
-          Google <span className="fw-semi-bold">Maps</span>
+          회사 <span className="fw-semi-bold">소개</span>
         </h1>
         <Widget
           title={<h4>Google Maps <small className="text-muted">Default and customized</small></h4>}
