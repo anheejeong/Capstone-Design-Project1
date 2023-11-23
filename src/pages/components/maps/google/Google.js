@@ -27,9 +27,12 @@ class Maps extends React.Component {
           회사 <span className="fw-semi-bold">소개</span>
         </h1>
         <Widget
-          title={<h4>Google Maps <small className="text-muted">Default and customized</small></h4>}
+          title={<h4>통계마당 <small className="text-muted">여기에 있어용</small></h4>}
           collapse close
         >
+          <div>
+            <p>대표는 누구고 우리는 이런 회사 어쩌구저쩌구</p>
+          </div>
           <div className={s.MapContainer}>
             <BasicMap
               googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=AIzaSyB7OXmzfQYua_1LEhRdqsoYzyJOPh9hGLg"
