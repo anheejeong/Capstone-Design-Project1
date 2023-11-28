@@ -30,7 +30,7 @@ We have implemented some basic pages, so you can see our template in action.
 ![image](https://github.com/anheejeong/Capstone-Design-Project1/assets/100365693/344fc63f-2e93-44c4-bf92-a4c9f643d4ff)
 
 
-## Instalation 
+## Installation 
 
 1. Clone repository
 ```shell
