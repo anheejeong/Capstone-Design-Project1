@@ -11,3 +11,9 @@ def hello_webr():
 @bp.route('/')
 def index():
     return 'Webr index'
+
+
+@bp.route('/app/main/dashboard')
+def dashboard():
+    return {"members": [{ "id" : 1, "name" : "yerin" },
+    					{ "id" : 2, "name" : "dalkong" }]}

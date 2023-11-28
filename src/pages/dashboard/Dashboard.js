@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component, componentDidMount } from "react";
 import ApexChart from "react-apexcharts";
 import { Row, Col, Progress, Table, Label, Input } from "reactstrap";
 
@@ -33,10 +33,62 @@ import 'echarts/lib/chart/pie';
 
 import { chartData } from "../components/charts/mock";
 
+import axios from 'axios';
+
+import config from "../components/charts/config";
+const colors = config.chartColors;
+
+let columnColors = [
+  colors.blue,
+  colors.green,
+  colors.orange,
+  colors.red,
+  colors.default,
+  colors.gray,
+  colors.teal,
+  colors.pink,
+];
+let lineColors = [colors.blue, colors.green, colors.orange];
+
+function generateDayWiseTimeSeries(baseval, count, yrange) {
+  var i = 0;
+  var series = [];
+  while (i < count) {
+    var y = Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
+
+    series.push([baseval, y]);
+    baseval += 86400000;
+    i++;
+  }
+  return series;
+}
+
 class Dashboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      donut_value_one: null,
+      donut_value_two: null,
+
+      visit_year: [],
+
+      // visitToday: null,
+      // payments: null,
+      // monthVisitor: null,
+      visitToday: [],
+      payments: [],
+      payment_percent: [],
+
+      month_visit: [],
+
+      keyword_ranking: [],
+
+      hot_post_one: [],
+      hot_post_two: [],
+      hot_post_three: [],
+      hot_post_four: [],
+      hot_post_five: [],
+
       graph: null,
       checkedArr: [false, false, false],
       cd: chartData,
@@ -128,6 +180,70 @@ class Dashboard extends React.Component {
     this.checkTable = this.checkTable.bind(this);
   }
 
+  // async loadAsyncData() {
+  //   try {
+  //     const resp = await fetch('/')
+  //       .then(r => r.json())
+  //     // .then(data => {
+  //     //   console.log(data)
+  //     // })
+  //     console.log(resp)
+  //   } catch (e) {
+  //     console.log(e)
+  //   }
+  // }
+
+  // componentDidMount() {
+  //   this.loadAsyncData();
+  // }
+
+  // componentDidMount() {
+  //   fetch('/home')
+  //     .then(r => r.json())
+  //     .then(r => console.log(r))
+  // }
+
+  loadItem = async () => {
+    axios
+      .get("./home")
+      .then(({ data }) => {
+        console.log(data);
+        this.setState({
+          // visitToday: data.visitor,
+          // payments: data.payment,
+          // monthVisitor: data.year_visitor
+          visitToday: data.visitor,
+          payments: data.payment,
+          payment_percent: data.payment_percent,
+
+          month_visit: data.visitor_for_year,
+
+          donut_value_one: data.user_percentage[0],
+          donut_value_two: data.user_percentage[1],
+
+          keyword_ranking: data.keyword_rank,
+
+          visit_year: data.visitor_for_year,
+
+          hot_post_one: data.hot_post[0],
+          hot_post_two: data.hot_post[1],
+          hot_post_three: data.hot_post[2],
+          hot_post_four: data.hot_post[3],
+          hot_post_five: data.hot_post[4],
+        })
+      })
+      .catch(e => {  // API 호출이 실패한 경우
+        console.error(e);  // 에러표시
+        this.setState({
+          loading: false
+        });
+      });
+  };
+
+  componentDidMount() {
+    this.loadItem();
+  }
+
   parseDate(date) {
     this.dateSet = date.toDateString().split(" ");
 
@@ -164,6 +280,183 @@ class Dashboard extends React.Component {
 
   render() {
     const { cd, initEchartsOptions } = this.state;
+    console.log(this.state.visitToday)
+    console.log(this.state.payments)
+    console.log(this.state.payment_percent)
+    console.log(this.state.month_visit)
+    console.log(this.state.keyword_ranking)
+    // console.log(this.state.hot_post)
+
+    const donut = {
+      tooltip: {
+        trigger: "item",
+        formatter: "{a} <br/>{b}: {c} ({d}%)",
+      },
+      legend: {
+        show: false,
+      },
+      color: [
+        colors.red,
+        colors.green,
+      ],
+      series: [
+        {
+          name: "Access source",
+          type: "pie",
+          radius: ["50%", "70%"],
+          avoidLabelOverlap: false,
+          label: {
+            normal: {
+              show: false,
+              position: "center",
+            },
+            emphasis: {
+              show: true,
+              textStyle: {
+                fontSize: "30",
+                fontWeight: "bold",
+              },
+            },
+          },
+          labelLine: {
+            normal: {
+              show: false,
+            },
+          },
+          data: [
+            { value: this.state.donut_value_one, name: "정회원" },
+            { value: this.state.donut_value_two, name: "비회원" },
+          ],
+        },
+      ],
+    };
+
+    const flow = {
+      series: [
+        {
+          name: 'Visitor',
+          data: [
+            [1486771200000, this.state.visit_year[0]],
+            [1486857600000, this.state.visit_year[1]],
+            [1486944000000, this.state.visit_year[2]],
+            [1487030400000, this.state.visit_year[3]],
+            [1487116800000, this.state.visit_year[4]],
+            [1487203200000, this.state.visit_year[5]],
+            [1487289600000, this.state.visit_year[6]],
+            [1487376000000, this.state.visit_year[7]],
+            [1487462400000, this.state.visit_year[8]],
+            [1487548800000, this.state.visit_year[9]],
+            [1487635200000, this.state.visit_year[10]],
+            [1487721600000, this.state.visit_year[11]],
+          ]
+        },
+      ],
+    }
+
+    const tableStyles = [
+      {
+        id: 1,
+        // picture: require("../../assets/tables/1.png"), // eslint-disable-line global-require
+        title: this.state.hot_post_one[0],
+        description: this.state.hot_post_one[1],
+        info: {
+          type: "JPEG",
+          dimensions: "200x150",
+        },
+        date: this.state.hot_post_one[2],
+        size: "45.6 KB",
+        progress: {
+          percent: 29,
+          colorClass: "success",
+        },
+        recommendation: this.state.hot_post_one[3]
+      },
+      {
+        id: 2,
+        // picture: require("../../assets/tables/2.png"), // eslint-disable-line global-require
+        title: this.state.hot_post_two[0],
+        description: this.state.hot_post_two[1],
+        info: {
+          type: "PSD",
+          dimensions: "2400x1455",
+        },
+        date: this.state.hot_post_two[2],
+        size: "15.3 MB",
+        progress: {
+          percent: 33,
+          colorClass: "warning",
+        },
+        recommendation: this.state.hot_post_two[3]
+      },
+      {
+        id: 3,
+        // picture: require("../../assets/tables/3.png"), // eslint-disable-line global-require
+        title: this.state.hot_post_three[0],
+        description: this.state.hot_post_three[1],
+        label: {
+          colorClass: "primary",
+          text: "INFO!",
+        },
+        info: {
+          type: "JPEG",
+          dimensions: "200x150",
+        },
+        date: this.state.hot_post_three[2],
+        size: "49.0 KB",
+        progress: {
+          percent: 38,
+          colorClass: "inverse",
+        },
+        recommendation: this.state.hot_post_three[3]
+      },
+      {
+        id: 4,
+        // picture: require("../../assets/tables/4.png"), // eslint-disable-line global-require
+        title: this.state.hot_post_four[0],
+        description: this.state.hot_post_four[1],
+        info: {
+          type: "PNG",
+          dimensions: "210x160",
+        },
+        date: this.state.hot_post_four[2],
+        size: "69.1 KB",
+        progress: {
+          percent: 17,
+          colorClass: "danger",
+        },
+        recommendation: this.state.hot_post_four[3]
+      },
+      {
+        id: 5,
+        title: this.state.hot_post_five[0],
+        // picture: require("../../assets/tables/5.png"), // eslint-disable-line global-require
+        description: this.state.hot_post_five[1],
+        info: {
+          type: "JPEG",
+          dimensions: "1452x1320",
+        },
+        date: this.state.hot_post_five[2],
+        size: "2.3 MB",
+        progress: {
+          percent: 41,
+          colorClass: "primary",
+        },
+        recommendation: this.state.hot_post_five[3]
+      },
+    ]
+
+    const payment_percent_one = {
+      width: this.state.payment_percent[0] + '%'
+    }
+
+    const payment_percent_two = {
+      width: this.state.payment_percent[1] + '%'
+    }
+
+    const payment_percent_three = {
+      width: this.state.payment_percent[2] + '%'
+    }
+
     return (
       <div className={s.root}>
         <h1 className="page-title">
@@ -187,20 +480,20 @@ class Dashboard extends React.Component {
                   </header>
                   <div class="widget-body">
                     <div class="d-flex justify-content-between align-items-center mb-lg">
-                      <h2>4,332</h2>
-                      <i class="la la-2x la-arrow-right text-success rotate-315"></i>
+                      <h2>{this.state.visitToday[0]}</h2>
+                      <i class="la la-2x la-arrow-left text-danger rotate-315"></i>
                     </div>
                     <div class="d-flex flex-wrap justify-content-between">
                       <div class="mt visit-element">
-                        <h6>+830</h6>
-                        <p class="text-muted mb-0"><small>Logins</small></p>
+                        <h6>{this.state.visitToday[1]}</h6>
+                        <p class="text-muted mb-0"><small>Yesterday</small></p>
                       </div>
                       <div class="mt visit-element">
-                        <h6>0.5%</h6>
-                        <p class="text-muted mb-0"><small>Sign Out</small></p>
+                        <h6>{this.state.visitToday[3]}</h6>
+                        <p class="text-muted mb-0"><small>This Month</small></p>
                       </div>
                       <div class="mt visit-element">
-                        <h6>4.5%</h6>
+                        <h6>{this.state.visitToday[2]}%</h6>
                         <p class="text-muted mb-0"><small>Rate</small></p>
                       </div>
                     </div>
@@ -212,7 +505,7 @@ class Dashboard extends React.Component {
 
           {/* 최근 세달 결제 금액 */}
           <Col xl={3} md={6}>
-            <Widget title={<h6> 최근 세달 결제 금액 </h6>} close settings>
+            <Widget title={<h6> Recent Payments </h6>} close settings>
               <div class="pb-xlg h-100">
                 <section class="widget mb-0 h-100">
                   <header>
@@ -222,35 +515,20 @@ class Dashboard extends React.Component {
                     </div>
                   </header>
                   <div class="widget-body">
-                    <p class="d-flex flex-wrap">
-                      <small class="mr-lg d-flex align-items-center" data-toggle="tooltip"
-                        data-placement="top" title="Year 2019">
-                        <span class="circle bg-success text-danger mr-xs" style={{ 'font-size': '4px' }}>.</span>
-                        This Period
-                      </small>
-                      <small class="mr-lg d-flex align-items-center" data-toggle="tooltip"
-                        data-placement="top" title="Year 2019">
-                        <span class="circle bg-primary text-primary mr-xs" style={{ 'font-size': '4px' }}>.</span>
-                        Last Period
-                      </small>
-                    </p>
-                    <h6 class="fs-sm">SDK</h6>
-                    <div class="progress progress-xs mb-xs ">
-                      <div class="progress-bar bg-success" role="progressbar" style={{ 'width': '60%' }}
-                        aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                    <h6 class="fs-sm">This Month ({this.state.payments[0]}₩)</h6>
+                    <div class="progress progress-s mb-s ">
+                      <div class="progress-bar bg-warning" role="progressbar" style={payment_percent_one}
+                        aria-valuenow={this.state.payments[0]} aria-valuemin="0" aria-valuemax={this.state.payments[3]}></div>
                     </div>
-                    <div class="progress progress-xs ">
-                      <div class="progress-bar bg-primary" role="progressbar" style={{ 'width': '30%' }}
-                        aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+                    <h6>Last Month ({this.state.payments[1]}₩)</h6>
+                    <div class="progress progress-s ">
+                      <div class="progress-bar bg-warning" role="progressbar" style={payment_percent_two}
+                        aria-valuenow={this.state.payments[1]} aria-valuemin="0" aria-valuemax={this.state.payments[3]}></div>
                     </div>
-                    <h6 class="mt-sm fs-sm">Integration</h6>
-                    <div class="progress progress-xs mb-xs ">
-                      <div class="progress-bar bg-success" role="progressbar" style={{ 'width': '40%' }}
-                        aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                    <div class="progress progress-xs ">
-                      <div class="progress-bar bg-primary" role="progressbar" style={{ 'width': '55%' }}
-                        aria-valuenow="55" aria-valuemin="0" aria-valuemax="100"></div>
+                    <h6 class="mt-sm fs-sm">Two Months Ago ({this.state.payments[2]}₩)</h6>
+                    <div class="progress progress-s mb-s ">
+                      <div class="progress-bar bg-warning" role="progressbar" style={payment_percent_three}
+                        aria-valuenow={this.state.payments[2]} aria-valuemin="0" aria-valuemax={this.state.payments[3]}></div>
                     </div>
                   </div>
                 </section>
@@ -259,7 +537,7 @@ class Dashboard extends React.Component {
           </Col>
 
           { /* member rate */}
-          <Col lg={3} xs={6}>
+          <Col xl={3} md={6}>
             <Widget
               title={
                 <h5>
@@ -271,7 +549,8 @@ class Dashboard extends React.Component {
             >
               <ReactEchartsCore
                 echarts={echarts}
-                option={cd.echarts.donut}
+                // option={cd.echarts.donut}
+                option={donut}
                 opts={initEchartsOptions}
                 style={{ height: "170px" }}
               />
@@ -279,7 +558,7 @@ class Dashboard extends React.Component {
           </Col>
 
           { /* 실시간 검색어 */}
-          <Col lg={3}>
+          <Col xl={3} md={6}>
             <Widget
               title={
                 <h5>
@@ -303,60 +582,51 @@ class Dashboard extends React.Component {
               </p>
               <div className="row progress-stats">
                 <div className="col-md-9 col-12">
-                  {/* <h6 className="name fw-semi-bold">정회원</h6> */}
-                  <p className="description deemphasize mb-xs text-white">
-                    검색어1
-                  </p>
+                  <h6 className="name fw-semi-bold">{this.state.keyword_ranking[0]}</h6>
                   <Progress
                     color="primary"
-                    value="60"
+                    value={this.state.keyword_ranking[1]}
                     className="bg-subtle-blue progress-xs"
                   />
                 </div>
                 <div className="col-md-3 col-12 text-center">
                   <span className="status rounded rounded-lg bg-default text-light">
                     <small>
-                      <AnimateNumber value={75} />%
+                      <AnimateNumber value={this.state.keyword_ranking[1]} />%
                     </small>
                   </span>
                 </div>
               </div>
               <div className="row progress-stats">
                 <div className="col-md-9 col-12">
-                  {/* <h6 className="name fw-semi-bold">정회원</h6> */}
-                  <p className="description deemphasize mb-xs text-white">
-                    검색어2
-                  </p>
+                  <h6 className="name fw-semi-bold">{this.state.keyword_ranking[2]}</h6>
                   <Progress
                     color="danger"
-                    value="39"
+                    value={this.state.keyword_ranking[3]}
                     className="bg-subtle-blue progress-xs"
                   />
                 </div>
                 <div className="col-md-3 col-12 text-center">
                   <span className="status rounded rounded-lg bg-default text-light">
                     <small>
-                      <AnimateNumber value={84} />%
+                      <AnimateNumber value={this.state.keyword_ranking[3]} />%
                     </small>
                   </span>
                 </div>
               </div>
               <div className="row progress-stats">
                 <div className="col-md-9 col-12">
-                  {/* <h6 className="name fw-semi-bold">비회원</h6> */}
-                  <p className="description deemphasize mb-xs text-white">
-                    검색어3
-                  </p>
+                  <h6 className="name fw-semi-bold">{this.state.keyword_ranking[4]}</h6>
                   <Progress
                     color="success"
-                    value="80"
+                    value={this.state.keyword_ranking[5]}
                     className="bg-subtle-blue progress-xs"
                   />
                 </div>
                 <div className="col-md-3 col-12 text-center">
                   <span className="status rounded rounded-lg bg-default text-light">
                     <small>
-                      <AnimateNumber value={92} />%
+                      <AnimateNumber value={this.state.keyword_ranking[5]} />%
                     </small>
                   </span>
                 </div>
@@ -382,7 +652,8 @@ class Dashboard extends React.Component {
                 className="sparkline-chart"
                 type={"area"}
                 height={350}
-                series={cd.apex.flow.series}
+                // series={cd.apex.flow.series}
+                series={flow.series}
                 options={cd.apex.flow.options}
               />
             </Widget>
@@ -407,25 +678,27 @@ class Dashboard extends React.Component {
                   <thead>
                     <tr className="fs-sm">
                       <th className="hidden-sm-down">#</th>
-                      <th>Picture</th>
+                      <th>Title</th>
                       <th>Description</th>
-                      <th className="hidden-sm-down">Info</th>
+                      {/* <th className="hidden-sm-down">Info</th> */}
                       <th className="hidden-sm-down">Date</th>
-                      <th className="hidden-sm-down">Size</th>
+                      <th className="hidden-sm-down">Recommendation</th>
                       <th className="hidden-sm-down">Status</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {this.state.tableStyles.map((row) => (
+                    {tableStyles.map((row) => (
                       <tr key={row.id}>
                         <td>{row.id}</td>
                         <td>
-                          <img
+                          {/* <img
                             className="img-rounded"
                             src={row.picture}
                             alt=""
                             height="50"
-                          />
+                          /> */}
+                          <p>{row.title}</p>
+
                         </td>
                         <td>
                           {row.description}
@@ -439,6 +712,9 @@ class Dashboard extends React.Component {
                         </td>
                         <td>
                           <p className="mb-0">
+                            {row.date}
+                          </p>
+                          {/* <p className="mb-0">
                             <small>
                               Type:
                               <span className="text-muted fw-semi-bold">
@@ -453,10 +729,11 @@ class Dashboard extends React.Component {
                                 &nbsp; {row.info.dimensions}
                               </span>
                             </small>
-                          </p>
+                          </p> */}
                         </td>
-                        <td className="text-muted">{this.parseDate(row.date)}</td>
-                        <td className="text-muted">{row.size}</td>
+                        {/* <td className="text-muted">{this.parseDate(row.date)}</td> */}
+                        {/* <td className="text-muted">{row.size}</td> */}
+                        <td className="text-muted">{row.recommendation}</td>
                         <td className="width-150">
                           <Progress
                             color={row.progress.colorClass}

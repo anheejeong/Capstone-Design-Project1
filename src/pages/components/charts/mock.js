@@ -25,6 +25,7 @@ function generateDayWiseTimeSeries(baseval, count, yrange) {
     baseval += 86400000;
     i++;
   }
+  console.log(series);
   return series;
 }
 
@@ -141,24 +142,28 @@ export const chartData = {
       series: [
         {
           name: 'South',
-          data: generateDayWiseTimeSeries(new Date('11 Feb 2017 GMT').getTime(), 20, {
-            min: 10,
-            max: 60
-          })
-        },
-        {
-          name: 'North',
-          data: generateDayWiseTimeSeries(new Date('11 Feb 2017 GMT').getTime(), 20, {
-            min: 10,
-            max: 20
-          })
-        },
-        {
-          name: 'Central',
-          data: generateDayWiseTimeSeries(new Date('11 Feb 2017 GMT').getTime(), 20, {
-            min: 10,
-            max: 15
-          })
+          data: [
+            [1486771200000, 28],
+            [1486857600000, 59],
+            [1486944000000, 14],
+            [1487030400000, 51],
+            [1487116800000, 38],
+            [1487203200000, 32],
+            [1487289600000, 11],
+            [1487376000000, 10],
+            [1487462400000, 56],
+            [1487548800000, 24],
+            [1487635200000, 39],
+            [1487721600000, 22],
+            [1487808000000, 28],
+            [1487894400000, 50],
+            [1487980800000, 41],
+            [1488067200000, 39],
+            [1488153600000, 43],
+            [1488240000000, 39],
+            [1488326400000, 20],
+            [1488412800000, 39],
+          ]
         },
       ],
       options: {
@@ -173,7 +178,7 @@ export const chartData = {
           },
           background: 'none'
         },
-        colors: ['#cf1228', '#1b5bfa', '#257511'],
+        color: ['#bf02ac'],
         theme: {
           mode: 'dark',
         },
@@ -195,7 +200,9 @@ export const chartData = {
           horizontalAlign: 'left'
         },
         xaxis: {
-          type: 'datetime'
+          // type: "datetime",
+          type: "category",
+          categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
         },
       },
     }
@@ -425,7 +432,6 @@ export const chartData = {
           },
         },
       },
-
       legend: {
         data: ["DQ", "TY", "SS", "QG", "SY", "DD"],
         textStyle: {

@@ -69,7 +69,8 @@ class Layout extends React.Component {
           <Sidebar />
           <Hammer onSwipe={this.handleSwipe}>
             <main className={s.content}>
-              <BreadcrumbHistory url={this.props.location.pathname} />
+              {/* 현재 페이지 위치 알려주는 코드 */}
+              {/* <BreadcrumbHistory url={this.props.location.pathname} /> */}
               <TransitionGroup>
                 <CSSTransition
                   key={this.props.location.key}

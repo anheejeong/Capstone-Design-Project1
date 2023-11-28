@@ -1,0 +1,10 @@
+<title>knu.knu_counter_status</title>
+
+<h1>일자별 조회수</h1>
+<p>date &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uniq    pageview</p>
+{% for i in data_list %}
+
+    {{  i[0] }} &nbsp;{{  i[1] }} &nbsp;&nbsp;&nbsp;{{  i[2] }}
+    <br>
+
+{% endfor %}

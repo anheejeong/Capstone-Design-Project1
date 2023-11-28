@@ -41,8 +41,12 @@ if (!checkRequiredFiles([paths.appHtml, paths.appIndexJs])) {
 }
 
 // Tools like Cloud9 rely on this.
+// url 올리는 거 여기서 수정
+// const DEFAULT_PORT = parseInt(process.env.PORT, 10) || 3000;
 const DEFAULT_PORT = parseInt(process.env.PORT, 10) || 3000;
-const HOST = process.env.HOST || '0.0.0.0';
+// const HOST = process.env.HOST || '0.0.0.0';
+const HOST = '127.0.0.1';
+// const HOST = process.env.HOST || '52.79.137.61';
 
 if (process.env.HOST) {
   console.log(
@@ -101,8 +105,8 @@ checkBrowsers(paths.appPath, isInteractive)
       openBrowser(urls.localUrlForBrowser);
     });
 
-    ['SIGINT', 'SIGTERM'].forEach(function(sig) {
-      process.on(sig, function() {
+    ['SIGINT', 'SIGTERM'].forEach(function (sig) {
+      process.on(sig, function () {
         devServer.close();
         process.exit();
       });
