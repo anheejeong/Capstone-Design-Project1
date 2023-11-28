@@ -4,7 +4,7 @@
 
 **Administrator monitoring dashboard that analyzes the types and activities of members on the [Web-r](https://web-r.org/), a community and medical statistical analysis platform**
 
-[![image](https://github.com/anheejeong/Capstone-Design-Project1/assets/100365693/fa418960-731b-451e-b45d-5e2ad1629141)
+![image](https://github.com/anheejeong/Capstone-Design-Project1/assets/100365693/fa418960-731b-451e-b45d-5e2ad1629141)
 
 
 ## Pages
