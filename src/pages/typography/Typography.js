@@ -26,8 +26,12 @@ import exportData from "highcharts/modules/export-data";
 
 import Map from '../dashboard/components/am4chartMap/am4chartMap'
 
+import axios from "axios";
+
 class Typography extends React.Component {
   state = {
+    traffic: null,
+
     cd: chartData,
     initEchartsOptions: {
       renderer: "canvas",
@@ -37,8 +41,34 @@ class Typography extends React.Component {
     checkboxes3: [false, false, false, false, false, false],
   }
 
+  loadItem = async () => {
+    axios
+      .get("./user")
+      .then(({ data }) => {
+        console.log(data);
+        this.setState({
+          // visitToday: data.visitor,
+          // payments: data.payment,
+          // monthVisitor: data.year_visitor
+          traffic: data.traffic,
+        })
+      })
+      .catch(e => {  // API 호출이 실패한 경우
+        console.error(e);  // 에러표시
+        this.setState({
+          loading: false
+        });
+      });
+  };
+
+  componentDidMount() {
+    this.loadItem();
+  }
+
   render() {
     const { cd, initEchartsOptions } = this.state
+    console.log(this.state.traffic)
+
     return (
       <div className={s.root}>
         <h2 className="page-title">
