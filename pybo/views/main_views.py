@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, render_template
-import pymysql  # mysql 모듈
+import pymysql  # mysql 모듈gxw
 import json
 
 # mysql db 연결
