@@ -69,14 +69,14 @@ def index():
         "hot_post": hot_post
     }
 
-    return render_template('user.html')
+    return jsonify(result)
 
 
 @bp.route('/user')
 def user():
     cursor = db.cursor()
     sql1 = "SELECT * FROM result_datas.connection_date;"
-    sql2 = "SELECT * FROM result_datas.visitor_date;"
+    sql2 = "SELECT * FROM result_datas.user_percentage"  # 3. 정회원, 비회원 비율
 
     #1
     cursor.execute(sql1)
@@ -138,8 +138,13 @@ def user():
         traffic[i][1] = j
         j += 1
 
+    # 2. user_percentage
+    cursor.execute(sql2)
+    user_percentage = cursor.fetchone()
+
     result = {
-        "traffic": traffic
+        "traffic": traffic,
+        "user_percentage": user_percentage
 
     }
 
