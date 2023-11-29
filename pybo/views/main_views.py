@@ -75,8 +75,9 @@ def index():
 @bp.route('/user')
 def user():
     cursor = db.cursor()
-    sql1 = "SELECT * FROM result_datas.connection_date;"
-    sql2 = "SELECT * FROM result_datas.user_percentage"  # 3. 정회원, 비회원 비율
+    sql1 = "SELECT * FROM result_datas.connection_date;" # 1
+    sql2 = "SELECT * FROM result_datas.user_percentage"  # 2. 정회원, 비회원 비율
+    sql3 = "SELECT * FROM result_datas.user_os"  # 2. 정회원, 비회원 비율
 
     #1
     cursor.execute(sql1)
@@ -142,9 +143,15 @@ def user():
     cursor.execute(sql2)
     user_percentage = cursor.fetchone()
 
+
+    # 3. user_os
+    cursor.execute(sql3)
+    user_os = cursor.fetchall()
+
     result = {
         "traffic": traffic,
-        "user_percentage": user_percentage
+        "user_percentage": user_percentage,
+        "user_os": user_os
 
     }
 
