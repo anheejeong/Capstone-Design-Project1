@@ -75,9 +75,10 @@ def index():
 @bp.route('/user')
 def user():
     cursor = db.cursor()
-    sql1 = "SELECT * FROM result_datas.connection_date;" # 1
+    sql1 = "SELECT * FROM result_datas.connection_date;" # 1. 월별 접속자
     sql2 = "SELECT * FROM result_datas.user_percentage"  # 2. 정회원, 비회원 비율
-    sql3 = "SELECT * FROM result_datas.user_os"  # 2. 정회원, 비회원 비율
+    sql3 = "SELECT * FROM result_datas.user_os"  # 3. 접속기기
+    sql4 = "SELECT * FROM result_datas.new_user"  # 4. 신규 유료회원
 
     #1
     cursor.execute(sql1)
@@ -148,11 +149,22 @@ def user():
     cursor.execute(sql3)
     user_os = cursor.fetchall()
 
+    # 4. new_user
+    cursor.execute(sql4)
+    new_user = cursor.fetchall()
+
     result = {
         "traffic": traffic,
         "user_percentage": user_percentage,
-        "user_os": user_os
-
+        "user_os": user_os,
+        "new_user": new_user
     }
 
     return jsonify(result)
+
+'''
+   sql5 = "SELECT * FROM result_datas.payment_year"  # 5. 올해 작년 구매금액 비교
+    sql6 = "SELECT * FROM result_datas.payment_method"  # 6. 결제 방식
+    sql7 = "SELECT * FROM result_datas.payment_list"  # 7. 구매목록
+    sql8 = "SELECT * FROM result_datas.user_map"  # 8. 접속 국가
+'''
