@@ -141,6 +141,8 @@ def user():
         traffic[i][1] = j
         j += 1
 
+    new_traffic = list(traffic)
+
     # 2. user_percentage - 정회원/비회원 비율
     cursor.execute(sql2)
     user_percentage = cursor.fetchone()
@@ -158,7 +160,8 @@ def user():
     result = {
         "traffic": traffic,
         "user_percentage": user_percentage,
-        "user_os": user_os
+        "user_os": user_os,
+        "new_traffic": new_traffic
         #"user_map": user_map
     }
 
@@ -191,7 +194,6 @@ def payment():
     # 3. payment_list - 구매 목록
     cursor.execute(sql3)
     payment_list = cursor.fetchall()
-
 
     # 4. new_user - 신규 유료 회원
     cursor.execute(sql4)
