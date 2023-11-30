@@ -170,34 +170,38 @@ def user():
 def payment():
     cursor = db.cursor()
     sql1 = "SELECT * FROM result_datas.payment_method"  # 1. 결제 방식
-    sql2 = "SELECT * FROM result_datas.payment_year"  # 2. 올해 작년 구매 금액 비교
+    sql2 = "SELECT * FROM result_datas.payment_this_year"  # 2. 올해 작년 구매 금액 비교 - 올해
+    sql2_1 = "SELECT * FROM result_datas.payment_last_year"  # 2_1. 올해 작년 구매 금액 비교 - 작년
     sql3 = "SELECT * FROM result_datas.payment_list"  # 3. 구매 목록
     sql4 = "SELECT * FROM result_datas.new_user"  # 4. 신규 유료 회원
 
-    '''
+
     # 1. payment_method - 결제 방식
     cursor.execute(sql1)
     payment_method = cursor.fetchall()
 
-    # 2. payment_year - 올해 작년 구매 금액 비교
+    # 2. payment_year - 올해 작년 구매 금액 비교 - 올해
     cursor.execute(sql2)
-    payment_year = cursor.fetchall()
+    payment_this_year = cursor.fetchall()
+
+    # 2_1. payment_year - 올해 작년 구매 금액 비교 - 작년
+    cursor.execute(sql2_1)
+    payment_last_year = cursor.fetchall()
 
     # 3. payment_list - 구매 목록
     cursor.execute(sql3)
     payment_list = cursor.fetchall()
-    '''
+
 
     # 4. new_user - 신규 유료 회원
     cursor.execute(sql4)
     new_user = cursor.fetchall()
 
     result = {
-        '''
         "payment_method": payment_method,
-        "payment_year": payment_year,
+        "payment_this_year": payment_this_year,
+        "payment_last_year": payment_last_year,
         "payment_list": payment_list,
-        '''
         "new_user": new_user
     }
 
