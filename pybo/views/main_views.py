@@ -220,16 +220,6 @@ def user():
         "traffic": traffic,
         "user_percentage": user_percentage,
         "user_os": user_os,
-        '''
-        "new_traffic": new_traffic,
-        "circle1": circle1,
-        "circle2": circle2,
-        "circle3": circle3,
-        "circle4": circle4,
-        "circle5": circle5,
-        "circle6": circle6,
-        "circle7": circle7,
-        '''
         "day": day,
         "hour": hour,
         "importance": importance
