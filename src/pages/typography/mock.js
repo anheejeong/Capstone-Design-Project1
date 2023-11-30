@@ -78,6 +78,8 @@ data.forEach(function (dataItem) {
     series[dataItem[0]].data.push([dataItem[1], dataItem[2]]);
 });
 
+console.log(series)
+
 const colors2 = Highcharts.getOptions().colors.map((c, i) =>
     // Start out with a darkened base color (negative brighten), and end
     // up with a much brighter color

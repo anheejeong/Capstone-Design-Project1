@@ -41,7 +41,9 @@ const colors2 = Highcharts.getOptions().colors.map((c, i) =>
 
 class Typography extends React.Component {
   state = {
-    traffic: null,
+    traffic_day: [null],
+    traffic_hour: [null],
+    traffic_importance: [null],
 
     os_1_1: null,
     os_1_2: null,
@@ -75,12 +77,13 @@ class Typography extends React.Component {
     axios
       .get("./user")
       .then(({ data }) => {
-        console.log(data);
         this.setState({
           // visitToday: data.visitor,
           // payments: data.payment,
           // monthVisitor: data.year_visitor
-          traffic: data.traffic,
+          traffic_day: data.day,
+          traffic_hour: data.hour,
+          traffic_importance: data.importance,
 
           os_1_1: data.user_os[0][0],
           os_1_2: data.user_os[0][1],
@@ -101,6 +104,9 @@ class Typography extends React.Component {
           user_percentage_1: data.user_percentage[0],
           user_percentage_2: data.user_percentage[1],
         })
+        // console.log(data.day)
+        // console.log(data.hour)
+        // console.log(data.importance)
       })
       .catch(e => {  // API 호출이 실패한 경우
         console.error(e);  // 에러표시
@@ -161,6 +167,94 @@ class Typography extends React.Component {
       }]
     }
 
+    // prettier-ignore
+    const hours = [
+      '12a', '1a', '2a', '3a', '4a', '5a', '6a',
+      '7a', '8a', '9a', '10a', '11a',
+      '12p', '1p', '2p', '3p', '4p', '5p',
+      '6p', '7p', '8p', '9p', '10p', '11p'
+    ];
+    // prettier-ignore
+    const days = [
+      'Monday', 'Tuesday', 'Wednesday',
+      'Thursday', 'Friday', 'Saturday', 'Sunday'
+    ];
+    // prettier-ignore
+    // const data = this.state.traffic;
+    const title = [];
+    const singleAxis = [];
+    const series = [];
+    days.forEach(function (day, idx) {
+      title.push({
+        textBaseline: 'middle',
+        top: ((idx + 0.5) * 100) / 7 + '%',
+        text: day,
+        textStyle: {
+          color: colors.textColor
+        },
+      });
+      singleAxis.push({
+        left: 150,
+        type: 'category',
+        boundaryGap: false,
+        data: hours,
+        top: (idx * 100) / 7 + 5 + '%',
+        height: 100 / 7 - 10 + '%',
+        axisLabel: {
+          interval: 2
+        },
+        axisLine: {
+          lineStyle: {
+            color: colors.textColor
+          }
+        }
+      });
+      series.push({
+        singleAxisIndex: idx,
+        coordinateSystem: 'singleAxis',
+        type: 'scatter',
+        data: [],
+        symbolSize: function (dataItem) {
+          return dataItem[1] * 4;
+        }
+      });
+    });
+
+    let count;
+
+    for (count = 0; count < 24; count++) {
+      series[0].data.push([this.state.traffic_hour[count], this.state.traffic_importance[count]])
+    }
+    for (count = 24; count < 48; count++) {
+      series[1].data.push([this.state.traffic_hour[count], this.state.traffic_importance[count]])
+    }
+    for (count = 48; count < 72; count++) {
+      series[2].data.push([this.state.traffic_hour[count], this.state.traffic_importance[count]])
+    }
+    for (count = 72; count < 96; count++) {
+      series[3].data.push([this.state.traffic_hour[count], this.state.traffic_importance[count]])
+    }
+    for (count = 96; count < 120; count++) {
+      series[4].data.push([this.state.traffic_hour[count], this.state.traffic_importance[count]])
+    }
+    for (count = 120; count < 144; count++) {
+      series[5].data.push([this.state.traffic_hour[count], this.state.traffic_importance[count]])
+    }
+    for (count = 144; count < 168; count++) {
+      series[6].data.push([this.state.traffic_hour[count], this.state.traffic_importance[count]])
+    }
+
+    console.log(series)
+
+    const scatter = {
+      tooltip: {
+        position: 'top'
+      },
+      title: title,
+      singleAxis: singleAxis,
+      series: series,
+    }
+
     return (
       <div className={s.root}>
         <h2 className="page-title">
@@ -200,7 +294,8 @@ class Typography extends React.Component {
               >
                 <ReactEchartsCore
                   echarts={echarts}
-                  option={cd.echarts.scatter}
+                  // option={cd.echarts.scatter}
+                  option={scatter}
                   opts={initEchartsOptions}
                   style={{ height: 350 }}
                 />
