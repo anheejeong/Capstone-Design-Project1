@@ -92,9 +92,9 @@ def user():
     circle5 = cursor.fetchone()
     circle6 = cursor.fetchone()
     circle7 = cursor.fetchone()
-    day = []
-    hour = []
-    importance = []
+    day = [0] * 168
+    hour = [0] * 168
+    importance = [0] * 168
 
     # day = [0, 0, 0 .... 24개 ... 1, 1, 1, 1 .... 24개, ........... 6, 6, 6, 24개]
     # hour = [0, 1, 2, 3, 4, ... 23, 0, 1, 2, 3 ... 23]
@@ -109,48 +109,47 @@ def user():
 
     j = 0
     for i in range(24, 48):
-        day[i] = 0
+        day[i] = 1
         hour[i] = j
         importance[i] = int(circle2[j])
         j += 1
 
     j = 0
     for i in range(48, 72):
-        day[i] = 0
+        day[i] = 2
         hour[i] = j
         importance[i] = int(circle3[j])
         j += 1
 
     j = 0
     for i in range(72, 96):
-        day[i] = 0
+        day[i] = 3
         hour[i] = j
         importance[i] = int(circle4[j])
         j += 1
 
     j = 0
     for i in range(96, 120):
-        day[i] = 0
+        day[i] = 4
         hour[i] = j
         importance[i] = int(circle5[j])
         j += 1
 
     j = 0
     for i in range(120, 144):
-        day[i] = 0
+        day[i] = 5
         hour[i] = j
         importance[i] = int(circle6[j])
         j += 1
 
     j = 0
     for i in range(144, 168):
-        day[i] = 0
+        day[i] = 6
         hour[i] = j
         importance[i] = int(circle7[j])
         j += 1
 
-
-
+    '''
     j = 0
     for i in range(0,24):
         traffic[i][0] = 0
@@ -201,6 +200,7 @@ def user():
         j += 1
 
     new_traffic = list(traffic)
+    '''
 
     # 2. user_percentage - 정회원/비회원 비율
     cursor.execute(sql2)
@@ -220,6 +220,7 @@ def user():
         "traffic": traffic,
         "user_percentage": user_percentage,
         "user_os": user_os,
+        '''
         "new_traffic": new_traffic,
         "circle1": circle1,
         "circle2": circle2,
@@ -228,6 +229,7 @@ def user():
         "circle5": circle5,
         "circle6": circle6,
         "circle7": circle7,
+        '''
         "day": day,
         "hour": hour,
         "importance": importance
