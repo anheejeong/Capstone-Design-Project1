@@ -92,6 +92,64 @@ def user():
     circle5 = cursor.fetchone()
     circle6 = cursor.fetchone()
     circle7 = cursor.fetchone()
+    day = []
+    hour = []
+    importance = []
+
+    # day = [0, 0, 0 .... 24개 ... 1, 1, 1, 1 .... 24개, ........... 6, 6, 6, 24개]
+    # hour = [0, 1, 2, 3, 4, ... 23, 0, 1, 2, 3 ... 23]
+    # importance = [7, 2, 3, 4, ... .circle1 24개 .... circle2 24개 ....]
+
+    j = 0
+    for i in range(0, 24):
+        day[i] = 0
+        hour[i] = j
+        importance[i] = int(circle1[j])
+        j += 1
+
+    j = 0
+    for i in range(24, 48):
+        day[i] = 0
+        hour[i] = j
+        importance[i] = int(circle2[j])
+        j += 1
+
+    j = 0
+    for i in range(48, 72):
+        day[i] = 0
+        hour[i] = j
+        importance[i] = int(circle3[j])
+        j += 1
+
+    j = 0
+    for i in range(72, 96):
+        day[i] = 0
+        hour[i] = j
+        importance[i] = int(circle4[j])
+        j += 1
+
+    j = 0
+    for i in range(96, 120):
+        day[i] = 0
+        hour[i] = j
+        importance[i] = int(circle5[j])
+        j += 1
+
+    j = 0
+    for i in range(120, 144):
+        day[i] = 0
+        hour[i] = j
+        importance[i] = int(circle6[j])
+        j += 1
+
+    j = 0
+    for i in range(144, 168):
+        day[i] = 0
+        hour[i] = j
+        importance[i] = int(circle7[j])
+        j += 1
+
+
 
     j = 0
     for i in range(0,24):
@@ -99,6 +157,7 @@ def user():
         traffic[i][1] = j
         traffic[i][2] = int(circle1[j])
         j += 1
+
     j = 0
     for i in range(24, 48):
         traffic[i][2] = int(circle2[j])
@@ -161,7 +220,17 @@ def user():
         "traffic": traffic,
         "user_percentage": user_percentage,
         "user_os": user_os,
-        "new_traffic": new_traffic
+        "new_traffic": new_traffic,
+        "circle1": circle1,
+        "circle2": circle2,
+        "circle3": circle3,
+        "circle4": circle4,
+        "circle5": circle5,
+        "circle6": circle6,
+        "circle7": circle7,
+        "day": day,
+        "hour": hour,
+        "importance": importance
         #"user_map": user_map
     }
 
