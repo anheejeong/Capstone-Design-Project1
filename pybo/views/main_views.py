@@ -202,7 +202,20 @@ def payment():
         "payment_this_year": payment_this_year,
         "payment_last_year": payment_last_year,
         "payment_list": payment_list,
+<<<<<<< HEAD
+=======
+        '''
+>>>>>>> de396a6 (connect user page os/rate chart)
         "new_user": new_user
     }
 
     return jsonify(result)
+<<<<<<< HEAD
+=======
+
+
+@bp.route('/nlp')
+def nlp():
+    cursor = db.cursor()
+    #sql1 = "SELECT * FROM result_datas."
+>>>>>>> de396a6 (connect user page os/rate chart)

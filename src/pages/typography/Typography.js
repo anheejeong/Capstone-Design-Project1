@@ -28,9 +28,39 @@ import Map from '../dashboard/components/am4chartMap/am4chartMap'
 
 import axios from "axios";
 
+import config from "../components/charts/config";
+const colors = config.chartColors;
+let lineColors = [colors.blue, colors.green, colors.orange];
+const colors2 = Highcharts.getOptions().colors.map((c, i) =>
+  // Start out with a darkened base color (negative brighten), and end
+  // up with a much brighter color
+  Highcharts.color(Highcharts.getOptions().colors[0])
+    .brighten((i - 3) / 7)
+    .get()
+);
+
 class Typography extends React.Component {
   state = {
     traffic: null,
+
+    os_1_1: null,
+    os_1_2: null,
+    os_1_3: null,
+    os_2_1: null,
+    os_2_2: null,
+    os_2_3: null,
+    os_3_1: null,
+    os_3_2: null,
+    os_3_3: null,
+    os_4_1: null,
+    os_4_2: null,
+    os_4_3: null,
+    os_5_1: null,
+    os_5_2: null,
+    os_5_3: null,
+
+    user_percentage_1: null,
+    user_percentage_2: null,
 
     cd: chartData,
     initEchartsOptions: {
@@ -51,6 +81,25 @@ class Typography extends React.Component {
           // payments: data.payment,
           // monthVisitor: data.year_visitor
           traffic: data.traffic,
+
+          os_1_1: data.user_os[0][0],
+          os_1_2: data.user_os[0][1],
+          os_1_3: data.user_os[0][2],
+          os_2_1: data.user_os[0][3],
+          os_2_2: data.user_os[0][4],
+          os_2_3: data.user_os[0][5],
+          os_3_1: data.user_os[0][6],
+          os_3_2: data.user_os[0][7],
+          os_3_3: data.user_os[0][8],
+          os_4_1: data.user_os[0][9],
+          os_4_2: data.user_os[0][10],
+          os_4_3: data.user_os[0][11],
+          os_5_1: data.user_os[0][12],
+          os_5_2: data.user_os[0][13],
+          os_5_3: data.user_os[0][14],
+
+          user_percentage_1: data.user_percentage[0],
+          user_percentage_2: data.user_percentage[1],
         })
       })
       .catch(e => {  // API 호출이 실패한 경우
@@ -67,7 +116,50 @@ class Typography extends React.Component {
 
   render() {
     const { cd, initEchartsOptions } = this.state
-    console.log(this.state.traffic)
+
+    const pie = {
+      chart: {
+        plotBackgroundColor: null,
+        plotBorderWidth: null,
+        plotShadow: false,
+        type: 'pie',
+        backgroundColor: null,
+      },
+      tooltip: {
+        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+      },
+      title: null,
+      accessibility: {
+        point: {
+          valueSuffix: '%'
+        }
+      },
+      plotOptions: {
+        pie: {
+          allowPointSelect: true,
+          cursor: 'pointer',
+          colors2,
+          borderRadius: 5,
+          dataLabels: {
+            enabled: true,
+            format: '<b>{point.name}</b><br>{point.percentage:.1f} %',
+            distance: -50,
+            filter: {
+              property: 'percentage',
+              operator: '>',
+              value: 4
+            }
+          }
+        }
+      },
+      series: [{
+        name: 'Share',
+        data: [
+          { name: '정회원', y: this.state.user_percentage_1 },
+          { name: '비회원', y: this.state.user_percentage_2 },
+        ]
+      }]
+    }
 
     return (
       <div className={s.root}>
@@ -131,7 +223,7 @@ class Typography extends React.Component {
                   options={cd.highcharts.pie} /> */}
                 <PieChart
                   highcharts={Highcharts}
-                  options={cd.highcharts.pie}
+                  options={pie}
                 />
               </Widget>
             </Col>
@@ -172,9 +264,9 @@ class Typography extends React.Component {
                             <Label for="checkbox10" />
                           </div>
                         </th>
-                        <th>Product</th>
-                        <th className="text-right">Price</th>
-                        <th className="text-center">Sales</th>
+                        <th>OS</th>
+                        <th className="text-right">RATE</th>
+                        <th className="text-center">WEB/APP</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -192,15 +284,16 @@ class Typography extends React.Component {
                             <Label for="checkbox11" />
                           </div>
                         </td>
-                        <td>On the Road</td>
-                        <td className="text-right">$25 224.2</td>
+                        <td>{this.state.os_1_1}</td>
+                        <td className="text-right">{this.state.os_1_2}</td>
                         <td className="text-center">
-                          <Sparklines
+                          {/* <Sparklines
                             data={[13, 14, 16, 15, 4, 14, 20]}
                             style={{ width: "35px", height: "20px" }}
                           >
                             <SparklinesBars style={{ fill: "#1870DC" }} />
-                          </Sparklines>
+                          </Sparklines> */}
+                          {this.state.os_1_3}
                         </td>
                       </tr>
                       <tr>
@@ -217,15 +310,16 @@ class Typography extends React.Component {
                             <Label for="checkbox12" />
                           </div>
                         </td>
-                        <td>HP Core i7</td>
-                        <td className="text-right">$87 346.1</td>
+                        <td>{this.state.os_2_1}</td>
+                        <td className="text-right">{this.state.os_2_2}</td>
                         <td className="text-center">
-                          <Sparklines
+                          {/* <Sparklines
                             data={[14, 12, 16, 11, 17, 19, 16]}
                             style={{ width: "35px", height: "20px" }}
                           >
                             <SparklinesBars style={{ fill: "#58D777" }} />
-                          </Sparklines>
+                          </Sparklines> */}
+                          {this.state.os_2_3}
                         </td>
                       </tr>
                       <tr>
@@ -242,15 +336,16 @@ class Typography extends React.Component {
                             <Label for="checkbox13" />
                           </div>
                         </td>
-                        <td>Let&apos;s Dance</td>
-                        <td className="text-right">$57 944.6</td>
+                        <td>{this.state.os_3_1}</td>
+                        <td className="text-right">{this.state.os_3_2}</td>
                         <td className="text-center">
-                          <Sparklines
+                          {/* <Sparklines
                             data={[11, 17, 19, 16, 14, 12, 16]}
                             style={{ width: "35px", height: "20px" }}
                           >
                             <SparklinesBars style={{ fill: "#f0af03" }} />
-                          </Sparklines>
+                          </Sparklines> */}
+                          {this.state.os_3_3}
                         </td>
                       </tr>
                       <tr>
@@ -267,15 +362,16 @@ class Typography extends React.Component {
                             <Label for="checkbox14" />
                           </div>
                         </td>
-                        <td>Air Pro</td>
-                        <td className="text-right">$118 533.1</td>
+                        <td>{this.state.os_4_1}</td>
+                        <td className="text-right">{this.state.os_4_2}</td>
                         <td className="text-center">
-                          <Sparklines
+                          {/* <Sparklines
                             data={[13, 14, 20, 16, 15, 4, 14]}
                             style={{ width: "35px", height: "20px" }}
                           >
                             <SparklinesBars style={{ fill: "#F45722" }} />
-                          </Sparklines>
+                          </Sparklines> */}
+                          {this.state.os_4_3}
                         </td>
                       </tr>
                       <tr>
@@ -292,15 +388,16 @@ class Typography extends React.Component {
                             <Label for="checkbox15" />
                           </div>
                         </td>
-                        <td>Version Control</td>
-                        <td className="text-right">$72 854.5</td>
+                        <td>{this.state.os_5_1}</td>
+                        <td className="text-right">{this.state.os_5_2}</td>
                         <td className="text-center">
-                          <Sparklines
+                          {/* <Sparklines
                             data={[16, 15, 4, 14, 13, 14, 20]}
                             style={{ width: "35px", height: "20px" }}
                           >
                             <SparklinesBars style={{ fill: "#4ebfbb" }} />
-                          </Sparklines>
+                          </Sparklines> */}
+                          {this.state.os_5_3}
                         </td>
                       </tr>
                     </tbody>
