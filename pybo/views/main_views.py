@@ -1,25 +1,27 @@
-from flask import Blueprint, jsonify, render_template
-import pymysql  # mysql 모듈gxw
-import json
+from flask import Blueprint, jsonify # flask - Blueprint를 통해 라우팅 함수 관리, jsonify를 통해 반환값을 json형식으로 변환
+import pymysql  # mysql 쿼리문을 python에서 사용할 수 있는 모듈
+import json # json 데이터 타입
 
 # mysql db 연결
 db = pymysql.connect(host='180.66.240.165', port=53306, user='root', password='U6ycE],+', db='xedb', charset='utf8')
 
+# Blueprint - 라우팅 함수 관리
 bp = Blueprint('main', __name__, url_prefix='/')
 
 
-@bp.route('/home')
+# home 화면
+@bp.route('/home') # home 화면 - 방문자 수, 최근 결제 금액, 정회원/비회원 비율, 인기 검색어, 연간 월 별 조회수, 월 별 조회수 높은 게시글
 def index():
     cursor = db.cursor()  # db 데이터 가르킬 객체 생성
-    sql1 = "SELECT * FROM result_datas.visitor_date;" # 1. 방문자 수 - 오늘, 어제, 어제 오늘 비율, 이번 달
-    sql2 = "SELECT * FROM result_datas.payments_3months;" # 2. 이번 달, 저번달, 저저번달, 이번년 총결제금액
-    sql2_1 = "SELECT * FROM result_datas.payments_3months_percent;" # 2_1 sql2를 %로 나타냄
-    sql3 = "SELECT * FROM result_datas.user_percentage" # 3. 정회원, 비회원 비율
-    sql4 = "SELECT * FROM result_datas.keyword_rank" # 4. 인기검색어 5개
-    sql5 = "SELECT * FROM result_datas.visitor_for_year;" # 5. 이번 년도 월별 조회수
-    sql6 = "SELECT * FROM result_datas.hot_post" # 6. 인기 게시글 5개
+    sql1 = "SELECT * FROM result_datas.visitor_date;"  # 1. 방문자 수 - 오늘, 어제, 이번 달 방문자 수, 어제 대비 오늘 방문자 수 증감률
+    sql2 = "SELECT * FROM result_datas.payments_3months;"  # 2. 최근 3개월 결제 금액 (원)
+    sql2_1 = "SELECT * FROM result_datas.payments_3months_percent;"  # 2_1 최근 3개월 결제 금액 (%)
+    sql3 = "SELECT * FROM result_datas.user_percentage"  # 3. 정회원/비회원 비율
+    sql4 = "SELECT * FROM result_datas.keyword_rank"  # 4. 인기 검색어
+    sql5 = "SELECT * FROM result_datas.visitor_for_year;"  # 5. 금년도 월 별 조회수
+    sql6 = "SELECT * FROM result_datas.hot_post"  # 6. 인기 게시글
 
-    # 1. visitor
+    # 1. visitor_date
     cursor.execute(sql1)
     data = cursor.fetchone()
     today_visitor = json.dumps(data[0])
@@ -28,7 +30,7 @@ def index():
     month_visitor = json.dumps(data[3])
     visitor = [today_visitor, yesterday_visitor, today_yesterday_visitor_rate, month_visitor]
 
-    # 2. payment
+    # 2. payments_3months
     cursor.execute(sql2)
     data = cursor.fetchone()
     this_month_payment = json.dumps(data[0])
@@ -37,10 +39,9 @@ def index():
     total_payment = json.dumps(data[3])
     payment = [this_month_payment, last_month_payment, last_last_month_payment, total_payment]
 
-    # 2_1. payment_percent
+    # 2_1. payments_3months_percent
     cursor.execute(sql2_1)
     payment_percent = cursor.fetchone()
-
 
     # 3. user_percentage
     cursor.execute(sql3)
@@ -55,7 +56,6 @@ def index():
     visitor_for_year = cursor.fetchone()
 
     # 6. hot_post
-
     cursor.execute(sql6)
     hot_post = cursor.fetchall()
 
@@ -69,16 +69,19 @@ def index():
         "hot_post": hot_post
     }
 
-    return render_template('user.html')
+    return jsonify(result)
 
 
-@bp.route('/user')
+# user
+@bp.route('/user')  # user 화면 - 월별 접속자, 정회원/비회원 비율, 접속 기기, 접속 국가
 def user():
     cursor = db.cursor()
-    sql1 = "SELECT * FROM result_datas.connection_date;"
-    sql2 = "SELECT * FROM result_datas.visitor_date;"
+    sql1 = "SELECT * FROM result_datas.connection_date;"  # 1. 월별 접속자
+    sql2 = "SELECT * FROM result_datas.user_percentage"  # 2. 정회원/비회원 비율
+    sql3 = "SELECT * FROM result_datas.user_os"  # 3. 접속 기기
+    #sql4 = "SELECT * FROM result_datas.user_map"  # 4. 접속 국가
 
-    #1
+    # 1. connection_date - 월별 접속자
     cursor.execute(sql1)
     traffic = [[0] * 3 for _ in range(168)]
 
@@ -96,7 +99,6 @@ def user():
         traffic[i][1] = j
         traffic[i][2] = circle1[j]
         j += 1
-
     j = 0
     for i in range(24, 48):
         traffic[i][2] = circle2[j]
@@ -139,9 +141,70 @@ def user():
         traffic[i][1] = j
         j += 1
 
-    result = {
-        "traffic": traffic
+    # 2. user_percentage - 정회원/비회원 비율
+    cursor.execute(sql2)
+    user_percentage = cursor.fetchone()
 
+    # 3. user_os - 접속 기기
+    cursor.execute(sql3)
+    user_os = cursor.fetchall()
+
+    """
+    # 4. user_map - 접속 국가
+    cursor.execute(sql4)
+    user_map = cursor.fetchall()
+    """
+
+    result = {
+        "traffic": traffic,
+        "user_percentage": user_percentage,
+        "user_os": user_os
+        #"user_map": user_map
     }
 
     return jsonify(result)
+
+
+# payment 화면 - 결제 방식, 금년/작년 구매 금액 비교, 구매 목록, 신규 유료 회원
+@bp.route('/payment')
+def payment():
+    cursor = db.cursor()
+    sql1 = "SELECT * FROM result_datas.payment_method"  # 1. 결제 방식
+    sql2 = "SELECT * FROM result_datas.payment_year"  # 2. 올해 작년 구매 금액 비교
+    sql3 = "SELECT * FROM result_datas.payment_list"  # 3. 구매 목록
+    sql4 = "SELECT * FROM result_datas.new_user"  # 4. 신규 유료 회원
+
+    '''
+    # 1. payment_method - 결제 방식
+    cursor.execute(sql1)
+    payment_method = cursor.fetchall()
+
+    # 2. payment_year - 올해 작년 구매 금액 비교
+    cursor.execute(sql2)
+    payment_year = cursor.fetchall()
+
+    # 3. payment_list - 구매 목록
+    cursor.execute(sql3)
+    payment_list = cursor.fetchall()
+    '''
+
+    # 4. new_user - 신규 유료 회원
+    cursor.execute(sql4)
+    new_user = cursor.fetchall()
+
+    result = {
+        '''
+        "payment_method": payment_method,
+        "payment_year": payment_year,
+        "payment_list": payment_list,
+        '''
+        "new_user": new_user
+    }
+
+    return jsonify(result)
+
+
+@bp.route('/nlp')
+def nlp():
+    cursor = db.cursor()
+    #sql1 = "SELECT * FROM result_datas."
