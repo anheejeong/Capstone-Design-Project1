@@ -97,46 +97,46 @@ def user():
     for i in range(0,24):
         traffic[i][0] = 0
         traffic[i][1] = j
-        traffic[i][2] = circle1[j]
+        traffic[i][2] = int(circle1[j])
         j += 1
     j = 0
     for i in range(24, 48):
-        traffic[i][2] = circle2[j]
+        traffic[i][2] = int(circle2[j])
         traffic[i][0] = 1
         traffic[i][1] = j
         j += 1
 
     j = 0
     for i in range(48, 72):
-        traffic[i][2] = circle3[j]
+        traffic[i][2] = int(circle3[j])
         traffic[i][0] = 2
         traffic[i][1] = j
         j += 1
 
     j = 0
     for i in range(72, 96):
-        traffic[i][2] = circle4[j]
+        traffic[i][2] = int(circle4[j])
         traffic[i][0] = 3
         traffic[i][1] = j
         j += 1
 
     j = 0
     for i in range(96, 120):
-        traffic[i][2] = circle5[j]
+        traffic[i][2] = int(circle5[j])
         traffic[i][0] = 4
         traffic[i][1] = j
         j += 1
 
     j = 0
     for i in range(120, 144):
-        traffic[i][2] = circle6[j]
+        traffic[i][2] = int(circle6[j])
         traffic[i][0] = 5
         traffic[i][1] = j
         j += 1
 
     j = 0
     for i in range(144, 168):
-        traffic[i][2] = circle7[j]
+        traffic[i][2] = int(circle7[j])
         traffic[i][0] = 6
         traffic[i][1] = j
         j += 1
