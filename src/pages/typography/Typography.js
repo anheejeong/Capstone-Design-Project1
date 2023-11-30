@@ -222,7 +222,8 @@ class Typography extends React.Component {
 
     let count;
 
-    for (count = 0; count < 24; count++) {
+    // 코드 정리하면 시간 초과 남
+    for (count = 0; count < 168; count++) {
       series[0].data.push([this.state.traffic_hour[count], this.state.traffic_importance[count]])
     }
     for (count = 24; count < 48; count++) {
