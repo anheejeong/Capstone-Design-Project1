@@ -23,6 +23,12 @@ import echarts from "echarts/lib/echarts";
 
 import { chartData } from "./mock";
 
+import axios from "axios";
+
+import config from "../../components/charts/config";
+const colors = config.chartColors;
+let lineColors = [colors.blue, colors.green, colors.orange];
+
 class Static extends React.Component {
   // constructor(props) {
   //   super(props);
@@ -35,10 +41,173 @@ class Static extends React.Component {
     initEchartsOptions: {
       renderer: "canvas",
     },
+    this_year: null,
+    last_year: null,
+  }
+
+  loadItem = async () => {
+    axios
+      .get("./payment")
+      .then(({ data }) => {
+        this.setState({
+          this_year: data.payment_this_year,
+          last_year: data.payment_last_year
+        })
+      })
+      .catch(e => {  // API 호출이 실패한 경우
+        console.error(e);  // 에러표시
+        this.setState({
+          loading: false
+        });
+      })
+
+  };
+
+  componentDidMount() {
+    this.loadItem();
   }
 
   render() {
     const { cd, initEchartsOptions } = this.state
+
+    const line = {
+      color: lineColors,
+      tooltip: {
+        trigger: "none",
+        axisPointer: {
+          type: "cross",
+        },
+      },
+      legend: {
+        data: ["2015 Precipitation", "2016 Precipitation"],
+        textStyle: {
+          color: colors.textColor,
+        },
+      },
+      grid: {
+        top: 70,
+        bottom: 50,
+      },
+      xAxis: [
+        {
+          type: "category",
+          axisTick: {
+            alignWithLabel: true,
+          },
+          axisLine: {
+            onZero: false,
+            lineStyle: {
+              color: lineColors[1],
+            },
+          },
+          axisPointer: {
+            label: {
+              formatter: function (params) {
+                return (
+                  "Precipitation  " +
+                  params.value +
+                  (params.seriesData.length
+                    ? "：" + params.seriesData[0].data
+                    : "")
+                );
+              },
+            },
+          },
+          data: [
+            "2023-1",
+            "2023-2",
+            "2023-3",
+            "2023-4",
+            "2023-5",
+            "2023-6",
+            "2023-7",
+            "2023-8",
+            "2023-9",
+            "2023-10",
+            "2023-11",
+            "2023-12",
+          ],
+        },
+        {
+          type: "category",
+          axisTick: {
+            alignWithLabel: true,
+          },
+          axisLine: {
+            onZero: false,
+            lineStyle: {
+              color: lineColors[0],
+            },
+          },
+          axisPointer: {
+            label: {
+              formatter: function (params) {
+                return (
+                  "Precipitation  " +
+                  params.value +
+                  (params.seriesData.length
+                    ? "：" + params.seriesData[0].data
+                    : "")
+                );
+              },
+            },
+          },
+          data: [
+            "2022-1",
+            "2022-2",
+            "2022-3",
+            "2022-4",
+            "2022-5",
+            "2022-6",
+            "2022-7",
+            "2022-8",
+            "2022-9",
+            "2022-10",
+            "2022-11",
+            "2022-12",
+          ],
+        },
+      ],
+      yAxis: [
+        {
+          type: "value",
+          axisLabel: {
+            color: colors.textColor,
+          },
+          axisLine: {
+            lineStyle: {
+              color: colors.textColor,
+            },
+          },
+          splitLine: {
+            lineStyle: {
+              color: colors.gridLineColor,
+            },
+          },
+          axisPointer: {
+            label: {
+              color: colors.dark,
+            },
+          },
+        },
+      ],
+      series: [
+        {
+          name: "2015 Precipitation",
+          type: "line",
+          xAxisIndex: 1,
+          smooth: true,
+          data: this.state.last_year,
+        },
+        {
+          name: "2016 Precipitation",
+          type: "line",
+          smooth: true,
+          data: this.state.this_year,
+        },
+      ],
+    }
+
     return (
       <div className={s.root}>
         <h2 className="page-title">
@@ -57,9 +226,8 @@ class Static extends React.Component {
             >
               <ReactEchartsCore
                 echarts={echarts}
-                option={cd.echarts.line}
+                option={line}
                 opts={initEchartsOptions}
-                // style={{ height: "365px" }}
                 style={{ height: "500px" }}
               />
             </Widget>
