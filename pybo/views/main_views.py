@@ -202,15 +202,15 @@ def payment():
     payment_list = cursor.fetchall()
 
     # 4. new_user - 신규 유료 회원
-    cursor.execute(sql4)
-    new_user = cursor.fetchall()
+    # cursor.execute(sql4)
+    # new_user = cursor.fetchall()
 
     result = {
         "payment_method": payment_method,
         "payment_this_year": payment_this_year,
         "payment_last_year": payment_last_year,
         "payment_list": payment_list,
-        "new_user": new_user
+        # "new_user": new_user
     }
 
     return jsonify(result)
