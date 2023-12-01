@@ -46,6 +46,10 @@ class Static extends React.Component {
 
     credit: null,
     toss: null,
+
+    new_user_this_month: null,
+    new_user_rate: null,
+    new_user_amount: null,
   }
 
   loadItem = async () => {
@@ -58,6 +62,10 @@ class Static extends React.Component {
 
           credit: data.payment_method[1][1],
           toss: data.payment_method[2][1],
+
+          new_user_this_month: data.new_user[0][0],
+          new_user_rate: data.new_user[0][1],
+          new_user_amount: data.new_user[0][2]
         })
         console.log(data.payment_method)
       })
@@ -340,27 +348,28 @@ class Static extends React.Component {
                   <header class="d-flex justify-content-between flex-nowrap">
                     <h4 class="d-flex align-items-center pb-1 big-stat-title">
                       <span class="circle bg-primary mr-sm" style={{ 'font-size': '6px' }}></span>
-                      신규 <span class="fw-normal ml-xs">정회원</span>
+                      이번달 <span class="fw-normal ml-xs">신규 정회원</span>
                     </h4>
                   </header>
                   <div class="pb-xlg h-100">
                     <section class="widget mb-0 h-100">
                       <div class="widget-body p-0">
-                        <h4 class="fw-semi-bold ml-lg mb-lg">4,232</h4>
+                        <h4 class="fw-semi-bold ml-lg mb-lg">{this.state.new_user_this_month} (명)</h4>
                         <div class="d-flex border-top">
                           <div class="w-50 border-right p-3 px-4">
                             <div class="d-flex align-items-center mb-2">
-                              <h6>+830</h6>
-                              <i class="la la-arrow-right la-2x text-success rotate-315 ml-sm"></i>
+                              <h6>{this.state.new_user_rate}%</h6>
+                              {/* <i class="la la-arrow-right la-2x text-success rotate-315 ml-sm"></i> */}
+                              <i class="la la-2x la-arrow-right text-danger rotate-45 ml-sm"></i>
                             </div>
-                            <p class="text-muted mb-0 mr"><small>Registrations</small></p>
+                            <p class="text-muted mb-0 mr"><small>저번달 대비 정회원 비율</small></p>
                           </div>
                           <div class="w-50 p-3 px-4">
                             <div class="d-flex align-items-center mb-2">
-                              <h6>4.5%</h6>
-                              <i class="la la-2x la-arrow-right text-danger rotate-45 ml-sm"></i>
+                              <h6>{this.state.new_user_amount} (만원)</h6>
+                              {/* <i class="la la-2x la-arrow-right text-danger rotate-45 ml-sm"></i> */}
                             </div>
-                            <p class="text-muted mb-0 mr"><small>Bounce Rate</small></p>
+                            <p class="text-muted mb-0 mr"><small>올해 구독료 총합</small></p>
                           </div>
                         </div>
                       </div>
