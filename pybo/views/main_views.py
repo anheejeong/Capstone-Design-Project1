@@ -191,11 +191,11 @@ def payment():
 
     # 2. payment_year - 올해 작년 구매 금액 비교 - 올해
     cursor.execute(sql2)
-    payment_this_year = cursor.fetchall()
+    payment_this_year = cursor.fetchone()
 
     # 2_1. payment_year - 올해 작년 구매 금액 비교 - 작년
     cursor.execute(sql2_1)
-    payment_last_year = cursor.fetchall()
+    payment_last_year = cursor.fetchone()
 
     # 3. payment_list - 구매 목록
     cursor.execute(sql3)
