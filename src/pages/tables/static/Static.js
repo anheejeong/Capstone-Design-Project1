@@ -43,6 +43,9 @@ class Static extends React.Component {
     },
     this_year: null,
     last_year: null,
+
+    credit: null,
+    toss: null,
   }
 
   loadItem = async () => {
@@ -51,8 +54,12 @@ class Static extends React.Component {
       .then(({ data }) => {
         this.setState({
           this_year: data.payment_this_year,
-          last_year: data.payment_last_year
+          last_year: data.payment_last_year,
+
+          credit: data.payment_method[1][1],
+          toss: data.payment_method[2][1],
         })
+        console.log(data.payment_method)
       })
       .catch(e => {  // API 호출이 실패한 경우
         console.error(e);  // 에러표시
@@ -208,6 +215,71 @@ class Static extends React.Component {
       ],
     }
 
+    const bar = {
+      dataset: {
+        source: [
+          ['score', 'amount', 'product'],
+          [57.1, this.state.credit, '신용카드'],
+          [19.6, this.state.toss, '토스']
+        ]
+      },
+      grid: { containLabel: true },
+      xAxis: [
+        {
+          name: '%',
+          axisLine: {
+            lineStyle: {
+              color: colors.textColor,
+            },
+          },
+          splitLine: {
+            lineStyle: {
+              color: colors.gridLineColor,
+            },
+          },
+        },
+      ],
+      yAxis: [
+        {
+          type: 'category',
+          axisLabel: {
+            color: colors.textColor,
+          },
+          axisLine: {
+            lineStyle: {
+              color: colors.textColor,
+            },
+          },
+        },
+      ],
+      visualMap: {
+        orient: 'horizontal',
+        left: 'center',
+        min: 10,
+        max: 100,
+        text: ['High Score', 'Low Score'],
+        textStyle: {
+          color: colors.textColor
+        },
+        // Map the score column to color
+        dimension: 0,
+        inRange: {
+          color: ['#65B581', '#FFCE34', '#FD665F']
+        }
+      },
+      series: [
+        {
+          type: 'bar',
+          encode: {
+            // Map the "amount" column to X axis.
+            x: 'amount',
+            // Map the "product" column to Y axis
+            y: 'product'
+          }
+        }
+      ]
+    }
+
     return (
       <div className={s.root}>
         <h2 className="page-title">
@@ -246,7 +318,8 @@ class Static extends React.Component {
                 >
                   <ReactEchartsCore
                     echarts={echarts}
-                    option={cd.echarts.bar}
+                    // option={cd.echarts.bar}
+                    option={bar}
                     opts={initEchartsOptions}
                     style={{ height: "220px" }}
                   />
