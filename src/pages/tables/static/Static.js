@@ -79,7 +79,7 @@ class Static extends React.Component {
         },
       },
       legend: {
-        data: ["2015 Precipitation", "2016 Precipitation"],
+        data: ["Payment Amount in 2022", "Payment Amount in 2023"],
         textStyle: {
           color: colors.textColor,
         },
@@ -193,14 +193,14 @@ class Static extends React.Component {
       ],
       series: [
         {
-          name: "2015 Precipitation",
+          name: "Payment Amount in 2022",
           type: "line",
           xAxisIndex: 1,
           smooth: true,
           data: this.state.last_year,
         },
         {
-          name: "2016 Precipitation",
+          name: "Payment Amount in 2023",
           type: "line",
           smooth: true,
           data: this.state.this_year,
