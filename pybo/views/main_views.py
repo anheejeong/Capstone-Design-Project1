@@ -83,7 +83,7 @@ def user():
 
     # 1. connection_date - 월별 접속자
     cursor.execute(sql1)
-    traffic = [[0] * 3 for _ in range(168)]
+    # traffic = [[0] * 3 for _ in range(168)]
 
     circle1 = cursor.fetchone()
     circle2 = cursor.fetchone()
@@ -92,15 +92,74 @@ def user():
     circle5 = cursor.fetchone()
     circle6 = cursor.fetchone()
     circle7 = cursor.fetchone()
+    day = [0] * 168
+    hour = [0] * 168
+    importance = [0] * 168
 
+    # day = [0, 0, 0 .... 24개 ... 1, 1, 1, 1 .... 24개, ........... 6, 6, 6, 24개]
+    # hour = [0, 1, 2, 3, 4, ... 23, 0, 1, 2, 3 ... 23]
+    # importance = [7, 2, 3, 4, ... .circle1 24개 .... circle2 24개 ....]
+
+    j = 0
+    for i in range(0, 24):
+        day[i] = 0
+        hour[i] = j
+        importance[i] = int(circle1[j])
+        j += 1
+
+    j = 0
+    for i in range(24, 48):
+        day[i] = 1
+        hour[i] = j
+        importance[i] = int(circle2[j])
+        j += 1
+
+    j = 0
+    for i in range(48, 72):
+        day[i] = 2
+        hour[i] = j
+        importance[i] = int(circle3[j])
+        j += 1
+
+    j = 0
+    for i in range(72, 96):
+        day[i] = 3
+        hour[i] = j
+        importance[i] = int(circle4[j])
+        j += 1
+
+    j = 0
+    for i in range(96, 120):
+        day[i] = 4
+        hour[i] = j
+        importance[i] = int(circle5[j])
+        j += 1
+
+    j = 0
+    for i in range(120, 144):
+        day[i] = 5
+        hour[i] = j
+        importance[i] = int(circle6[j])
+        j += 1
+
+    j = 0
+    for i in range(144, 168):
+        day[i] = 6
+        hour[i] = j
+        importance[i] = int(circle7[j])
+        j += 1
+
+    '''
     j = 0
     for i in range(0,24):
         traffic[i][0] = 0
         traffic[i][1] = j
+        traffic[i][2] = int(circle1[j])
         traffic[i][2] = circle1[j]
         j += 1
     j = 0
     for i in range(24, 48):
+        traffic[i][2] = int(circle2[j])
         traffic[i][2] = circle2[j]
         traffic[i][0] = 1
         traffic[i][1] = j
@@ -108,6 +167,7 @@ def user():
 
     j = 0
     for i in range(48, 72):
+        traffic[i][2] = int(circle3[j])
         traffic[i][2] = circle3[j]
         traffic[i][0] = 2
         traffic[i][1] = j
@@ -115,6 +175,7 @@ def user():
 
     j = 0
     for i in range(72, 96):
+        traffic[i][2] = int(circle4[j])
         traffic[i][2] = circle4[j]
         traffic[i][0] = 3
         traffic[i][1] = j
@@ -122,6 +183,7 @@ def user():
 
     j = 0
     for i in range(96, 120):
+        traffic[i][2] = int(circle5[j])
         traffic[i][2] = circle5[j]
         traffic[i][0] = 4
         traffic[i][1] = j
@@ -129,6 +191,7 @@ def user():
 
     j = 0
     for i in range(120, 144):
+        traffic[i][2] = int(circle6[j])
         traffic[i][2] = circle6[j]
         traffic[i][0] = 5
         traffic[i][1] = j
@@ -136,10 +199,14 @@ def user():
 
     j = 0
     for i in range(144, 168):
+        traffic[i][2] = int(circle7[j])
         traffic[i][2] = circle7[j]
         traffic[i][0] = 6
         traffic[i][1] = j
         j += 1
+
+    new_traffic = list(traffic)
+    '''
 
     # 2. user_percentage - 정회원/비회원 비율
     cursor.execute(sql2)
@@ -156,10 +223,12 @@ def user():
     """
 
     result = {
-        "traffic": traffic,
+        "day": day,
+        "hour": hour,
+        "importance": importance,
         "user_percentage": user_percentage,
         "user_os": user_os
-        #"user_map": user_map
+        # "user_map": user_map
     }
 
     return jsonify(result)
