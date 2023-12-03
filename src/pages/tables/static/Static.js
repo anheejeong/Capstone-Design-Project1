@@ -50,6 +50,12 @@ class Static extends React.Component {
     new_user_this_month: null,
     new_user_rate: null,
     new_user_amount: null,
+
+    buy_list_1: [],
+    buy_list_2: [],
+    buy_list_3: [],
+    buy_list_4: [],
+    buy_list_5: [],
   }
 
   loadItem = async () => {
@@ -65,9 +71,15 @@ class Static extends React.Component {
 
           new_user_this_month: data.new_user[0][0],
           new_user_rate: data.new_user[0][1],
-          new_user_amount: data.new_user[0][2]
+          new_user_amount: data.new_user[0][2],
+
+          buy_list_1: data.payment_list[0],
+          buy_list_2: data.payment_list[1],
+          buy_list_3: data.payment_list[2],
+          buy_list_4: data.payment_list[3],
+          buy_list_5: data.payment_list[4],
         })
-        console.log(data.payment_method)
+        console.log(data.payment_list)
       })
       .catch(e => {  // API 호출이 실패한 경우
         console.error(e);  // 에러표시
@@ -397,60 +409,46 @@ class Static extends React.Component {
                 <table class="table table-striped mb-0">
                   <thead>
                     <tr class="text-white">
-                      <th scope="col"><span class=" pl-3">NAME</span></th>
-                      <th scope="col">EMAIL</th>
-                      <th scope="col">PRODUCT</th>
-                      <th scope="col">PRICE</th>
+                      <th scope="col"><span class=" pl-3">PRODUCT</span></th>
+                      <th scope="col">PRICE (만원)</th>
+                      <th scope="col">MEMBER SERIAL NUM</th>
                       <th scope="col">DATE</th>
-                      <th scope="col">CITY</th>
-                      <th scope="col">STATUS</th>
                     </tr>
                   </thead>
                   <tbody class="text-white-50">
                     <tr>
-                      <th class="pl-4 fw-normal">Mark Otto</th>
-                      <td>ottoto@wxample.com</td>
-                      <td>ON the Road</td>
-                      <td>$25 224.2</td>
-                      <td>11 May 2017</td>
-                      <td>Otsego</td>
-                      <td><span class="badge badge-primary p-1 px-3">Sent</span></td>
+                      <th class="pl-4 fw-normal">{this.state.buy_list_1[1]}</th>
+                      <td>{this.state.buy_list_1[2]}</td>
+                      <td>{this.state.buy_list_1[0]}</td>
+                      <td>{this.state.buy_list_1[3]}</td>
                     </tr>
                     <tr>
-                      <th class="pl-4">Jacob Thornton</th>
-                      <td>thornton@wxample.com</td>
-                      <td>HP Core i7</td>
-                      <td>$1 254.2</td>
-                      <td>4 Jun 2017</td>
-                      <td>Fivepointville</td>
-                      <td><span class="badge badge-primary p-1 px-3">Sent</span></td>
+                      <th class="pl-4">{this.state.buy_list_2[1]}</th>
+                      <td>{this.state.buy_list_2[2]}</td>
+                      <td>{this.state.buy_list_2[0]}</td>
+                      <td>{this.state.buy_list_2[3]}</td>
+                      {/* <td><span class="badge badge-primary p-1 px-3">Sent</span></td> */}
                     </tr>
                     <tr>
-                      <th class="pl-4">Larry the Bird</th>
-                      <td>bird@wxample.com</td>
-                      <td>Air Pro</td>
-                      <td>$1 570.0</td>
-                      <td>27 Aug 2017</td>
-                      <td>Leadville North</td>
-                      <td><span class="badge badge-success p-1 px-3">Pending</span></td>
+                      <th class="pl-4">{this.state.buy_list_3[1]}</th>
+                      <td>{this.state.buy_list_3[2]}</td>
+                      <td>{this.state.buy_list_3[0]}</td>
+                      <td>{this.state.buy_list_3[3]}</td>
+                      {/* <td><span class="badge badge-success p-1 px-3">Pending</span></td> */}
                     </tr>
                     <tr>
-                      <th class="pl-4">Joseph May</th>
-                      <td>josephmay@wxample.com</td>
-                      <td>Version Control</td>
-                      <td>$5 224.5</td>
-                      <td>19 Feb 2018</td>
-                      <td>Seaforth</td>
-                      <td><span class="badge badge-danger p-1 px-3">Declined</span></td>
+                      <th class="pl-4">{this.state.buy_list_4[1]}</th>
+                      <td>{this.state.buy_list_4[2]}</td>
+                      <td>{this.state.buy_list_4[0]}</td>
+                      <td>{this.state.buy_list_4[3]}</td>
+                      {/* <td><span class="badge badge-danger p-1 px-3">Declined</span></td> */}
                     </tr>
                     <tr>
-                      <th class="pl-4">Peter Horadnia</th>
-                      <td>horadnia@wxample.com</td>
-                      <td>Let's Dance</td>
-                      <td>$43 594.7</td>
-                      <td>1 Mar 2018</td>
-                      <td>Hanoverton</td>
-                      <td><span class="badge badge-primary p-1 px-3">Sent</span></td>
+                      <th class="pl-4">{this.state.buy_list_5[1]}</th>
+                      <td>{this.state.buy_list_5[2]}</td>
+                      <td>{this.state.buy_list_5[0]}</td>
+                      <td>{this.state.buy_list_5[3]}</td>
+                      {/* <td><span class="badge badge-primary p-1 px-3">Sent</span></td> */}
                     </tr>
                   </tbody>
                 </table>
