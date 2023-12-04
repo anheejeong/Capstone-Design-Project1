@@ -69,6 +69,7 @@ def index():
         "hot_post": hot_post
     }
 
+    cursor.close()
     return jsonify(result)
 
 
@@ -231,6 +232,7 @@ def user():
         # "user_map": user_map
     }
 
+    cursor.close()
     return jsonify(result)
 
 
@@ -282,4 +284,5 @@ def payment():
         "new_user": new_user
     }
 
+    cursor.close()
     return jsonify(result)
