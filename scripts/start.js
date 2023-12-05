@@ -46,6 +46,7 @@ if (!checkRequiredFiles([paths.appHtml, paths.appIndexJs])) {
 const DEFAULT_PORT = parseInt(process.env.PORT, 10) || 3000;
 // const HOST = process.env.HOST || '0.0.0.0';
 const HOST = '127.0.0.1';
+// const HOST = 'https://kpuniv.statground.net/'
 // const HOST = process.env.HOST || '52.79.137.61';
 
 if (process.env.HOST) {
