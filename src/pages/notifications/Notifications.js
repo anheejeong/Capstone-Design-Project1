@@ -13,28 +13,151 @@ import HighchartsReact from "highcharts-react-official";
 import exporting from "highcharts/modules/exporting";
 import exportData from "highcharts/modules/export-data";
 
+import ReactEchartsCore from "echarts-for-react/lib/core";
+import echarts from "echarts/lib/echarts";
+
+import $ from "jquery";
+
 exporting(Highcharts);
 exportData(Highcharts);
+
+// var ROOT_PATH = 'https://echarts.apache.org/examples';
+
+// var chartDom = document.getElementById('main');
+// var myChart = echarts.init(chartDom, 'dark');
+// var option;
 
 class Notifications extends React.Component {
   state = {
     cd: chartData,
+    initEchartsOptions: {
+      renderer: "canvas",
+    },
   };
 
+  // componentDidMount() {
+  //   $.getJSON(ROOT_PATH + '/data/asset/data/les-miserables.json', function (graph) {
+  //     myChart.hideLoading();
+  //     option = {
+  //       tooltip: {},
+  //       legend: [
+  //         {
+  //           data: graph.categories.map(function (a) {
+  //             return a.name;
+  //           })
+  //         }
+  //       ],
+  //       series: [
+  //         {
+  //           name: 'Les Miserables',
+  //           type: 'graph',
+  //           layout: 'none',
+  //           data: graph.nodes,
+  //           links: graph.links,
+  //           categories: graph.categories,
+  //           roam: true,
+  //           label: {
+  //             show: true,
+  //             position: 'right',
+  //             formatter: '{b}'
+  //           },
+  //           labelLayout: {
+  //             hideOverlap: true
+  //           },
+  //           scaleLimit: {
+  //             min: 0.4,
+  //             max: 2
+  //           },
+  //           lineStyle: {
+  //             color: 'source',
+  //             curveness: 0.3
+  //           }
+  //         }
+  //       ]
+  //     };
+  //   }
+  //   )
+  // }
+
   render() {
-    const { cd } = this.state
+    const { initEchartsOptions } = this.state;
+
+    console.log(this.state.cd.echarts.nodes)
+    console.log(this.state.cd.echarts.categories)
+
+    const clustering = {
+      tooltip: {},
+      legend: [
+        {
+          data: this.state.cd.echarts.categories.map(function (a) {
+            return a.name;
+          }),
+          textStyle: {
+            color: '#fff',
+          },
+        },
+      ],
+      series: [
+        {
+          name: 'Les Miserables',
+          type: 'graph',
+          layout: 'none',
+          data: this.state.cd.echarts.nodes,
+          links: this.state.cd.echarts.links,
+          categories: this.state.cd.echarts.categories,
+          roam: true,
+          label: {
+            show: true,
+            position: 'right',
+            formatter: '{b}',
+            color: '#fff',
+          },
+          labelLayout: {
+            hideOverlap: true,
+            color: '#fff',
+          },
+          scaleLimit: {
+            min: 0.4,
+            max: 2
+          },
+          lineStyle: {
+            color: 'source',
+            curveness: 0.3
+          }
+        }
+      ]
+    };
+
+    console.log(clustering)
+
     return (
-      <div className={s.root}>
+      <div className={s.root} >
         <h1 className="page-title">
           Analysis - <span className="fw-semi-bold">NLP</span>
         </h1>
         <Row>
-          <Col lg={6}>
-            <Widget>
-              {/* <HighchartsReact
-                highcharts={Highcharts}
-                options={cd.highcharts.wordcloud}
+          <Col lg={12} xs={12}>
+            <Widget
+              title={
+                <h5>Clustering</h5>
+              }
+              close
+              collapse
+            >
+              {/* <ReactEchartsCore
+                echarts={echarts}
+                // option={cd.echarts.scatter}
+                option={scatter}
+                opts={initEchartsOptions}
+                style={{ height: 350 }}
               /> */}
+              {/* clustering - echarts : les-miserables */}
+              <ReactEchartsCore
+                echarts={echarts}
+                option={clustering}
+                opts={initEchartsOptions}
+                style={{ height: 700 }}
+              />
             </Widget>
           </Col>
         </Row>
