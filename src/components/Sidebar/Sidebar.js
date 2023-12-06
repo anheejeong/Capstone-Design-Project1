@@ -140,11 +140,9 @@ class Sidebar extends React.Component {
                         ]}
                     />
                 </ul>
-                <h5 className={s.navTitle}>
+                {/* <h5 className={s.navTitle}>
                     LABELS
-                    {/* eslint-disable-next-line */}
                 </h5>
-                {/* eslint-disable */}
                 <ul className={s.sidebarLabels}>
                     <li>
                         <a href="#">
@@ -165,7 +163,6 @@ class Sidebar extends React.Component {
                         </a>
                     </li>
                 </ul>
-                {/* eslint-enable */}
                 <h5 className={s.navTitle}>
                     PROJECTS
                 </h5>
@@ -186,7 +183,7 @@ class Sidebar extends React.Component {
                             <span className={s.alertFooter}>{alert.footer}</span>
                         </Alert>,
                     )}
-                </div>
+                </div> */}
             </nav>
         );
     }
