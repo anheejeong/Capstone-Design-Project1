@@ -335,13 +335,11 @@ class Typography extends React.Component {
                 close
               >
                 <h3>
-                  너무 할 게 없어서 <span className="fw-semi-bold">설명이라도</span>
+                  접속기기
+                  {/* 접속기기 <span className="fw-semi-bold">설명이라도</span> */}
                 </h3>
                 <p>
-                  적어야 할 것 같아요 옆에 파이 차트랑 height가 안 맞아요ㅠ
-                  how all of us learned in school the table should look like. Just
-                  add
-                  <code>.table-bordered</code> to it.
+                  접속기기
                 </p>
                 <div className={`widget-table-overflow ${s.overFlow}`}>
                   <Table className="table-bordered table-lg mt-lg mb-0">

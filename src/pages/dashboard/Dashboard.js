@@ -331,6 +331,187 @@ class Dashboard extends React.Component {
       ],
     };
 
+    const pie = {
+      tooltip: {
+        trigger: 'item',
+        formatter: '{a} <br/>{b} : {c} ({d}%)'
+      },
+      series: [
+        {
+          type: 'pie',
+          radius: '65%',
+          center: ['50%', '50%'],
+          selectedMode: 'single',
+          data: [
+            { value: 735, name: 'CityC' },
+            { value: 510, name: 'CityD' },
+            // { value: 434, name: 'CityB' },
+            // { value: 335, name: 'CityA' }
+          ],
+          emphasis: {
+            itemStyle: {
+              shadowBlur: 10,
+              shadowOffsetX: 0,
+              shadowColor: 'rgba(0, 0, 0, 0.5)'
+            }
+          },
+        }
+      ]
+    };
+
+    // const pie = {
+    //   tooltip: {
+    //     trigger: 'item',
+    //     formatter: '{a} <br/>{b}: {c} ({d}%)'
+    //   },
+    //   legend: {
+    //     data: [
+    //       'Direct',
+    //       'Marketing',
+    //       'Search Engine',
+    //       'Email',
+    //       'Union Ads',
+    //       'Video Ads',
+    //       'Baidu',
+    //       'Google',
+    //       'Bing',
+    //       'Others'
+    //     ]
+    //   },
+    //   series: [
+    //     {
+    //       name: 'Access From',
+    //       type: 'pie',
+    //       selectedMode: 'single',
+    //       radius: [0, '30%'],
+    //       label: {
+    //         position: 'inner',
+    //         fontSize: 14
+    //       },
+    //       labelLine: {
+    //         show: false
+    //       },
+    //       data: [
+    //         { value: 1548, name: 'Search Engine' },
+    //         { value: 775, name: 'Direct' },
+    //         { value: 679, name: 'Marketing', selected: true }
+    //       ]
+    //     },
+    //     {
+    //       name: 'Access From',
+    //       type: 'pie',
+    //       radius: ['45%', '60%'],
+    //       labelLine: {
+    //         length: 30
+    //       },
+    //       label: {
+    //         formatter: '{a|{a}}{abg|}\n{hr|}\n  {b|{b}：}{c}  {per|{d}%}  ',
+    //         backgroundColor: '#F6F8FC',
+    //         borderColor: '#8C8D8E',
+    //         borderWidth: 1,
+    //         borderRadius: 4,
+    //         rich: {
+    //           a: {
+    //             color: '#6E7079',
+    //             lineHeight: 22,
+    //             align: 'center'
+    //           },
+    //           hr: {
+    //             borderColor: '#8C8D8E',
+    //             width: '100%',
+    //             borderWidth: 1,
+    //             height: 0
+    //           },
+    //           b: {
+    //             color: '#4C5058',
+    //             fontSize: 14,
+    //             fontWeight: 'bold',
+    //             lineHeight: 33
+    //           },
+    //           per: {
+    //             color: '#fff',
+    //             backgroundColor: '#4C5058',
+    //             padding: [3, 4],
+    //             borderRadius: 4
+    //           }
+    //         }
+    //       },
+    //       data: [
+    //         { value: 1048, name: 'Baidu' },
+    //         { value: 335, name: 'Direct' },
+    //         { value: 310, name: 'Email' },
+    //         { value: 251, name: 'Google' },
+    //         { value: 234, name: 'Union Ads' },
+    //         { value: 147, name: 'Bing' },
+    //         { value: 135, name: 'Video Ads' },
+    //         { value: 102, name: 'Others' }
+    //       ]
+    //     }
+    //   ]
+    // };
+
+    // const pie = {
+    //   // backgroundColor: '#2c343c',
+    //   // title: {
+    //   //   text: 'Customized Pie',
+    //   //   left: 'center',
+    //   //   top: 20,
+    //   //   textStyle: {
+    //   //     color: '#ccc'
+    //   //   }
+    //   // },
+    //   tooltip: {
+    //     trigger: 'item'
+    //   },
+    //   visualMap: {
+    //     show: false,
+    //     min: 80,
+    //     max: 600,
+    //     inRange: {
+    //       colorLightness: [0, 1]
+    //     }
+    //   },
+    //   series: [
+    //     {
+    //       name: 'Access From',
+    //       type: 'pie',
+    //       radius: '55%',
+    //       center: ['50%', '50%'],
+    //       data: [
+    //         { value: 335, name: 'Direct' },
+    //         { value: 310, name: 'Email' },
+    //         { value: 274, name: 'Union Ads' },
+    //         { value: 235, name: 'Video Ads' },
+    //         { value: 400, name: 'Search Engine' }
+    //       ].sort(function (a, b) {
+    //         return a.value - b.value;
+    //       }),
+    //       roseType: 'radius',
+    //       label: {
+    //         color: 'rgba(255, 255, 255, 0.3)'
+    //       },
+    //       labelLine: {
+    //         lineStyle: {
+    //           color: 'rgba(255, 255, 255, 0.3)'
+    //         },
+    //         smooth: 0.2,
+    //         length: 10,
+    //         length2: 20
+    //       },
+    //       itemStyle: {
+    //         color: '#c23531',
+    //         shadowBlur: 200,
+    //         shadowColor: 'rgba(0, 0, 0, 0.5)'
+    //       },
+    //       animationType: 'scale',
+    //       animationEasing: 'elasticOut',
+    //       animationDelay: function (idx) {
+    //         return Math.random() * 200;
+    //       }
+    //     }
+    //   ]
+    // };
+
     const flow = {
       series: [
         {
@@ -495,6 +676,7 @@ class Dashboard extends React.Component {
                       <div class="mt visit-element">
                         <h6>{this.state.visitToday[2]}%</h6>
                         <p class="text-muted mb-0"><small>Rate</small></p>
+                        <p>저번달 대비<br />이번달 회원<br />비율</p>
                       </div>
                     </div>
                   </div>
@@ -549,8 +731,8 @@ class Dashboard extends React.Component {
             >
               <ReactEchartsCore
                 echarts={echarts}
-                // option={cd.echarts.donut}
                 option={donut}
+                // option={pie}
                 opts={initEchartsOptions}
                 style={{ height: "170px" }}
               />
@@ -714,22 +896,6 @@ class Dashboard extends React.Component {
                           <p className="mb-0">
                             {row.date}
                           </p>
-                          {/* <p className="mb-0">
-                            <small>
-                              Type:
-                              <span className="text-muted fw-semi-bold">
-                                &nbsp; {row.info.type}
-                              </span>
-                            </small>
-                          </p>
-                          <p>
-                            <small>
-                              Dimensions:
-                              <span className="text-muted fw-semi-bold">
-                                &nbsp; {row.info.dimensions}
-                              </span>
-                            </small>
-                          </p> */}
                         </td>
                         {/* <td className="text-muted">{this.parseDate(row.date)}</td> */}
                         {/* <td className="text-muted">{row.size}</td> */}
@@ -745,31 +911,6 @@ class Dashboard extends React.Component {
                     ))}
                   </tbody>
                 </Table>
-              </div>
-              <div className="clearfix">
-                <div className="float-right">
-                  <Button color="default" className="mr-2" size="sm">
-                    Send to...
-                  </Button>
-                  <UncontrolledButtonDropdown>
-                    <DropdownToggle
-                      color="inverse"
-                      className="mr-xs"
-                      size="sm"
-                      caret
-                    >
-                      Clear
-                    </DropdownToggle>
-                    <DropdownMenu>
-                      <DropdownItem>Clear</DropdownItem>
-                      <DropdownItem>Move ...</DropdownItem>
-                      <DropdownItem>Something else here</DropdownItem>
-                      <DropdownItem divider />
-                      <DropdownItem>Separated link</DropdownItem>
-                    </DropdownMenu>
-                  </UncontrolledButtonDropdown>
-                </div>
-                <p>Basic table with styled content</p>
               </div>
             </Widget>
           </Col>
