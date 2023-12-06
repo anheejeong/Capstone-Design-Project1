@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Row, Col } from "reactstrap";
+import { Row, Col, Badge } from "reactstrap";
 
 import Widget from "../../../components/Widget";
 import ApexChart from "react-apexcharts";
@@ -66,7 +66,31 @@ class Charts extends React.Component {
         <h1 className="page-title">
           KNU <span className="fw-semi-bold">팀원 소개</span>
         </h1>
-        <p>파워레인져 엔진포스 나는 빨강 나는 노랑 나는 초록 나는 파랑 나는 보라 !</p>
+        <p>안녕하세요 저희는 세얼간이입니다</p>
+        <p>할 줄 아는 게 아무것도 없어요</p>
+        <p>사실 이거 다 디비에서 들고만 온 거예요</p>
+        <p>감사합니다.</p>
+        <h5>
+          <Badge color="warning">
+            FRONTEND
+          </Badge>
+          &nbsp;2021110011 안희정
+        </h5>
+        <p>하이 나는 프론트엔드</p>
+        <h5>
+          <Badge color="danger">
+            BACKEND
+          </Badge>
+          &nbsp;2020- 조성호
+        </h5>
+        <p>하이 나는 백엔드</p>
+        <h5>
+          <Badge color="dark">
+            DATA ANALYSIS
+          </Badge>
+          &nbsp;2019- 김창현
+        </h5>
+        <p>하이 나는 데이터분석</p>
       </div>
     );
   }
