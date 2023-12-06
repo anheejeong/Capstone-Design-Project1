@@ -124,48 +124,48 @@ class Typography extends React.Component {
     const { cd, initEchartsOptions } = this.state
 
     const pie = {
-      chart: {
-        plotBackgroundColor: null,
-        plotBorderWidth: null,
-        plotShadow: false,
-        type: 'pie',
-        backgroundColor: null,
-      },
       tooltip: {
-        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        trigger: 'item'
       },
-      title: null,
-      accessibility: {
-        point: {
-          valueSuffix: '%'
-        }
+      legend: {
+        top: '5%',
+        left: 'center',
+        textStyle: {
+          color: '#fff',
+        },
       },
-      plotOptions: {
-        pie: {
-          allowPointSelect: true,
-          cursor: 'pointer',
-          colors2,
-          borderRadius: 5,
-          dataLabels: {
-            enabled: true,
-            format: '<b>{point.name}</b><br>{point.percentage:.1f} %',
-            distance: -50,
-            filter: {
-              property: 'percentage',
-              operator: '>',
-              value: 4
+      series: [
+        {
+          name: 'Access From',
+          type: 'pie',
+          radius: ['40%', '70%'],
+          avoidLabelOverlap: false,
+          itemStyle: {
+            borderRadius: 10,
+            borderColor: '#fff',
+            borderWidth: 2
+          },
+          label: {
+            show: false,
+            position: 'center'
+          },
+          emphasis: {
+            label: {
+              show: true,
+              fontSize: 40,
+              fontWeight: 'bold'
             }
-          }
+          },
+          labelLine: {
+            show: false
+          },
+          data: [
+            { value: this.state.user_percentage_1, name: '정회원' },
+            { value: this.state.user_percentage_2, name: '비회원' },
+          ]
         }
-      },
-      series: [{
-        name: 'Share',
-        data: [
-          { name: '정회원', y: this.state.user_percentage_1 },
-          { name: '비회원', y: this.state.user_percentage_2 },
-        ]
-      }]
-    }
+      ]
+    };
 
     // prettier-ignore
     const hours = [
@@ -317,9 +317,16 @@ class Typography extends React.Component {
                 {/* <HighchartsReact
                   highcharts={Highcharts}
                   options={cd.highcharts.pie} /> */}
-                <PieChart
+                {/* <PieChart
                   highcharts={Highcharts}
                   options={pie}
+                /> */}
+                <ReactEchartsCore
+                  echarts={echarts}
+                  // option={donut}
+                  option={pie}
+                  opts={initEchartsOptions}
+                  style={{ height: 400 }}
                 />
               </Widget>
             </Col>
@@ -500,7 +507,7 @@ class Typography extends React.Component {
               </Widget>
             </Col>
           </Row>
-          <Row>
+          {/* <Row>
             <Col lg={8}>
               <Widget className="bg-transparent">
                 <Map />
@@ -616,7 +623,7 @@ class Typography extends React.Component {
                 </div>
               </Widget>
             </Col>
-          </Row>
+          </Row> */}
         </div>
       </div>
     )
