@@ -239,8 +239,8 @@ class Static extends React.Component {
       dataset: {
         source: [
           ['score', 'amount', 'product'],
-          [57.1, this.state.credit, '신용카드'],
-          [19.6, this.state.toss, '토스']
+          [this.state.credit, this.state.credit, '신용카드'],
+          [this.state.toss, this.state.toss, '토스']
         ]
       },
       grid: { containLabel: true },
