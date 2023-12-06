@@ -93,6 +93,7 @@
     "react-sparklines": "^1.7.0",
     "react-toastify": "^7.0.4",
     "react-transition-group": "^4.4.5",
+    "react-wordcloud": "^1.2.7",
     "reactstrap": "^8.5.1",
     "redux": "^4.2.1",
     "redux-logger": "^3.0.6",
