@@ -5,9 +5,9 @@ import {
   GoogleMap,
   Marker,
 } from 'react-google-maps';
-import Widget from '../../../../components/Widget';
+import Widget from '../../../../components/Widget/Widget';
 
-import s from './Google.module.scss';
+import s from './Company.module.scss';
 
 const BasicMap = withScriptjs(withGoogleMap(() =>
   <GoogleMap
@@ -18,7 +18,7 @@ const BasicMap = withScriptjs(withGoogleMap(() =>
   </GoogleMap>,
 ));
 
-class Maps extends React.Component {
+class Company extends React.Component {
 
   render() {
     return (
@@ -47,4 +47,4 @@ class Maps extends React.Component {
 
 }
 
-export default Maps;
+export default Company;

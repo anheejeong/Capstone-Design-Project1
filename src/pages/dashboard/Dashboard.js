@@ -31,11 +31,11 @@ import echarts from "echarts";
 import 'echarts/lib/chart/line';
 import 'echarts/lib/chart/pie';
 
-import { chartData } from "../components/charts/mock";
+import { chartData } from "../components/developer/mock";
 
 import axios from 'axios';
 
-import config from "../components/charts/config";
+import config from "../components/developer/config";
 const colors = config.chartColors;
 
 let columnColors = [

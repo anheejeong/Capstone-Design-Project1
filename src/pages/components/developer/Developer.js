@@ -2,12 +2,12 @@ import React from "react";
 
 import { Row, Col, Badge } from "reactstrap";
 
-import Widget from "../../../components/Widget";
+import Widget from "../../../components/Widget/Widget";
 import ApexChart from "react-apexcharts";
 
-import s from "./Charts.module.scss";
+import s from "./Developer.module.scss";
 import { chartData, liveChart, liveChartInterval } from "./mock";
-import Sparklines from "../../../components/Sparklines";
+import Sparklines from "../../../components/Sparklines/Sparklines";
 
 import ReactEchartsCore from "echarts-for-react/lib/core";
 
@@ -27,7 +27,7 @@ import exportData from "highcharts/modules/export-data";
 exporting(Highcharts);
 exportData(Highcharts);
 
-class Charts extends React.Component {
+class Developer extends React.Component {
   state = {
     cd: chartData,
     ld: liveChart,
@@ -96,4 +96,4 @@ class Charts extends React.Component {
   }
 }
 
-export default Charts;
+export default Developer;

@@ -1,4 +1,4 @@
-import config from "../../components/charts/config";
+import config from "../../components/developer/config";
 const colors = config.chartColors;
 let lineColors = [colors.blue, colors.green, colors.orange];
 

@@ -4,9 +4,9 @@ import {
 } from 'reactstrap';
 import classnames from 'classnames';
 
-import s from './Icons.module.scss';
+import s from './Documents.module.scss';
 
-class Icons extends React.Component {
+class Documents extends React.Component {
   constructor(props) {
     super(props);
     this.toggle = this.toggle.bind(this);
@@ -103,4 +103,4 @@ class Icons extends React.Component {
   }
 }
 
-export default Icons;
+export default Documents;

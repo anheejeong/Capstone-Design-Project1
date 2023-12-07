@@ -98,7 +98,7 @@ class Sidebar extends React.Component {
                         header="Users"
                         isHeader
                         iconName={<TypographyIcon className={s.menuIcon} />}
-                        link="/app/typography"
+                        link="/app/users"
                         index="core"
                     />
                     <LinksGroup
@@ -107,7 +107,7 @@ class Sidebar extends React.Component {
                         header="Payments"
                         isHeader
                         iconName={<TablesIcon className={s.menuIcon} />}
-                        link="/app/tables"
+                        link="/app/payments"
                         index="tables"
                     />
                     <LinksGroup
@@ -116,7 +116,7 @@ class Sidebar extends React.Component {
                         header="NLP"
                         isHeader
                         iconName={<NotificationsIcon className={s.menuIcon} />}
-                        link="/app/notifications"
+                        link="/app/nlp"
                         index="ui"
                     />
                     <LinksGroup
@@ -129,13 +129,13 @@ class Sidebar extends React.Component {
                         index="components"
                         childrenLinks={[
                             {
-                                header: 'Developer', link: '/app/components/charts',
+                                header: 'Developer', link: '/app/components/developer',
                             },
                             {
-                                header: 'Documents', link: '/app/components/icons',
+                                header: 'Documents', link: '/app/components/documents',
                             },
                             {
-                                header: 'Company', link: '/app/components/maps',
+                                header: 'Company', link: '/app/components/company',
                             },
                         ]}
                     />

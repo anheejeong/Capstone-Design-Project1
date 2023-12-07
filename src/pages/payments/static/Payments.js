@@ -16,7 +16,7 @@ import {
 import { Sparklines, SparklinesBars } from "react-sparklines";
 
 import Widget from "../../../components/Widget/Widget";
-import s from "./Static.module.scss";
+import s from "./Payments.module.scss";
 
 import ReactEchartsCore from "echarts-for-react/lib/core";
 import echarts from "echarts/lib/echarts";
@@ -25,11 +25,11 @@ import { chartData } from "./mock";
 
 import axios from "axios";
 
-import config from "../../components/charts/config";
+import config from "../../components/developer/config";
 const colors = config.chartColors;
 let lineColors = [colors.blue, colors.green, colors.orange];
 
-class Static extends React.Component {
+class Payments extends React.Component {
   // constructor(props) {
   //   super(props);
 
@@ -461,4 +461,4 @@ class Static extends React.Component {
   }
 }
 
-export default Static;
+export default Payments;

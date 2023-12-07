@@ -5,12 +5,16 @@ import { Switch, Route, withRouter, Redirect } from 'react-router';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import Hammer from 'rc-hammerjs';
 
-import UIIcons from '../../pages/components/icons';
-import UINotifications from '../../pages/notifications';
-import TablesStatic from '../../pages/tables/static';
-import MapsGoogle from '../../pages/components/maps/google';
-import CoreTypography from '../../pages/typography';
-import Charts from '../../pages/components/charts/Charts';
+// import UIIcons from '../../pages/components/documents/Documents';
+import Documents from '../../pages/components/documents/Documents';
+
+import Payments from '../../pages/payments/static/Payments';
+import NLP from '../../pages/nlp/NLP';
+import Users from '../../pages/users/Users';
+
+// import MapsGoogle from '../../pages/components/maps/google';
+import Company from '../../pages/components/company/google/Company';
+import Developer from '../../pages/components/developer/Developer';
 import Dashboard from '../../pages/dashboard';
 
 import Header from '../Header';
@@ -80,12 +84,12 @@ class Layout extends React.Component {
                   <Switch>
                     <Route path="/app/main" exact render={() => <Redirect to="/app/main/dashboard" />} />
                     <Route path="/app/main/dashboard" exact component={Dashboard} />
-                    <Route path="/app/components/icons" exact component={UIIcons} />
-                    <Route path="/app/notifications" exact component={UINotifications} />
-                    <Route path="/app/components/charts" exact component={Charts} />
-                    <Route path="/app/tables" exact component={TablesStatic} />
-                    <Route path="/app/components/maps" exact component={MapsGoogle} />
-                    <Route path="/app/typography" exact component={CoreTypography} />
+                    <Route path="/app/components/documents" exact component={Documents} />
+                    <Route path="/app/nlp" exact component={NLP} />
+                    <Route path="/app/components/developer" exact component={Developer} />
+                    <Route path="/app/payments" exact component={Payments} />
+                    <Route path="/app/components/company" exact component={Company} />
+                    <Route path="/app/users" exact component={Users} />
                   </Switch>
                 </CSSTransition>
               </TransitionGroup>

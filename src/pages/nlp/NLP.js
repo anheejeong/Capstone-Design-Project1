@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import uuid from "uuid/v4";
 import Widget from "../../components/Widget/Widget";
-import s from "./Notifications.module.scss";
+import s from "./NLP.module.scss";
 
 import { chartData } from "./mock";
 import Highcharts from "highcharts";
@@ -29,7 +29,7 @@ exportData(Highcharts);
 // var myChart = echarts.init(chartDom, 'dark');
 // var option;
 
-class Notifications extends React.Component {
+class NLP extends React.Component {
   state = {
     cd: chartData,
     initEchartsOptions: {
@@ -232,4 +232,4 @@ class Notifications extends React.Component {
   }
 }
 
-export default Notifications;
+export default NLP;

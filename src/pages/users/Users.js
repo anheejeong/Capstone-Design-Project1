@@ -9,10 +9,10 @@ import {
 } from "reactstrap";
 import { Sparklines, SparklinesBars } from "react-sparklines";
 
-import Widget from "../../components/Widget";
+import Widget from "../../components/Widget/Widget";
 import AnimateNumber from "react-animated-number";
 
-import s from './Typography.module.scss';
+import s from './Users.module.scss';
 
 import { chartData } from './mock';
 import ReactEchartsCore from "echarts-for-react/lib/core";
@@ -28,7 +28,7 @@ import Map from '../dashboard/components/am4chartMap/am4chartMap'
 
 import axios from "axios";
 
-import config from "../components/charts/config";
+import config from "../components/developer/config";
 const colors = config.chartColors;
 let lineColors = [colors.blue, colors.green, colors.orange];
 const colors2 = Highcharts.getOptions().colors.map((c, i) =>
@@ -39,7 +39,7 @@ const colors2 = Highcharts.getOptions().colors.map((c, i) =>
     .get()
 );
 
-class Typography extends React.Component {
+class Users extends React.Component {
   state = {
     traffic_day: [null],
     traffic_hour: [null],
@@ -630,4 +630,4 @@ class Typography extends React.Component {
   }
 }
 
-export default Typography;
+export default Users;
