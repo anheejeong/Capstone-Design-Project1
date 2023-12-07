@@ -15,7 +15,7 @@ import {
 } from "reactstrap";
 import { Sparklines, SparklinesBars } from "react-sparklines";
 
-import Widget from "../../../components/Widget";
+import Widget from "../../../components/Widget/Widget";
 import s from "./Static.module.scss";
 
 import ReactEchartsCore from "echarts-for-react/lib/core";

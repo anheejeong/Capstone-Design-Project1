@@ -4,7 +4,7 @@ import { Row, Col, Button } from "reactstrap";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import uuid from "uuid/v4";
-import Widget from "../../components/Widget";
+import Widget from "../../components/Widget/Widget";
 import s from "./Notifications.module.scss";
 
 import { chartData } from "./mock";
