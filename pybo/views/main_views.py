@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify # flask - Blueprint를 통해 라우팅 함수 관리, jsonify를 통해 반환값을 json형식으로 변환
 import pymysql  # mysql 쿼리문을 python에서 사용할 수 있는 모듈..
 import json # json 데이터 타입
+from collections import OrderedDict
 
 # mysql db 연결
 db = pymysql.connect(host='180.66.240.165', port=53306, user='root', password='U6ycE],+', db='xedb', charset='utf8')
@@ -294,12 +295,26 @@ def nlp():
 
     sql1 = "SELECT * FROM result_datas.clustering"
 
-    cursor.execute(sql1)
-    clustering_list = cursor.fetchall()
+    # x y word category value
+    # id name symbolSize x y value category
 
+    cursor.execute(sql1)
+    clustering_list = list()
+
+    for i in range(0, 70):
+        data = cursor.fetchone()
+        clustering_dict = OrderedDict([('id', str(i)), ('name', data[2]), ('symbolSize', data[4])
+                                       , ('x', data[0]), ('y', data[1]), ('value', data[4]), ('category', data[3])])
+        clustering_list.append(clustering_dict)
+
+    clustering = json.dumps(clustering_list, sort_keys=False, default=str)
+
+    """
     result = {
-        "clustering_list": clustering_list,
+        "clustering": clustering,
     }
+    """
 
     cursor.close()
-    return jsonify(result)
+    return clustering
+    #return jsonify(result)
