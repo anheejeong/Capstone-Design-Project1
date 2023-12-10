@@ -37,7 +37,9 @@ class NLP extends React.Component {
     initEchartsOptions: {
       renderer: "canvas",
     },
-    clustering: []
+    clustering: [],
+    regular: [],
+    non_regular: [],
   };
 
   loadItem = async () => {
@@ -45,7 +47,9 @@ class NLP extends React.Component {
       .get("./nlp")
       .then(({ data }) => {
         this.setState({
-          clustering: data.clustering
+          clustering: data.clustering,
+          regular: data.regular,
+          non_regular: data.non_regular
         })
       })
       .catch(e => {  // API 호출이 실패한 경우
@@ -123,11 +127,26 @@ class NLP extends React.Component {
       }
     }
 
-    console.log(clustering_list)
-    console.log(this.state.cd.echarts.nodes)
+    let regular = [];
+    let non_regular = [];
 
-    // console.log(this.state.cd.echarts.nodes)
-    // console.log(this.state.cd.echarts.categories)
+    for (let i = 0; i < 50; i++) {
+      if (this.state.regular[i]) {
+        regular.push({
+          text: this.state.regular[i][0],
+          value: this.state.regular[i][1]
+        })
+        if (this.state.non_regular[i]) {
+          non_regular.push({
+            text: this.state.non_regular[i][0],
+            value: this.state.non_regular[i][1]
+          })
+        }
+      }
+    }
+
+    console.log(regular)
+    console.log(non_regular)
 
     const words = [
       {
@@ -148,7 +167,7 @@ class NLP extends React.Component {
       },
     ]
     const callbacks = {
-      getWordColor: word => word.value > 50 ? "white" : "red",
+      getWordColor: word => word.value < 3 ? "white" : "yellow",
       onWordClick: console.log,
       onWordMouseOver: console.log,
       getWordTooltip: word => `${word.text} (${word.value}) [${word.value > 50 ? "good" : "bad"}]`,
@@ -249,7 +268,7 @@ class NLP extends React.Component {
                 callbacks={callbacks}
                 options={options}
                 // size={size}
-                words={words}
+                words={regular}
               />
             </Widget>
           </Col>
@@ -265,7 +284,7 @@ class NLP extends React.Component {
                 callbacks={callbacks}
                 options={options}
                 // size={size}
-                words={words}
+                words={non_regular}
               />
             </Widget>
           </Col>
