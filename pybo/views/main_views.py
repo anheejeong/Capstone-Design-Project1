@@ -297,7 +297,7 @@ def nlp():
 
     # x y word category value
     # id name symbolSize x y value category
-
+    # 1. clustering
     cursor.execute(sql1)
     clustering_list = list()
 
@@ -309,12 +309,14 @@ def nlp():
 
     clustering = json.dumps(clustering_list, sort_keys=False, default=str)
 
-    """
+
+    # 2. word cloud
+
+
     result = {
-        "clustering": clustering,
+        "clustering": clustering
     }
-    """
 
     cursor.close()
-    return clustering
+    return result
     #return jsonify(result)
