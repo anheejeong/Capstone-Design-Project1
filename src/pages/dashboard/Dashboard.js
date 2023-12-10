@@ -207,7 +207,7 @@ class Dashboard extends React.Component {
     axios
       .get("./home")
       .then(({ data }) => {
-        console.log(data);
+        // console.log(data);
         this.setState({
           // visitToday: data.visitor,
           // payments: data.payment,
@@ -279,12 +279,28 @@ class Dashboard extends React.Component {
   }
 
   render() {
+    // console.log(this.state.hot_post_one)
+    console.log(this.state.payments[0])
+
+    let payment1;
+    let payment2;
+    let payment3;
+    if (this.state.payments[0]) {
+      payment1 = this.state.payments[0].replaceAll("\"", "");
+    }
+    if (this.state.payments[1]) {
+      payment2 = this.state.payments[1].replaceAll("\"", "");
+    }
+    if (this.state.payments[2]) {
+      payment3 = this.state.payments[2].replaceAll("\"", "");
+    }
+
     const { cd, initEchartsOptions } = this.state;
-    console.log(this.state.visitToday)
-    console.log(this.state.payments)
-    console.log(this.state.payment_percent)
-    console.log(this.state.month_visit)
-    console.log(this.state.keyword_ranking)
+    // console.log(this.state.visitToday)
+    // console.log(this.state.payments)
+    // console.log(this.state.payment_percent)
+    // console.log(this.state.month_visit)
+    // console.log(this.state.keyword_ranking)
     // console.log(this.state.hot_post)
 
     const donut = {
@@ -512,27 +528,87 @@ class Dashboard extends React.Component {
     //   ]
     // };
 
+    let base = +new Date(2022, 8, 1);
+    let oneDay = 24 * 3600 * 1000;
+    let date = ['2022/8', '2022/9', '2022/10', '2022/11', '2022/12', '2023/1', '2023/2', '2023/3', '2023/4', '2023/5', '2023/6', '2023/7'];
+
     const flow = {
+      tooltip: {
+        trigger: 'axis',
+        position: function (pt) {
+          return [pt[0], '10%'];
+        }
+      },
+      toolbox: {
+        feature: {
+          dataZoom: {
+            yAxisIndex: 'none'
+          },
+          restore: {},
+          saveAsImage: {}
+        }
+      },
+      xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: date,
+      },
+      yAxis: {
+        type: 'value',
+        boundaryGap: [0, '100%']
+      },
+      // dataZoom: [
+      //   {
+      //     type: 'inside',
+      //     start: 0,
+      //     end: 10
+      //   },
+      //   {
+      //     start: 0,
+      //     end: 10
+      //   }
+      // ],
       series: [
         {
           name: 'Visitor',
+          type: 'line',
+          symbol: 'none',
+          sampling: 'lttb',
+          itemStyle: {
+            color: 'rgb(255, 70, 131)'
+          },
+          areaStyle: {
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+              {
+                offset: 0,
+                color: 'rgb(255, 158, 68)'
+              },
+              {
+                offset: 1,
+                color: 'rgb(255, 70, 131)'
+              }
+            ])
+          },
           data: [
-            [1486771200000, this.state.visit_year[0]],
-            [1486857600000, this.state.visit_year[1]],
-            [1486944000000, this.state.visit_year[2]],
-            [1487030400000, this.state.visit_year[3]],
-            [1487116800000, this.state.visit_year[4]],
-            [1487203200000, this.state.visit_year[5]],
-            [1487289600000, this.state.visit_year[6]],
-            [1487376000000, this.state.visit_year[7]],
-            [1487462400000, this.state.visit_year[8]],
-            [1487548800000, this.state.visit_year[9]],
-            [1487635200000, this.state.visit_year[10]],
-            [1487721600000, this.state.visit_year[11]],
+            this.state.visit_year[0],
+            this.state.visit_year[1],
+            this.state.visit_year[2],
+            this.state.visit_year[3],
+            this.state.visit_year[4],
+            this.state.visit_year[5],
+            this.state.visit_year[6],
+            this.state.visit_year[7],
+            this.state.visit_year[8],
+            this.state.visit_year[9],
+            this.state.visit_year[10],
+            this.state.visit_year[11],
           ]
-        },
+        }
       ],
-    }
+      textStyle: {
+        color: '#fff'
+      }
+    };
 
     const tableStyles = [
       {
@@ -550,7 +626,8 @@ class Dashboard extends React.Component {
           percent: 29,
           colorClass: "success",
         },
-        recommendation: this.state.hot_post_one[3]
+        recommendation: this.state.hot_post_one[3],
+        percentage: this.state.hot_post_one[4]
       },
       {
         id: 2,
@@ -567,28 +644,30 @@ class Dashboard extends React.Component {
           percent: 33,
           colorClass: "warning",
         },
-        recommendation: this.state.hot_post_two[3]
+        recommendation: this.state.hot_post_two[3],
+        percentage: this.state.hot_post_two[4]
       },
       {
         id: 3,
         // picture: require("../../assets/tables/3.png"), // eslint-disable-line global-require
         title: this.state.hot_post_three[0],
         description: this.state.hot_post_three[1],
-        label: {
-          colorClass: "primary",
-          text: "INFO!",
-        },
-        info: {
-          type: "JPEG",
-          dimensions: "200x150",
-        },
+        // label: {
+        //   colorClass: "primary",
+        //   text: "INFO!",
+        // },
+        // info: {
+        //   type: "JPEG",
+        //   dimensions: "200x150",
+        // },
         date: this.state.hot_post_three[2],
         size: "49.0 KB",
         progress: {
           percent: 38,
-          colorClass: "inverse",
+          colorClass: "white",
         },
-        recommendation: this.state.hot_post_three[3]
+        recommendation: this.state.hot_post_three[3],
+        percentage: this.state.hot_post_three[4]
       },
       {
         id: 4,
@@ -605,7 +684,8 @@ class Dashboard extends React.Component {
           percent: 17,
           colorClass: "danger",
         },
-        recommendation: this.state.hot_post_four[3]
+        recommendation: this.state.hot_post_four[3],
+        percentage: this.state.hot_post_four[4]
       },
       {
         id: 5,
@@ -622,7 +702,8 @@ class Dashboard extends React.Component {
           percent: 41,
           colorClass: "primary",
         },
-        recommendation: this.state.hot_post_five[3]
+        recommendation: this.state.hot_post_five[3],
+        percentage: this.state.hot_post_five[4]
       },
     ]
 
@@ -675,8 +756,8 @@ class Dashboard extends React.Component {
                       </div>
                       <div class="mt visit-element">
                         <h6>{this.state.visitToday[2]}%</h6>
-                        <p class="text-muted mb-0"><small>Rate</small></p>
-                        <p>저번달 대비<br />이번달 회원<br />비율</p>
+                        <p class="text-muted mb-0"><small>Current / Last</small></p>
+                        {/* <p>저번달 대비<br />이번달 회원<br />비율</p> */}
                       </div>
                     </div>
                   </div>
@@ -697,17 +778,17 @@ class Dashboard extends React.Component {
                     </div>
                   </header>
                   <div class="widget-body">
-                    <h6 class="fs-sm">This Month ({this.state.payments[0]}₩)</h6>
+                    <h6 class="fs-sm">This Month ({payment1}₩)</h6>
                     <div class="progress progress-s mb-s ">
                       <div class="progress-bar bg-warning" role="progressbar" style={payment_percent_one}
                         aria-valuenow={this.state.payments[0]} aria-valuemin="0" aria-valuemax={this.state.payments[3]}></div>
                     </div>
-                    <h6>Last Month ({this.state.payments[1]}₩)</h6>
+                    <h6>Last Month ({payment2}₩)</h6>
                     <div class="progress progress-s ">
                       <div class="progress-bar bg-warning" role="progressbar" style={payment_percent_two}
                         aria-valuenow={this.state.payments[1]} aria-valuemin="0" aria-valuemax={this.state.payments[3]}></div>
                     </div>
-                    <h6 class="mt-sm fs-sm">Two Months Ago ({this.state.payments[2]}₩)</h6>
+                    <h6 class="mt-sm fs-sm">Two Months Ago ({payment3}₩)</h6>
                     <div class="progress progress-s mb-s ">
                       <div class="progress-bar bg-warning" role="progressbar" style={payment_percent_three}
                         aria-valuenow={this.state.payments[2]} aria-valuemin="0" aria-valuemax={this.state.payments[3]}></div>
@@ -757,10 +838,10 @@ class Dashboard extends React.Component {
                 Status: <strong>Live</strong>
               </p>
               <p>
-                <span className="circle bg-default text-white">
-                  <i className="fa fa-map-marker" />
-                </span>{" "}
-                &nbsp; 146 Countries, 2759 Cities
+                {/* <span className="circle bg-default text-white"> */}
+                {/* <i className="fa fa-map-marker" /> */}
+                {/* </span>{" "} */}
+                {/* &nbsp; 146 Countries, 2759 Cities */}
               </p>
               <div className="row progress-stats">
                 <div className="col-md-9 col-12">
@@ -830,13 +911,12 @@ class Dashboard extends React.Component {
               close
               collapse
             >
-              <ApexChart
-                className="sparkline-chart"
-                type={"area"}
-                height={350}
-                // series={cd.apex.flow.series}
-                series={flow.series}
-                options={cd.apex.flow.options}
+              <ReactEchartsCore
+                echarts={echarts}
+                option={flow}
+                // option={pie}
+                opts={initEchartsOptions}
+                style={{ height: 350 }}
               />
             </Widget>
           </Col>
@@ -903,7 +983,7 @@ class Dashboard extends React.Component {
                         <td className="width-150">
                           <Progress
                             color={row.progress.colorClass}
-                            value={row.progress.percent}
+                            value={row.percentage}
                             className="progress-sm mb-xs"
                           />
                         </td>
