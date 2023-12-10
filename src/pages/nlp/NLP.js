@@ -20,6 +20,8 @@ import $ from "jquery";
 
 import ReactWordcloud from 'react-wordcloud';
 
+import axios from "axios";
+
 exporting(Highcharts);
 exportData(Highcharts);
 
@@ -35,7 +37,28 @@ class NLP extends React.Component {
     initEchartsOptions: {
       renderer: "canvas",
     },
+    clustering: []
   };
+
+  loadItem = async () => {
+    axios
+      .get("./nlp")
+      .then(({ data }) => {
+        this.setState({
+          clustering: data.clustering_list
+        })
+      })
+      .catch(e => {  // API 호출이 실패한 경우
+        console.error(e);  // 에러표시
+        this.setState({
+          loading: false
+        });
+      });
+  };
+
+  componentDidMount() {
+    this.loadItem();
+  }
 
   // componentDidMount() {
   //   $.getJSON(ROOT_PATH + '/data/asset/data/les-miserables.json', function (graph) {
@@ -84,8 +107,30 @@ class NLP extends React.Component {
   render() {
     const { initEchartsOptions } = this.state;
 
-    console.log(this.state.cd.echarts.nodes)
-    console.log(this.state.cd.echarts.categories)
+    // console.log(this.state.clustering[0])
+    // if (this.state.clustering[0]) {
+    //   console.log(this.state.clustering[0][0])
+    // }
+
+    let clustering_list = []
+    for (let i = 0; i < 70; i++) {
+      if (this.state.clustering[i]) {
+        clustering_list.push({
+          "id": this.state.clustering[i][3],
+          "name": this.state.clustering[i][2],
+          "symbolSize": this.state.clustering[i][4],
+          "x": this.state.clustering[i][0],
+          "y": this.state.clustering[i][1],
+          "value": this.state.clustering[i][4],
+          "category": 0
+        })
+      }
+    }
+
+    console.log(clustering_list)
+
+    // console.log(this.state.cd.echarts.nodes)
+    // console.log(this.state.cd.echarts.categories)
 
     const words = [
       {
