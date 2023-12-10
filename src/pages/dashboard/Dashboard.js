@@ -731,7 +731,7 @@ class Dashboard extends React.Component {
         <Row>
           { /* VISIT TODAY - animated x */}
           <Col xl={3} md={6}>
-            <Widget title={<h6> Visits Today </h6>} close settings>
+            <Widget title={<h5> 오늘의 <span className="fw-semi-bold">방문자 수</span> </h5>} close settings>
               <div class="pb-xlg h-100">
                 <section class="widget mb-0 h-100">
                   <header>
@@ -768,7 +768,7 @@ class Dashboard extends React.Component {
 
           {/* 최근 세달 결제 금액 */}
           <Col xl={3} md={6}>
-            <Widget title={<h6> Recent Payments </h6>} close settings>
+            <Widget title={<h5> 최근 <span className="fw-semi-bold">결제 금액</span> </h5>} close settings>
               <div class="pb-xlg h-100">
                 <section class="widget mb-0 h-100">
                   <header>

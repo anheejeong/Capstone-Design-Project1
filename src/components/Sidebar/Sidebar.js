@@ -78,7 +78,7 @@ class Sidebar extends React.Component {
                 }}
             >
                 <header className={s.logo}>
-                    <a href="https://demo.flatlogic.com/light-blue-react/">Dashboard <span
+                    <a href="/">Dashboard <span
                         className="fw-bold">KNU</span></a>
                 </header>
                 <ul className={s.nav}>

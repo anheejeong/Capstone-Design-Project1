@@ -298,7 +298,7 @@ class Users extends React.Component {
                   // option={cd.echarts.scatter}
                   option={scatter}
                   opts={initEchartsOptions}
-                  style={{ height: 350 }}
+                  style={{ height: 370 }}
                 />
               </Widget>
             </Col>
@@ -342,12 +342,9 @@ class Users extends React.Component {
                 close
               >
                 <h3>
-                  접속기기
+                  이용자 접속 환경
                   {/* 접속기기 <span className="fw-semi-bold">설명이라도</span> */}
                 </h3>
-                <p>
-                  접속기기
-                </p>
                 <div className={`widget-table-overflow ${s.overFlow}`}>
                   <Table className="table-bordered table-lg mt-lg mb-0">
                     <thead className="text-uppercase">
