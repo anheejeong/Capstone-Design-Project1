@@ -45,7 +45,7 @@ class NLP extends React.Component {
       .get("./nlp")
       .then(({ data }) => {
         this.setState({
-          clustering: data.clustering_list
+          clustering: data.clustering
         })
       })
       .catch(e => {  // API 호출이 실패한 경우
@@ -107,27 +107,24 @@ class NLP extends React.Component {
   render() {
     const { initEchartsOptions } = this.state;
 
-    // console.log(this.state.clustering[0])
-    // if (this.state.clustering[0]) {
-    //   console.log(this.state.clustering[0][0])
-    // }
-
+    // console.log(this.state.clustering)
     let clustering_list = []
     for (let i = 0; i < 70; i++) {
       if (this.state.clustering[i]) {
         clustering_list.push({
-          "id": this.state.clustering[i][3],
-          "name": this.state.clustering[i][2],
-          "symbolSize": this.state.clustering[i][4],
-          "x": this.state.clustering[i][0],
-          "y": this.state.clustering[i][1],
-          "value": this.state.clustering[i][4],
-          "category": 0
+          "id": this.state.clustering[i][0],
+          "name": this.state.clustering[i][1],
+          "symbolSize": this.state.clustering[i][2],
+          "x": this.state.clustering[i][3],
+          "y": this.state.clustering[i][4],
+          "value": this.state.clustering[i][5],
+          "category": this.state.clustering[i][6]
         })
       }
     }
 
     console.log(clustering_list)
+    console.log(this.state.cd.echarts.nodes)
 
     // console.log(this.state.cd.echarts.nodes)
     // console.log(this.state.cd.echarts.categories)
@@ -179,7 +176,8 @@ class NLP extends React.Component {
           name: 'Les Miserables',
           type: 'graph',
           layout: 'none',
-          data: this.state.cd.echarts.nodes,
+          // data: this.state.cd.echarts.nodes,
+          data: clustering_list,
           links: this.state.cd.echarts.links,
           categories: this.state.cd.echarts.categories,
           roam: true,

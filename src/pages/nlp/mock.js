@@ -1568,150 +1568,150 @@ export const chartData = {
                 "source": "69",
                 "target": "68"
             },
-            {
-                "source": "70",
-                "target": "11"
-            },
-            {
-                "source": "70",
-                "target": "24"
-            },
-            {
-                "source": "70",
-                "target": "25"
-            },
-            {
-                "source": "70",
-                "target": "27"
-            },
-            {
-                "source": "70",
-                "target": "41"
-            },
-            {
-                "source": "70",
-                "target": "58"
-            },
-            {
-                "source": "70",
-                "target": "68"
-            },
-            {
-                "source": "70",
-                "target": "69"
-            },
-            {
-                "source": "71",
-                "target": "11"
-            },
-            {
-                "source": "71",
-                "target": "25"
-            },
-            {
-                "source": "71",
-                "target": "27"
-            },
-            {
-                "source": "71",
-                "target": "41"
-            },
-            {
-                "source": "71",
-                "target": "48"
-            },
-            {
-                "source": "71",
-                "target": "68"
-            },
-            {
-                "source": "71",
-                "target": "69"
-            },
-            {
-                "source": "71",
-                "target": "70"
-            },
-            {
-                "source": "72",
-                "target": "11"
-            },
-            {
-                "source": "72",
-                "target": "26"
-            },
-            {
-                "source": "72",
-                "target": "27"
-            },
-            {
-                "source": "73",
-                "target": "48"
-            },
-            {
-                "source": "74",
-                "target": "48"
-            },
-            {
-                "source": "74",
-                "target": "73"
-            },
-            {
-                "source": "75",
-                "target": "25"
-            },
-            {
-                "source": "75",
-                "target": "41"
-            },
-            {
-                "source": "75",
-                "target": "48"
-            },
-            {
-                "source": "75",
-                "target": "68"
-            },
-            {
-                "source": "75",
-                "target": "69"
-            },
-            {
-                "source": "75",
-                "target": "70"
-            },
-            {
-                "source": "75",
-                "target": "71"
-            },
-            {
-                "source": "76",
-                "target": "48"
-            },
-            {
-                "source": "76",
-                "target": "58"
-            },
-            {
-                "source": "76",
-                "target": "62"
-            },
-            {
-                "source": "76",
-                "target": "63"
-            },
-            {
-                "source": "76",
-                "target": "64"
-            },
-            {
-                "source": "76",
-                "target": "65"
-            },
-            {
-                "source": "76",
-                "target": "66"
-            }
+            // {
+            //     "source": "70",
+            //     "target": "11"
+            // },
+            // {
+            //     "source": "70",
+            //     "target": "24"
+            // },
+            // {
+            //     "source": "70",
+            //     "target": "25"
+            // },
+            // {
+            //     "source": "70",
+            //     "target": "27"
+            // },
+            // {
+            //     "source": "70",
+            //     "target": "41"
+            // },
+            // {
+            //     "source": "70",
+            //     "target": "58"
+            // },
+            // {
+            //     "source": "70",
+            //     "target": "68"
+            // },
+            // {
+            //     "source": "70",
+            //     "target": "69"
+            // },
+            // {
+            //     "source": "71",
+            //     "target": "11"
+            // },
+            // {
+            //     "source": "71",
+            //     "target": "25"
+            // },
+            // {
+            //     "source": "71",
+            //     "target": "27"
+            // },
+            // {
+            //     "source": "71",
+            //     "target": "41"
+            // },
+            // {
+            //     "source": "71",
+            //     "target": "48"
+            // },
+            // {
+            //     "source": "71",
+            //     "target": "68"
+            // },
+            // {
+            //     "source": "71",
+            //     "target": "69"
+            // },
+            // {
+            //     "source": "71",
+            //     "target": "70"
+            // },
+            // {
+            //     "source": "72",
+            //     "target": "11"
+            // },
+            // {
+            //     "source": "72",
+            //     "target": "26"
+            // },
+            // {
+            //     "source": "72",
+            //     "target": "27"
+            // },
+            // {
+            //     "source": "73",
+            //     "target": "48"
+            // },
+            // {
+            //     "source": "74",
+            //     "target": "48"
+            // },
+            // {
+            //     "source": "74",
+            //     "target": "73"
+            // },
+            // {
+            //     "source": "75",
+            //     "target": "25"
+            // },
+            // {
+            //     "source": "75",
+            //     "target": "41"
+            // },
+            // {
+            //     "source": "75",
+            //     "target": "48"
+            // },
+            // {
+            //     "source": "75",
+            //     "target": "68"
+            // },
+            // {
+            //     "source": "75",
+            //     "target": "69"
+            // },
+            // {
+            //     "source": "75",
+            //     "target": "70"
+            // },
+            // {
+            //     "source": "75",
+            //     "target": "71"
+            // },
+            // {
+            //     "source": "76",
+            //     "target": "48"
+            // },
+            // {
+            //     "source": "76",
+            //     "target": "58"
+            // },
+            // {
+            //     "source": "76",
+            //     "target": "62"
+            // },
+            // {
+            //     "source": "76",
+            //     "target": "63"
+            // },
+            // {
+            //     "source": "76",
+            //     "target": "64"
+            // },
+            // {
+            //     "source": "76",
+            //     "target": "65"
+            // },
+            // {
+            //     "source": "76",
+            //     "target": "66"
+            // }
         ],
         categories: [
             {
