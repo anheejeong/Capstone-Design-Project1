@@ -306,7 +306,7 @@ def nlp():
 
     for i in range(0, 70):
         data = cursor.fetchone()
-        new_lst = [i, data[2], data[4], data[0], data[1], data[4], data[3]]
+        new_lst = [str(i), data[2], data[4], data[0], data[1], data[4], data[3]]
         clustering_list.append(new_lst)
 
     '''
@@ -329,9 +329,9 @@ def nlp():
     non_regular = cursor.fetchall()
 
     result = {
-        "clustring" : clustering_list,
-        "regular" : regular,
-        "non_regular" : non_regular
+        "clustering": clustering_list,
+        "regular": regular,
+        "non_regular": non_regular
     }
 
     cursor.close()
