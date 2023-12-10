@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify # flask - Blueprint를 통해 라우팅 함수 관리, jsonify를 통해 반환값을 json형식으로 변환
+from flask import Blueprint, jsonify, Response # flask - Blueprint를 통해 라우팅 함수 관리, jsonify를 통해 반환값을 json형식으로 변환
 import pymysql  # mysql 쿼리문을 python에서 사용할 수 있는 모듈..
 import json # json 데이터 타입
 from collections import OrderedDict
@@ -294,13 +294,24 @@ def nlp():
     cursor = db.cursor()
 
     sql1 = "SELECT * FROM result_datas.clustering"
+    sql2 = "SELECT * FROM result_datas.keyword_regular"
+    sql3 = "SELECT * FROM result_datas.keyword_non_regular"
 
     # x y word category value
     # id name symbolSize x y value category
     # 1. clustering
     cursor.execute(sql1)
+
     clustering_list = list()
 
+    for i in range(0, 70):
+        data = cursor.fetchone()
+        new_lst = [i, data[2], data[4], data[0], data[1], data[4], data[3]]
+        clustering_list.append(new_lst)
+
+    '''
+    clustering_list = list()
+    
     for i in range(0, 70):
         data = cursor.fetchone()
         clustering_dict = OrderedDict([('id', str(i)), ('name', data[2]), ('symbolSize', data[4])
@@ -308,15 +319,24 @@ def nlp():
         clustering_list.append(clustering_dict)
 
     clustering = json.dumps(clustering_list, sort_keys=False, default=str)
-
+    '''
 
     # 2. word cloud
+    cursor.execute(sql2)
+    regular = cursor.fetchall()
 
+    cursor.execute(sql3)
+    non_regular = cursor.fetchall()
 
     result = {
-        "clustering": clustering
+        "clustring" : clustering_list,
+        "regular" : regular,
+        "non_regular" : non_regular
     }
 
     cursor.close()
-    return result
-    #return jsonify(result)
+    return jsonify(result)
+    #response = Response(clustering, content_type='application/json')
+    #return response
+
+    #return result
