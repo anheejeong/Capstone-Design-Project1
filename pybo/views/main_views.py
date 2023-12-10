@@ -286,3 +286,20 @@ def payment():
 
     cursor.close()
     return jsonify(result)
+
+
+@bp.route('/nlp')
+def nlp():
+    cursor = db.cursor()
+
+    sql1 = "SELECT * FROM result_datas.clustering"
+
+    cursor.execute(sql1)
+    clustering_list = cursor.fetchall()
+
+    result = {
+        "clustering_list": clustering_list,
+    }
+
+    cursor.close()
+    return jsonify(result)
