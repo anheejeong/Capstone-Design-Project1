@@ -26,6 +26,9 @@ import {
   Badge,
 } from "reactstrap";
 
+import Fade from "react-reveal/Fade";
+import Slide from 'react-reveal/Slide';
+
 import ReactEchartsCore from "echarts-for-react/lib/core";
 import echarts from "echarts";
 import 'echarts/lib/chart/line';
@@ -731,268 +734,280 @@ class Dashboard extends React.Component {
         <Row>
           { /* VISIT TODAY - animated x */}
           <Col xl={3} md={6}>
-            <Widget title={<h5> 오늘의 <span className="fw-semi-bold">방문자 수</span> </h5>} close settings>
-              <div class="pb-xlg h-100">
-                <section class="widget mb-0 h-100">
-                  <header>
-                    <div class="widget-controls">
-                      <a data-widgster="close" title="Close" href="#"><i
-                        class="la la-remove text-white"></i></a>
-                    </div>
-                  </header>
-                  <div class="widget-body">
-                    <div class="d-flex justify-content-between align-items-center mb-lg">
-                      <h2>{this.state.visitToday[0]}</h2>
-                      <i class="la la-2x la-arrow-left text-danger rotate-315"></i>
-                    </div>
-                    <div class="d-flex flex-wrap justify-content-between">
-                      <div class="mt visit-element">
-                        <h6>{this.state.visitToday[1]}</h6>
-                        <p class="text-muted mb-0"><small>Yesterday</small></p>
+            <Fade clear>
+              <Widget title={<h5> 오늘의 <span className="fw-semi-bold">방문자 수</span> </h5>} close settings>
+                <div class="pb-xlg h-100">
+                  <section class="widget mb-0 h-100">
+                    <header>
+                      <div class="widget-controls">
+                        <a data-widgster="close" title="Close" href="#"><i
+                          class="la la-remove text-white"></i></a>
                       </div>
-                      <div class="mt visit-element">
-                        <h6>{this.state.visitToday[3]}</h6>
-                        <p class="text-muted mb-0"><small>This Month</small></p>
+                    </header>
+                    <div class="widget-body">
+                      <div class="d-flex justify-content-between align-items-center mb-lg">
+                        <h2>{this.state.visitToday[0]}</h2>
+                        <i class="la la-2x la-arrow-left text-danger rotate-315"></i>
                       </div>
-                      <div class="mt visit-element">
-                        <h6>{this.state.visitToday[2]}%</h6>
-                        <p class="text-muted mb-0"><small>Current / Last</small></p>
-                        {/* <p>저번달 대비<br />이번달 회원<br />비율</p> */}
+                      <div class="d-flex flex-wrap justify-content-between">
+                        <div class="mt visit-element">
+                          <h6>{this.state.visitToday[1]}</h6>
+                          <p class="text-muted mb-0"><small>Yesterday</small></p>
+                        </div>
+                        <div class="mt visit-element">
+                          <h6>{this.state.visitToday[3]}</h6>
+                          <p class="text-muted mb-0"><small>This Month</small></p>
+                        </div>
+                        <div class="mt visit-element">
+                          <h6>{this.state.visitToday[2]}%</h6>
+                          <p class="text-muted mb-0"><small>Current / Last</small></p>
+                          {/* <p>저번달 대비<br />이번달 회원<br />비율</p> */}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </section>
-              </div>
-            </Widget>
+                  </section>
+                </div>
+              </Widget>
+            </Fade>
           </Col>
 
           {/* 최근 세달 결제 금액 */}
           <Col xl={3} md={6}>
-            <Widget title={<h5> 최근 <span className="fw-semi-bold">결제 금액</span> </h5>} close settings>
-              <div class="pb-xlg h-100">
-                <section class="widget mb-0 h-100">
-                  <header>
-                    <div class="widget-controls">
-                      <a data-widgster="close" title="Close" href="#"><i
-                        class="la la-remove text-white"></i></a>
+            <Fade clear>
+              <Widget title={<h5> 최근 <span className="fw-semi-bold">결제 금액</span> </h5>} close settings>
+                <div class="pb-xlg h-100">
+                  <section class="widget mb-0 h-100">
+                    <header>
+                      <div class="widget-controls">
+                        <a data-widgster="close" title="Close" href="#"><i
+                          class="la la-remove text-white"></i></a>
+                      </div>
+                    </header>
+                    <div class="widget-body">
+                      <h6 class="fs-sm">This Month ({payment1}₩)</h6>
+                      <div class="progress progress-s mb-s ">
+                        <div class="progress-bar bg-warning" role="progressbar" style={payment_percent_one}
+                          aria-valuenow={this.state.payments[0]} aria-valuemin="0" aria-valuemax={this.state.payments[3]}></div>
+                      </div>
+                      <h6>Last Month ({payment2}₩)</h6>
+                      <div class="progress progress-s ">
+                        <div class="progress-bar bg-warning" role="progressbar" style={payment_percent_two}
+                          aria-valuenow={this.state.payments[1]} aria-valuemin="0" aria-valuemax={this.state.payments[3]}></div>
+                      </div>
+                      <h6 class="mt-sm fs-sm">Two Months Ago ({payment3}₩)</h6>
+                      <div class="progress progress-s mb-s ">
+                        <div class="progress-bar bg-warning" role="progressbar" style={payment_percent_three}
+                          aria-valuenow={this.state.payments[2]} aria-valuemin="0" aria-valuemax={this.state.payments[3]}></div>
+                      </div>
                     </div>
-                  </header>
-                  <div class="widget-body">
-                    <h6 class="fs-sm">This Month ({payment1}₩)</h6>
-                    <div class="progress progress-s mb-s ">
-                      <div class="progress-bar bg-warning" role="progressbar" style={payment_percent_one}
-                        aria-valuenow={this.state.payments[0]} aria-valuemin="0" aria-valuemax={this.state.payments[3]}></div>
-                    </div>
-                    <h6>Last Month ({payment2}₩)</h6>
-                    <div class="progress progress-s ">
-                      <div class="progress-bar bg-warning" role="progressbar" style={payment_percent_two}
-                        aria-valuenow={this.state.payments[1]} aria-valuemin="0" aria-valuemax={this.state.payments[3]}></div>
-                    </div>
-                    <h6 class="mt-sm fs-sm">Two Months Ago ({payment3}₩)</h6>
-                    <div class="progress progress-s mb-s ">
-                      <div class="progress-bar bg-warning" role="progressbar" style={payment_percent_three}
-                        aria-valuenow={this.state.payments[2]} aria-valuemin="0" aria-valuemax={this.state.payments[3]}></div>
-                    </div>
-                  </div>
-                </section>
-              </div>
-            </Widget>
+                  </section>
+                </div>
+              </Widget>
+            </Fade>
           </Col>
 
           { /* member rate */}
           <Col xl={3} md={6}>
-            <Widget
-              title={
-                <h5>
-                  비회원 정회원 <span className="fw-semi-bold">비율</span>
-                </h5>
-              }
-              close
-              collapse
-            >
-              <ReactEchartsCore
-                echarts={echarts}
-                option={donut}
-                // option={pie}
-                opts={initEchartsOptions}
-                style={{ height: "170px" }}
-              />
-            </Widget>
+            <Fade clear>
+              <Widget
+                title={
+                  <h5>
+                    비회원 정회원 <span className="fw-semi-bold">비율</span>
+                  </h5>
+                }
+                close
+                collapse
+              >
+                <ReactEchartsCore
+                  echarts={echarts}
+                  option={donut}
+                  // option={pie}
+                  opts={initEchartsOptions}
+                  style={{ height: "170px" }}
+                />
+              </Widget>
+            </Fade>
           </Col>
 
           { /* 실시간 검색어 */}
           <Col xl={3} md={6}>
-            <Widget
-              title={
-                <h5>
-                  {" "}
-                  실시간
-                  <span className="fw-semi-bold">&nbsp;인기 검색어</span>
-                </h5>
-              }
-              settings
-              refresh
-              close
-            >
-              <p>
-                Status: <strong>Live</strong>
-              </p>
-              <p>
-                {/* <span className="circle bg-default text-white"> */}
-                {/* <i className="fa fa-map-marker" /> */}
-                {/* </span>{" "} */}
-                {/* &nbsp; 146 Countries, 2759 Cities */}
-              </p>
-              <div className="row progress-stats">
-                <div className="col-md-9 col-12">
-                  <h6 className="name fw-semi-bold">{this.state.keyword_ranking[0]}</h6>
-                  <Progress
-                    color="primary"
-                    value={this.state.keyword_ranking[1]}
-                    className="bg-subtle-blue progress-xs"
-                  />
+            <Fade clear>
+              <Widget
+                title={
+                  <h5>
+                    {" "}
+                    실시간
+                    <span className="fw-semi-bold">&nbsp;인기 검색어</span>
+                  </h5>
+                }
+                settings
+                refresh
+                close
+              >
+                <p>
+                  Status: <strong>Live</strong>
+                </p>
+                <p>
+                  {/* <span className="circle bg-default text-white"> */}
+                  {/* <i className="fa fa-map-marker" /> */}
+                  {/* </span>{" "} */}
+                  {/* &nbsp; 146 Countries, 2759 Cities */}
+                </p>
+                <div className="row progress-stats">
+                  <div className="col-md-9 col-12">
+                    <h6 className="name fw-semi-bold">{this.state.keyword_ranking[0]}</h6>
+                    <Progress
+                      color="primary"
+                      value={this.state.keyword_ranking[1]}
+                      className="bg-subtle-blue progress-xs"
+                    />
+                  </div>
+                  <div className="col-md-3 col-12 text-center">
+                    <span className="status rounded rounded-lg bg-default text-light">
+                      <small>
+                        <AnimateNumber value={this.state.keyword_ranking[1]} />%
+                      </small>
+                    </span>
+                  </div>
                 </div>
-                <div className="col-md-3 col-12 text-center">
-                  <span className="status rounded rounded-lg bg-default text-light">
-                    <small>
-                      <AnimateNumber value={this.state.keyword_ranking[1]} />%
-                    </small>
-                  </span>
+                <div className="row progress-stats">
+                  <div className="col-md-9 col-12">
+                    <h6 className="name fw-semi-bold">{this.state.keyword_ranking[2]}</h6>
+                    <Progress
+                      color="danger"
+                      value={this.state.keyword_ranking[3]}
+                      className="bg-subtle-blue progress-xs"
+                    />
+                  </div>
+                  <div className="col-md-3 col-12 text-center">
+                    <span className="status rounded rounded-lg bg-default text-light">
+                      <small>
+                        <AnimateNumber value={this.state.keyword_ranking[3]} />%
+                      </small>
+                    </span>
+                  </div>
                 </div>
-              </div>
-              <div className="row progress-stats">
-                <div className="col-md-9 col-12">
-                  <h6 className="name fw-semi-bold">{this.state.keyword_ranking[2]}</h6>
-                  <Progress
-                    color="danger"
-                    value={this.state.keyword_ranking[3]}
-                    className="bg-subtle-blue progress-xs"
-                  />
+                <div className="row progress-stats">
+                  <div className="col-md-9 col-12">
+                    <h6 className="name fw-semi-bold">{this.state.keyword_ranking[4]}</h6>
+                    <Progress
+                      color="success"
+                      value={this.state.keyword_ranking[5]}
+                      className="bg-subtle-blue progress-xs"
+                    />
+                  </div>
+                  <div className="col-md-3 col-12 text-center">
+                    <span className="status rounded rounded-lg bg-default text-light">
+                      <small>
+                        <AnimateNumber value={this.state.keyword_ranking[5]} />%
+                      </small>
+                    </span>
+                  </div>
                 </div>
-                <div className="col-md-3 col-12 text-center">
-                  <span className="status rounded rounded-lg bg-default text-light">
-                    <small>
-                      <AnimateNumber value={this.state.keyword_ranking[3]} />%
-                    </small>
-                  </span>
-                </div>
-              </div>
-              <div className="row progress-stats">
-                <div className="col-md-9 col-12">
-                  <h6 className="name fw-semi-bold">{this.state.keyword_ranking[4]}</h6>
-                  <Progress
-                    color="success"
-                    value={this.state.keyword_ranking[5]}
-                    className="bg-subtle-blue progress-xs"
-                  />
-                </div>
-                <div className="col-md-3 col-12 text-center">
-                  <span className="status rounded rounded-lg bg-default text-light">
-                    <small>
-                      <AnimateNumber value={this.state.keyword_ranking[5]} />%
-                    </small>
-                  </span>
-                </div>
-              </div>
-            </Widget>
+              </Widget>
+            </Fade>
           </Col>
         </Row>
 
         {/* 월 별 방문자 수 */}
         <Row>
           <Col lg={12} xs={12}>
-            <Widget
-              title={
-                <h5>
-                  월 별{" "}
-                  <span className="fw-semi-bold">방문자 수</span>
-                </h5>
-              }
-              close
-              collapse
-            >
-              <ReactEchartsCore
-                echarts={echarts}
-                option={flow}
-                // option={pie}
-                opts={initEchartsOptions}
-                style={{ height: 350 }}
-              />
-            </Widget>
+            <Fade clear>
+              <Widget
+                title={
+                  <h5>
+                    월 별{" "}
+                    <span className="fw-semi-bold">방문자 수</span>
+                  </h5>
+                }
+                close
+                collapse
+              >
+                <ReactEchartsCore
+                  echarts={echarts}
+                  option={flow}
+                  // option={pie}
+                  opts={initEchartsOptions}
+                  style={{ height: 350 }}
+                />
+              </Widget>
+            </Fade>
           </Col>
         </Row>
 
         {/* 조회수 높은 게시글 */}
         <Row>
           <Col lg={12} md={12} sm={12}>
-            <Widget
-              title={
-                <h5>
-                  조회수 높은 <span className="fw-semi-bold">인기 게시글</span>
-                </h5>
-              }
-              settings
-              close
-              bodyClass={s.mainTableWidget}
-            >
-              <div className={s.overFlow}>
-                <Table lg={12} md={12} sm={12} striped>
-                  <thead>
-                    <tr className="fs-sm">
-                      <th className="hidden-sm-down">#</th>
-                      <th>Title</th>
-                      <th>Description</th>
-                      {/* <th className="hidden-sm-down">Info</th> */}
-                      <th className="hidden-sm-down">Date</th>
-                      <th className="hidden-sm-down">Recommendation</th>
-                      <th className="hidden-sm-down">Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {tableStyles.map((row) => (
-                      <tr key={row.id}>
-                        <td>{row.id}</td>
-                        <td>
-                          {/* <img
+            <Slide bottom>
+              <Widget
+                title={
+                  <h5>
+                    조회수 높은 <span className="fw-semi-bold">인기 게시글</span>
+                  </h5>
+                }
+                settings
+                close
+                bodyClass={s.mainTableWidget}
+              >
+                <div className={s.overFlow}>
+                  <Table lg={12} md={12} sm={12} striped>
+                    <thead>
+                      <tr className="fs-sm">
+                        <th className="hidden-sm-down">#</th>
+                        <th>Title</th>
+                        <th>Description</th>
+                        {/* <th className="hidden-sm-down">Info</th> */}
+                        <th className="hidden-sm-down">Date</th>
+                        <th className="hidden-sm-down">Recommendation</th>
+                        <th className="hidden-sm-down">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {tableStyles.map((row) => (
+                        <tr key={row.id}>
+                          <td>{row.id}</td>
+                          <td>
+                            {/* <img
                             className="img-rounded"
                             src={row.picture}
                             alt=""
                             height="50"
                           /> */}
-                          <p>{row.title}</p>
+                            <p>{row.title}</p>
 
-                        </td>
-                        <td>
-                          {row.description}
-                          {row.label && (
-                            <div>
-                              <Badge color={row.label.colorClass}>
-                                {row.label.text}
-                              </Badge>
-                            </div>
-                          )}
-                        </td>
-                        <td>
-                          <p className="mb-0">
-                            {row.date}
-                          </p>
-                        </td>
-                        {/* <td className="text-muted">{this.parseDate(row.date)}</td> */}
-                        {/* <td className="text-muted">{row.size}</td> */}
-                        <td className="text-muted">{row.recommendation}</td>
-                        <td className="width-150">
-                          <Progress
-                            color={row.progress.colorClass}
-                            value={row.percentage}
-                            className="progress-sm mb-xs"
-                          />
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </Table>
-              </div>
-            </Widget>
+                          </td>
+                          <td>
+                            {row.description}
+                            {row.label && (
+                              <div>
+                                <Badge color={row.label.colorClass}>
+                                  {row.label.text}
+                                </Badge>
+                              </div>
+                            )}
+                          </td>
+                          <td>
+                            <p className="mb-0">
+                              {row.date}
+                            </p>
+                          </td>
+                          {/* <td className="text-muted">{this.parseDate(row.date)}</td> */}
+                          {/* <td className="text-muted">{row.size}</td> */}
+                          <td className="text-muted">{row.recommendation}</td>
+                          <td className="width-150">
+                            <Progress
+                              color={row.progress.colorClass}
+                              value={row.percentage}
+                              className="progress-sm mb-xs"
+                            />
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </Table>
+                </div>
+              </Widget>
+            </Slide>
           </Col>
         </Row>
       </div>

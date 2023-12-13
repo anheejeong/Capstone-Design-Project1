@@ -26,6 +26,8 @@ import exportData from "highcharts/modules/export-data";
 
 import Map from '../dashboard/components/am4chartMap/am4chartMap'
 
+import Fade from "react-reveal/Fade";
+
 import axios from "axios";
 
 import config from "../components/developer/config";
@@ -284,224 +286,230 @@ class Users extends React.Component {
           </Row> */}
           <Row>
             <Col lg={12} xs={12}>
-              <Widget
-                title={
-                  <h5>
-                    접속 <span className="fw-semi-bold">시간</span>
-                  </h5>
-                }
-                close
-                collapse
-              >
-                <ReactEchartsCore
-                  echarts={echarts}
-                  // option={cd.echarts.scatter}
-                  option={scatter}
-                  opts={initEchartsOptions}
-                  style={{ height: 370 }}
-                />
-              </Widget>
+              <Fade clear>
+                <Widget
+                  title={
+                    <h5>
+                      접속 <span className="fw-semi-bold">시간</span>
+                    </h5>
+                  }
+                  close
+                  collapse
+                >
+                  <ReactEchartsCore
+                    echarts={echarts}
+                    // option={cd.echarts.scatter}
+                    option={scatter}
+                    opts={initEchartsOptions}
+                    style={{ height: 370 }}
+                  />
+                </Widget>
+              </Fade>
             </Col>
           </Row>
           <Row>
             <Col lg={5} xs={12}>
-              <Widget
-                title={
-                  <h5>
-                    정회원 비회원 <span className="fw-semi-bold">비율</span>
-                  </h5>
-                }
-                close
-                collapse
-              >
-                {/* <HighchartsReact
+              <Fade clear>
+                <Widget
+                  title={
+                    <h5>
+                      정회원 비회원 <span className="fw-semi-bold">비율</span>
+                    </h5>
+                  }
+                  close
+                  collapse
+                >
+                  {/* <HighchartsReact
                   highcharts={Highcharts}
                   options={cd.highcharts.pie} /> */}
-                {/* <PieChart
+                  {/* <PieChart
                   highcharts={Highcharts}
                   options={pie}
                 /> */}
-                <ReactEchartsCore
-                  echarts={echarts}
-                  // option={donut}
-                  option={pie}
-                  opts={initEchartsOptions}
-                  style={{ height: 400 }}
-                />
-              </Widget>
+                  <ReactEchartsCore
+                    echarts={echarts}
+                    // option={donut}
+                    option={pie}
+                    opts={initEchartsOptions}
+                    style={{ height: 400 }}
+                  />
+                </Widget>
+              </Fade>
             </Col>
             {/* <Col lg={6} md={6} sm={12}> */}
             <Col lg={7}>
-              <Widget
-                title={
-                  <h5>
-                    접속 <span className="fw-semi-bold">기기</span>
-                  </h5>
-                }
-                settings
-                close
-              >
-                <h3>
-                  이용자 접속 환경
-                  {/* 접속기기 <span className="fw-semi-bold">설명이라도</span> */}
-                </h3>
-                <div className={`widget-table-overflow ${s.overFlow}`}>
-                  <Table className="table-bordered table-lg mt-lg mb-0">
-                    <thead className="text-uppercase">
-                      <tr>
-                        <th>
-                          <div className="abc-checkbox">
-                            <Input
-                              id="checkbox10"
-                              type="checkbox"
-                              checked={this.state.checkboxes2[0]}
-                              onChange={(event) =>
-                                this.checkAll(event, "checkboxes2")
-                              }
-                            />
-                            <Label for="checkbox10" />
-                          </div>
-                        </th>
-                        <th>OS</th>
-                        <th className="text-right">RATE</th>
-                        <th className="text-center">WEB/APP</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>
-                          <div className="abc-checkbox">
-                            <Input
-                              id="checkbox11"
-                              type="checkbox"
-                              checked={this.state.checkboxes2[1]}
-                              onChange={(event) =>
-                                this.changeCheck(event, "checkboxes2", 1)
-                              }
-                            />
-                            <Label for="checkbox11" />
-                          </div>
-                        </td>
-                        <td>{this.state.os_1_1}</td>
-                        <td className="text-right">{this.state.os_1_2}</td>
-                        <td className="text-center">
-                          {/* <Sparklines
+              <Fade clear>
+                <Widget
+                  title={
+                    <h5>
+                      접속 <span className="fw-semi-bold">기기</span>
+                    </h5>
+                  }
+                  settings
+                  close
+                >
+                  <h3>
+                    이용자 접속 환경
+                    {/* 접속기기 <span className="fw-semi-bold">설명이라도</span> */}
+                  </h3>
+                  <div className={`widget-table-overflow ${s.overFlow}`}>
+                    <Table className="table-bordered table-lg mt-lg mb-0">
+                      <thead className="text-uppercase">
+                        <tr>
+                          <th>
+                            <div className="abc-checkbox">
+                              <Input
+                                id="checkbox10"
+                                type="checkbox"
+                                checked={this.state.checkboxes2[0]}
+                                onChange={(event) =>
+                                  this.checkAll(event, "checkboxes2")
+                                }
+                              />
+                              <Label for="checkbox10" />
+                            </div>
+                          </th>
+                          <th>OS</th>
+                          <th className="text-right">RATE</th>
+                          <th className="text-center">WEB/APP</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>
+                            <div className="abc-checkbox">
+                              <Input
+                                id="checkbox11"
+                                type="checkbox"
+                                checked={this.state.checkboxes2[1]}
+                                onChange={(event) =>
+                                  this.changeCheck(event, "checkboxes2", 1)
+                                }
+                              />
+                              <Label for="checkbox11" />
+                            </div>
+                          </td>
+                          <td>{this.state.os_1_1}</td>
+                          <td className="text-right">{this.state.os_1_2}</td>
+                          <td className="text-center">
+                            {/* <Sparklines
                             data={[13, 14, 16, 15, 4, 14, 20]}
                             style={{ width: "35px", height: "20px" }}
                           >
                             <SparklinesBars style={{ fill: "#1870DC" }} />
                           </Sparklines> */}
-                          {this.state.os_1_3}
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <div className="abc-checkbox">
-                            <Input
-                              id="checkbox12"
-                              type="checkbox"
-                              checked={this.state.checkboxes2[2]}
-                              onChange={(event) =>
-                                this.changeCheck(event, "checkboxes2", 2)
-                              }
-                            />
-                            <Label for="checkbox12" />
-                          </div>
-                        </td>
-                        <td>{this.state.os_2_1}</td>
-                        <td className="text-right">{this.state.os_2_2}</td>
-                        <td className="text-center">
-                          {/* <Sparklines
+                            {this.state.os_1_3}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <div className="abc-checkbox">
+                              <Input
+                                id="checkbox12"
+                                type="checkbox"
+                                checked={this.state.checkboxes2[2]}
+                                onChange={(event) =>
+                                  this.changeCheck(event, "checkboxes2", 2)
+                                }
+                              />
+                              <Label for="checkbox12" />
+                            </div>
+                          </td>
+                          <td>{this.state.os_2_1}</td>
+                          <td className="text-right">{this.state.os_2_2}</td>
+                          <td className="text-center">
+                            {/* <Sparklines
                             data={[14, 12, 16, 11, 17, 19, 16]}
                             style={{ width: "35px", height: "20px" }}
                           >
                             <SparklinesBars style={{ fill: "#58D777" }} />
                           </Sparklines> */}
-                          {this.state.os_2_3}
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <div className="abc-checkbox">
-                            <Input
-                              id="checkbox13"
-                              type="checkbox"
-                              checked={this.state.checkboxes2[3]}
-                              onChange={(event) =>
-                                this.changeCheck(event, "checkboxes2", 3)
-                              }
-                            />
-                            <Label for="checkbox13" />
-                          </div>
-                        </td>
-                        <td>{this.state.os_3_1}</td>
-                        <td className="text-right">{this.state.os_3_2}</td>
-                        <td className="text-center">
-                          {/* <Sparklines
+                            {this.state.os_2_3}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <div className="abc-checkbox">
+                              <Input
+                                id="checkbox13"
+                                type="checkbox"
+                                checked={this.state.checkboxes2[3]}
+                                onChange={(event) =>
+                                  this.changeCheck(event, "checkboxes2", 3)
+                                }
+                              />
+                              <Label for="checkbox13" />
+                            </div>
+                          </td>
+                          <td>{this.state.os_3_1}</td>
+                          <td className="text-right">{this.state.os_3_2}</td>
+                          <td className="text-center">
+                            {/* <Sparklines
                             data={[11, 17, 19, 16, 14, 12, 16]}
                             style={{ width: "35px", height: "20px" }}
                           >
                             <SparklinesBars style={{ fill: "#f0af03" }} />
                           </Sparklines> */}
-                          {this.state.os_3_3}
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <div className="abc-checkbox">
-                            <Input
-                              id="checkbox14"
-                              type="checkbox"
-                              checked={this.state.checkboxes2[4]}
-                              onChange={(event) =>
-                                this.changeCheck(event, "checkboxes2", 4)
-                              }
-                            />
-                            <Label for="checkbox14" />
-                          </div>
-                        </td>
-                        <td>{this.state.os_4_1}</td>
-                        <td className="text-right">{this.state.os_4_2}</td>
-                        <td className="text-center">
-                          {/* <Sparklines
+                            {this.state.os_3_3}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <div className="abc-checkbox">
+                              <Input
+                                id="checkbox14"
+                                type="checkbox"
+                                checked={this.state.checkboxes2[4]}
+                                onChange={(event) =>
+                                  this.changeCheck(event, "checkboxes2", 4)
+                                }
+                              />
+                              <Label for="checkbox14" />
+                            </div>
+                          </td>
+                          <td>{this.state.os_4_1}</td>
+                          <td className="text-right">{this.state.os_4_2}</td>
+                          <td className="text-center">
+                            {/* <Sparklines
                             data={[13, 14, 20, 16, 15, 4, 14]}
                             style={{ width: "35px", height: "20px" }}
                           >
                             <SparklinesBars style={{ fill: "#F45722" }} />
                           </Sparklines> */}
-                          {this.state.os_4_3}
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <div className="abc-checkbox">
-                            <Input
-                              id="checkbox15"
-                              type="checkbox"
-                              checked={this.state.checkboxes2[5]}
-                              onChange={(event) =>
-                                this.changeCheck(event, "checkboxes2", 5)
-                              }
-                            />
-                            <Label for="checkbox15" />
-                          </div>
-                        </td>
-                        <td>{this.state.os_5_1}</td>
-                        <td className="text-right">{this.state.os_5_2}</td>
-                        <td className="text-center">
-                          {/* <Sparklines
+                            {this.state.os_4_3}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <div className="abc-checkbox">
+                              <Input
+                                id="checkbox15"
+                                type="checkbox"
+                                checked={this.state.checkboxes2[5]}
+                                onChange={(event) =>
+                                  this.changeCheck(event, "checkboxes2", 5)
+                                }
+                              />
+                              <Label for="checkbox15" />
+                            </div>
+                          </td>
+                          <td>{this.state.os_5_1}</td>
+                          <td className="text-right">{this.state.os_5_2}</td>
+                          <td className="text-center">
+                            {/* <Sparklines
                             data={[16, 15, 4, 14, 13, 14, 20]}
                             style={{ width: "35px", height: "20px" }}
                           >
                             <SparklinesBars style={{ fill: "#4ebfbb" }} />
                           </Sparklines> */}
-                          {this.state.os_5_3}
-                        </td>
-                      </tr>
-                    </tbody>
-                  </Table>
-                </div>
-              </Widget>
+                            {this.state.os_5_3}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </Table>
+                  </div>
+                </Widget>
+              </Fade>
             </Col>
           </Row>
           {/* <Row>

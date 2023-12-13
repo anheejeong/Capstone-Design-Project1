@@ -20,6 +20,9 @@ import $ from "jquery";
 
 import ReactWordcloud from 'react-wordcloud';
 
+import Fade from "react-reveal/Fade";
+import Slide from 'react-reveal/Slide';
+
 import axios from "axios";
 
 exporting(Highcharts);
@@ -231,62 +234,68 @@ class NLP extends React.Component {
         </h1>
         <Row>
           <Col lg={12} xs={12}>
-            <Widget
-              title={
-                <h5>Clustering</h5>
-              }
-              close
-              collapse
-            >
-              {/* <ReactEchartsCore
+            <Fade clear>
+              <Widget
+                title={
+                  <h5>Clustering</h5>
+                }
+                close
+                collapse
+              >
+                {/* <ReactEchartsCore
                 echarts={echarts}
                 // option={cd.echarts.scatter}
                 option={scatter}
                 opts={initEchartsOptions}
                 style={{ height: 350 }}
               /> */}
-              {/* clustering - echarts : les-miserables */}
-              <ReactEchartsCore
-                echarts={echarts}
-                option={clustering}
-                opts={initEchartsOptions}
-                style={{ height: 700 }}
-              />
-            </Widget>
+                {/* clustering - echarts : les-miserables */}
+                <ReactEchartsCore
+                  echarts={echarts}
+                  option={clustering}
+                  opts={initEchartsOptions}
+                  style={{ height: 700 }}
+                />
+              </Widget>
+            </Fade>
           </Col>
         </Row>
         <Row>
           <Col lg={6} xs={12}>
-            <Widget
-              title={
-                <h5>정회원 WordCloud</h5>
-              }
-              close
-              collapse
-            >
-              <ReactWordcloud
-                callbacks={callbacks}
-                options={options}
-                // size={size}
-                words={regular}
-              />
-            </Widget>
+            <Slide bottom>
+              <Widget
+                title={
+                  <h5>정회원 WordCloud</h5>
+                }
+                close
+                collapse
+              >
+                <ReactWordcloud
+                  callbacks={callbacks}
+                  options={options}
+                  // size={size}
+                  words={regular}
+                />
+              </Widget>
+            </Slide>
           </Col>
           <Col lg={6} xs={12}>
-            <Widget
-              title={
-                <h5>비회원 WordCloud</h5>
-              }
-              close
-              collapse
-            >
-              <ReactWordcloud
-                callbacks={callbacks}
-                options={options}
-                // size={size}
-                words={non_regular}
-              />
-            </Widget>
+            <Slide bottom>
+              <Widget
+                title={
+                  <h5>비회원 WordCloud</h5>
+                }
+                close
+                collapse
+              >
+                <ReactWordcloud
+                  callbacks={callbacks}
+                  options={options}
+                  // size={size}
+                  words={non_regular}
+                />
+              </Widget>
+            </Slide>
           </Col>
         </Row>
       </div>

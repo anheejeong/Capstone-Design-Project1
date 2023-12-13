@@ -23,6 +23,8 @@ import echarts from "echarts/lib/echarts";
 
 import { chartData } from "./mock";
 
+import Fade from "react-reveal/Fade";
+
 import axios from "axios";
 
 import config from "../../components/developer/config";
@@ -307,87 +309,93 @@ class Payments extends React.Component {
         </h2>
         <Row>
           <Col lg={7} xs={12}>
-            <Widget
-              title={
-                <h5>
-                  <span className="fw-semi-bold">금액</span> (당일/월별)
-                </h5>
-              }
-              close
-              collapse
-            >
-              <ReactEchartsCore
-                echarts={echarts}
-                option={line}
-                opts={initEchartsOptions}
-                style={{ height: "500px" }}
-              />
-            </Widget>
+            <Fade clear>
+              <Widget
+                title={
+                  <h5>
+                    <span className="fw-semi-bold">금액</span> (당일/월별)
+                  </h5>
+                }
+                close
+                collapse
+              >
+                <ReactEchartsCore
+                  echarts={echarts}
+                  option={line}
+                  opts={initEchartsOptions}
+                  style={{ height: "500px" }}
+                />
+              </Widget>
+            </Fade>
           </Col>
           <Col lg={5} xs={12}>
             <Row>
               <Col lg={12}>
-                <Widget
-                  title={
-                    <h5>
-                      <span className="fw-semi-bold">결제 방식</span>
-                    </h5>
-                  }
-                  close
-                  collapse
-                >
-                  <ReactEchartsCore
-                    echarts={echarts}
-                    // option={cd.echarts.bar}
-                    option={bar}
-                    opts={initEchartsOptions}
-                    style={{ height: "220px" }}
-                  />
-                </Widget>
+                <Fade clear>
+                  <Widget
+                    title={
+                      <h5>
+                        <span className="fw-semi-bold">결제 방식</span>
+                      </h5>
+                    }
+                    close
+                    collapse
+                  >
+                    <ReactEchartsCore
+                      echarts={echarts}
+                      // option={cd.echarts.bar}
+                      option={bar}
+                      opts={initEchartsOptions}
+                      style={{ height: "220px" }}
+                    />
+                  </Widget>
+                </Fade>
               </Col>
             </Row>
             <Row>
               <Col lg={12}>
-                <Widget
-                  // title={
-                  //   <h5>
-                  //     <span className="fw-semi-bold">신규 정회원</span>
-                  //   </h5>
-                  // }
-                  close
-                  collapse
-                >
-                  <header class="d-flex justify-content-between flex-nowrap">
-                    <h4 class="d-flex align-items-center pb-1 big-stat-title">
-                      <span class="circle bg-primary mr-sm" style={{ 'font-size': '6px' }}></span>
-                      이번달 <span class="fw-normal ml-xs">신규 정회원</span>
-                    </h4>
-                  </header>
-                  <div class="pb-xlg h-100">
-                    <section class="widget mb-0 h-100">
-                      <div class="widget-body p-0">
-                        <h4 class="fw-semi-bold ml-lg mb-lg">{this.state.new_user_this_month} (명)</h4>
-                        <div class="d-flex border-top">
-                          <div class="w-50 border-right p-3 px-4">
-                            <div class="d-flex align-items-center mb-2">
-                              <h6>{this.state.new_user_rate}%</h6>
-                              {/* <i class="la la-arrow-right la-2x text-success rotate-315 ml-sm"></i> */}
-                              <i class="la la-2x la-arrow-right text-danger rotate-45 ml-sm"></i>
+                <Fade clear>
+                  <Widget
+                    // title={
+                    //   <h5>
+                    //     <span className="fw-semi-bold">신규 정회원</span>
+                    //   </h5>
+                    // }
+                    close
+                    collapse
+                  >
+                    <header class="d-flex justify-content-between flex-nowrap">
+                      <h4 class="d-flex align-items-center pb-1 big-stat-title">
+                        <span class="circle bg-primary mr-sm" style={{ 'font-size': '6px' }}></span>
+                        이번달 <span class="fw-normal ml-xs">신규 정회원</span>
+                      </h4>
+                    </header>
+                    <div class="pb-xlg h-100">
+                      <section class="widget mb-0 h-100">
+                        <div class="widget-body p-0">
+                          <h4 class="fw-semi-bold ml-lg mb-lg">{this.state.new_user_this_month} (명)</h4>
+                          <div class="d-flex border-top">
+                            <div class="w-50 border-right p-3 px-4">
+                              <div class="d-flex align-items-center mb-2">
+                                <h6>{this.state.new_user_rate}%</h6>
+                                {/* <i class="la la-arrow-right la-2x text-success rotate-315 ml-sm"></i> */}
+                                <i class="la la-2x la-arrow-right text-danger rotate-45 ml-sm"></i>
+                              </div>
+                              <p class="text-muted mb-0 mr"><small>저번달 대비 정회원 비율</small></p>
                             </div>
-                            <p class="text-muted mb-0 mr"><small>저번달 대비 정회원 비율</small></p>
-                          </div>
-                          <div class="w-50 p-3 px-4">
-                            <div class="d-flex align-items-center mb-2">
-                              <h6>{this.state.new_user_amount} (만원)</h6>
-                              {/* <i class="la la-2x la-arrow-right text-danger rotate-45 ml-sm"></i> */}
+                            <div class="w-50 p-3 px-4">
+                              <div class="d-flex align-items-center mb-2">
+                                <h6>{this.state.new_user_amount} (만원)</h6>
+                                {/* <i class="la la-2x la-arrow-right text-danger rotate-45 ml-sm"></i> */}
+                              </div>
+                              <p class="text-muted mb-0 mr"><small>올해 구독료 총합</small></p>
                             </div>
-                            <p class="text-muted mb-0 mr"><small>올해 구독료 총합</small></p>
                           </div>
                         </div>
-                      </div>
-                    </section>
-                  </div>
-                </Widget>
+                      </section>
+                    </div>
+                  </Widget>
+                </Fade>
               </Col>
             </Row>
           </Col>
@@ -395,65 +403,67 @@ class Payments extends React.Component {
 
         <Row>
           <Col lg={12}>
-            <Widget>
-              <header>
-                <h4>
-                  제품 구매 <strong>목록/수</strong>
-                </h4>
-                <div class="widget-controls">
-                  <a href="#"><i class="la la-cog text-white"></i></a>
-                  <a href="#" data-widgster="close"><i class="la la-remove text-white"></i></a>
+            <Fade clear>
+              <Widget>
+                <header>
+                  <h4>
+                    제품 구매 <strong>목록/수</strong>
+                  </h4>
+                  <div class="widget-controls">
+                    <a href="#"><i class="la la-cog text-white"></i></a>
+                    <a href="#" data-widgster="close"><i class="la la-remove text-white"></i></a>
+                  </div>
+                </header>
+                <div class="widget-body p-0 support table-wrapper">
+                  <table class="table table-striped mb-0">
+                    <thead>
+                      <tr class="text-white">
+                        <th scope="col"><span class=" pl-3">PRODUCT</span></th>
+                        <th scope="col">PRICE (만원)</th>
+                        <th scope="col">MEMBER SERIAL NUM</th>
+                        <th scope="col">DATE</th>
+                      </tr>
+                    </thead>
+                    <tbody class="text-white-50">
+                      <tr>
+                        <th class="pl-4 fw-normal">{this.state.buy_list_1[1]}</th>
+                        <td>{this.state.buy_list_1[2]}</td>
+                        <td>{this.state.buy_list_1[0]}</td>
+                        <td>{this.state.buy_list_1[3]}</td>
+                      </tr>
+                      <tr>
+                        <th class="pl-4">{this.state.buy_list_2[1]}</th>
+                        <td>{this.state.buy_list_2[2]}</td>
+                        <td>{this.state.buy_list_2[0]}</td>
+                        <td>{this.state.buy_list_2[3]}</td>
+                        {/* <td><span class="badge badge-primary p-1 px-3">Sent</span></td> */}
+                      </tr>
+                      <tr>
+                        <th class="pl-4">{this.state.buy_list_3[1]}</th>
+                        <td>{this.state.buy_list_3[2]}</td>
+                        <td>{this.state.buy_list_3[0]}</td>
+                        <td>{this.state.buy_list_3[3]}</td>
+                        {/* <td><span class="badge badge-success p-1 px-3">Pending</span></td> */}
+                      </tr>
+                      <tr>
+                        <th class="pl-4">{this.state.buy_list_4[1]}</th>
+                        <td>{this.state.buy_list_4[2]}</td>
+                        <td>{this.state.buy_list_4[0]}</td>
+                        <td>{this.state.buy_list_4[3]}</td>
+                        {/* <td><span class="badge badge-danger p-1 px-3">Declined</span></td> */}
+                      </tr>
+                      <tr>
+                        <th class="pl-4">{this.state.buy_list_5[1]}</th>
+                        <td>{this.state.buy_list_5[2]}</td>
+                        <td>{this.state.buy_list_5[0]}</td>
+                        <td>{this.state.buy_list_5[3]}</td>
+                        {/* <td><span class="badge badge-primary p-1 px-3">Sent</span></td> */}
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
-              </header>
-              <div class="widget-body p-0 support table-wrapper">
-                <table class="table table-striped mb-0">
-                  <thead>
-                    <tr class="text-white">
-                      <th scope="col"><span class=" pl-3">PRODUCT</span></th>
-                      <th scope="col">PRICE (만원)</th>
-                      <th scope="col">MEMBER SERIAL NUM</th>
-                      <th scope="col">DATE</th>
-                    </tr>
-                  </thead>
-                  <tbody class="text-white-50">
-                    <tr>
-                      <th class="pl-4 fw-normal">{this.state.buy_list_1[1]}</th>
-                      <td>{this.state.buy_list_1[2]}</td>
-                      <td>{this.state.buy_list_1[0]}</td>
-                      <td>{this.state.buy_list_1[3]}</td>
-                    </tr>
-                    <tr>
-                      <th class="pl-4">{this.state.buy_list_2[1]}</th>
-                      <td>{this.state.buy_list_2[2]}</td>
-                      <td>{this.state.buy_list_2[0]}</td>
-                      <td>{this.state.buy_list_2[3]}</td>
-                      {/* <td><span class="badge badge-primary p-1 px-3">Sent</span></td> */}
-                    </tr>
-                    <tr>
-                      <th class="pl-4">{this.state.buy_list_3[1]}</th>
-                      <td>{this.state.buy_list_3[2]}</td>
-                      <td>{this.state.buy_list_3[0]}</td>
-                      <td>{this.state.buy_list_3[3]}</td>
-                      {/* <td><span class="badge badge-success p-1 px-3">Pending</span></td> */}
-                    </tr>
-                    <tr>
-                      <th class="pl-4">{this.state.buy_list_4[1]}</th>
-                      <td>{this.state.buy_list_4[2]}</td>
-                      <td>{this.state.buy_list_4[0]}</td>
-                      <td>{this.state.buy_list_4[3]}</td>
-                      {/* <td><span class="badge badge-danger p-1 px-3">Declined</span></td> */}
-                    </tr>
-                    <tr>
-                      <th class="pl-4">{this.state.buy_list_5[1]}</th>
-                      <td>{this.state.buy_list_5[2]}</td>
-                      <td>{this.state.buy_list_5[0]}</td>
-                      <td>{this.state.buy_list_5[3]}</td>
-                      {/* <td><span class="badge badge-primary p-1 px-3">Sent</span></td> */}
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </Widget>
+              </Widget>
+            </Fade>
           </Col>
         </Row>
       </div>
