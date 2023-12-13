@@ -134,9 +134,6 @@ class Sidebar extends React.Component {
                             {
                                 header: 'Documents', link: '/app/components/documents',
                             },
-                            // {
-                            //     header: 'Company', link: '/app/components/company',
-                            // },
                         ]}
                     />
                 </ul>

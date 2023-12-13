@@ -88,7 +88,6 @@ class Layout extends React.Component {
                     <Route path="/app/nlp" exact component={NLP} />
                     <Route path="/app/components/developer" exact component={Developer} />
                     <Route path="/app/payments" exact component={Payments} />
-                    <Route path="/app/components/company" exact component={Company} />
                     <Route path="/app/users" exact component={Users} />
                   </Switch>
                 </CSSTransition>
