@@ -20,7 +20,8 @@ class Login extends React.Component {
         super(props);
 
         this.state = {
-            email: 'admin@flatlogic.com',
+            // email: 'admin@flatlogic.com',
+            email: 'Hobanu@knu.ac.kr',
             password: 'password',
         };
 
@@ -77,11 +78,11 @@ class Login extends React.Component {
                                 <InputGroup className="input-group-no-border">
                                     <InputGroupAddon addonType="prepend">
                                         <InputGroupText>
-                                            <i className="la la-user text-white"/>
+                                            <i className="la la-user text-white" />
                                         </InputGroupText>
                                     </InputGroupAddon>
                                     <Input id="email" className="input-transparent pl-3" value={this.state.email} onChange={this.changeEmail} type="email"
-                                           required name="email" placeholder="Email"/>
+                                        required name="email" placeholder="Email" />
                                 </InputGroup>
                             </FormGroup>
                             <FormGroup>
@@ -89,21 +90,21 @@ class Login extends React.Component {
                                 <InputGroup className="input-group-no-border">
                                     <InputGroupAddon addonType="prepend">
                                         <InputGroupText>
-                                            <i className="la la-lock text-white"/>
+                                            <i className="la la-lock text-white" />
                                         </InputGroupText>
                                     </InputGroupAddon>
                                     <Input id="password" className="input-transparent pl-3" value={this.state.password}
-                                           onChange={this.changePassword} type="password"
-                                           required name="password" placeholder="Password"/>
+                                        onChange={this.changePassword} type="password"
+                                        required name="password" placeholder="Password" />
                                 </InputGroup>
                             </FormGroup>
                             <div className="bg-widget auth-widget-footer">
                                 <Button type="submit" color="danger" className="auth-btn"
-                                        size="sm" style={{color: '#fff'}}>
-                                  <span className="auth-btn-circle" style={{marginRight: 8}}>
-                                    <i className="la la-caret-right"/>
-                                  </span>
-                                  {this.props.isFetching ? 'Loading...' : 'Login'}
+                                    size="sm" style={{ color: '#fff' }}>
+                                    <span className="auth-btn-circle" style={{ marginRight: 8 }}>
+                                        <i className="la la-caret-right" />
+                                    </span>
+                                    {this.props.isFetching ? 'Loading...' : 'Login'}
                                 </Button>
                                 <p className="widget-auth-info mt-4">
                                     Don't have an account? Sign up now!
@@ -111,13 +112,13 @@ class Login extends React.Component {
                                 <Link className="d-block text-center mb-4" to="register">Create an Account</Link>
                                 <div className="social-buttons">
                                     <Button color="primary" className="social-button">
-                                        <i className="social-icon social-google"/>
+                                        <i className="social-icon social-google" />
                                         <p className="social-text">GOOGLE</p>
                                     </Button>
                                     <Button color="success" className="social-button">
                                         <i className="social-icon social-microsoft"
-                                           style={{backgroundImage: `url(${microsoft})`}}/>
-                                        <p className="social-text" style={{color: '#fff'}}>MICROSOFT</p>
+                                            style={{ backgroundImage: `url(${microsoft})` }} />
+                                        <p className="social-text" style={{ color: '#fff' }}>MICROSOFT</p>
                                     </Button>
                                 </div>
                             </div>
@@ -125,7 +126,7 @@ class Login extends React.Component {
                     </Widget>
                 </Container>
                 <footer className="auth-footer">
-                {new Date().getFullYear()} &copy; Light Blue Template - React Admin Dashboard Template Made by <a href="https://flatlogic.com" rel="noopener noreferrer" target="_blank">Flatlogic LLC</a>.
+                    {new Date().getFullYear()} &copy; Light Blue Template - React Admin Dashboard Template Made by <a href="https://flatlogic.com" rel="noopener noreferrer" target="_blank">Flatlogic LLC</a>.
                 </footer>
             </div>
         );
