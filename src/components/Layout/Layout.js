@@ -93,7 +93,7 @@ class Layout extends React.Component {
                 </CSSTransition>
               </TransitionGroup>
               <footer className={s.contentFooter}>
-                KYUNGPOOK UNIVERSITY <a href="https://github.com/ChangHyeonn/Development_of_Dashboard" >GITHUB</a>
+                KYUNGPOOK UNIVERSITY <a href="https://github.com/anheejeong/Capstone-Design-Project1" >GITHUB</a>
               </footer>
             </main>
           </Hammer>
