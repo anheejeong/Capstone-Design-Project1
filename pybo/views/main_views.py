@@ -219,7 +219,7 @@ def payment():
 def nlp():
     cursor = db.cursor()
 
-    sql1 = "SELECT * FROM result_datas.clustering03"
+    sql1 = "SELECT * FROM result_datas.clustering"
     sql2 = "SELECT * FROM result_datas.keyword_regular"
     sql3 = "SELECT * FROM result_datas.keyword_non_regular"
 
