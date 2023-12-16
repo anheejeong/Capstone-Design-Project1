@@ -1726,21 +1726,21 @@ export const chartData = {
             {
                 "name": "D"
             },
-            {
-                "name": "E"
-            },
-            {
-                "name": "F"
-            },
-            {
-                "name": "G"
-            },
-            {
-                "name": "H"
-            },
-            {
-                "name": "I"
-            }
+            // {
+            //     "name": "E"
+            // },
+            // {
+            //     "name": "F"
+            // },
+            // {
+            //     "name": "G"
+            // },
+            // {
+            //     "name": "H"
+            // },
+            // {
+            //     "name": "I"
+            // }
         ]
     }
 }
