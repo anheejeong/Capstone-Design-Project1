@@ -1,17 +1,14 @@
-from flask import Blueprint, jsonify, Response # flask - Blueprint를 통해 라우팅 함수 관리, jsonify를 통해 반환값을 json형식으로 변환
-import pymysql  # mysql 쿼리문을 python에서 사용할 수 있는 모듈..
+from flask import Blueprint, jsonify # Blueprint를 통해 라우팅 함수 관리, jsonify를 통해 반환값을 json형식으로 변환
+import pymysql  # mysql을 python에서 사용할 수 있도록 하는 라이브러리
 import json # json 데이터 타입
-from collections import OrderedDict
 
-# mysql db 연결
 db = pymysql.connect(host='180.66.240.165', port=53306, user='root', password='U6ycE],+', db='xedb', charset='utf8')
 
-# Blueprint - 라우팅 함수 관리
 bp = Blueprint('main', __name__, url_prefix='/')
 
 
-# home 화면
-@bp.route('/home') # home 화면 - 방문자 수, 최근 결제 금액, 정회원/비회원 비율, 인기 검색어, 연간 월 별 조회수, 월 별 조회수 높은 게시글
+# home
+@bp.route('/home') # home - 방문자 수, 최근 결제 금액, 정회원/비회원 비율, 인기 검색어, 월 별 방문자 수, 조회수 높은 게시글
 def index():
     cursor = db.cursor()  # db 데이터 가르킬 객체 생성
     sql1 = "SELECT * FROM result_datas.visitor_date;"  # 1. 방문자 수 - 오늘, 어제, 이번 달 방문자 수, 어제 대비 오늘 방문자 수 증감률
@@ -75,17 +72,15 @@ def index():
 
 
 # user
-@bp.route('/user')  # user 화면 - 월별 접속자, 정회원/비회원 비율, 접속 기기, 접속 국가
+@bp.route('/user')  # user 화면 - 월별 접속자, 정회원/비회원 비율, 접속 기기
 def user():
     cursor = db.cursor()
     sql1 = "SELECT * FROM result_datas.connection_date;"  # 1. 월별 접속자
     sql2 = "SELECT * FROM result_datas.user_percentage"  # 2. 정회원/비회원 비율
     sql3 = "SELECT * FROM result_datas.user_os"  # 3. 접속 기기
-    #sql4 = "SELECT * FROM result_datas.user_map"  # 4. 접속 국가
 
     # 1. connection_date - 월별 접속자
     cursor.execute(sql1)
-    # traffic = [[0] * 3 for _ in range(168)]
 
     circle1 = cursor.fetchone()
     circle2 = cursor.fetchone()
@@ -97,10 +92,6 @@ def user():
     day = [0] * 168
     hour = [0] * 168
     importance = [0] * 168
-
-    # day = [0, 0, 0 .... 24개 ... 1, 1, 1, 1 .... 24개, ........... 6, 6, 6, 24개]
-    # hour = [0, 1, 2, 3, 4, ... 23, 0, 1, 2, 3 ... 23]
-    # importance = [7, 2, 3, 4, ... .circle1 24개 .... circle2 24개 ....]
 
     j = 0
     for i in range(0, 24):
@@ -151,65 +142,6 @@ def user():
         importance[i] = int(circle7[j])
         j += 1
 
-    '''
-    j = 0
-    for i in range(0,24):
-        traffic[i][0] = 0
-        traffic[i][1] = j
-        traffic[i][2] = int(circle1[j])
-        traffic[i][2] = circle1[j]
-        j += 1
-    j = 0
-    for i in range(24, 48):
-        traffic[i][2] = int(circle2[j])
-        traffic[i][2] = circle2[j]
-        traffic[i][0] = 1
-        traffic[i][1] = j
-        j += 1
-
-    j = 0
-    for i in range(48, 72):
-        traffic[i][2] = int(circle3[j])
-        traffic[i][2] = circle3[j]
-        traffic[i][0] = 2
-        traffic[i][1] = j
-        j += 1
-
-    j = 0
-    for i in range(72, 96):
-        traffic[i][2] = int(circle4[j])
-        traffic[i][2] = circle4[j]
-        traffic[i][0] = 3
-        traffic[i][1] = j
-        j += 1
-
-    j = 0
-    for i in range(96, 120):
-        traffic[i][2] = int(circle5[j])
-        traffic[i][2] = circle5[j]
-        traffic[i][0] = 4
-        traffic[i][1] = j
-        j += 1
-
-    j = 0
-    for i in range(120, 144):
-        traffic[i][2] = int(circle6[j])
-        traffic[i][2] = circle6[j]
-        traffic[i][0] = 5
-        traffic[i][1] = j
-        j += 1
-
-    j = 0
-    for i in range(144, 168):
-        traffic[i][2] = int(circle7[j])
-        traffic[i][2] = circle7[j]
-        traffic[i][0] = 6
-        traffic[i][1] = j
-        j += 1
-
-    new_traffic = list(traffic)
-    '''
-
     # 2. user_percentage - 정회원/비회원 비율
     cursor.execute(sql2)
     user_percentage = cursor.fetchone()
@@ -217,12 +149,6 @@ def user():
     # 3. user_os - 접속 기기
     cursor.execute(sql3)
     user_os = cursor.fetchall()
-
-    """
-    # 4. user_map - 접속 국가
-    cursor.execute(sql4)
-    user_map = cursor.fetchall()
-    """
 
     result = {
         "day": day,
@@ -237,7 +163,7 @@ def user():
     return jsonify(result)
 
 
-# payment 화면 - 결제 방식, 금년/작년 구매 금액 비교, 구매 목록, 신규 유료 회원
+# payment - 결제 방식, 금년/작년 구매 금액 비교, 구매 목록, 신규 유료 회원
 @bp.route('/payment')
 def payment():
     cursor = db.cursor()
@@ -246,7 +172,6 @@ def payment():
     sql2_1 = "SELECT * FROM result_datas.payment_last_year"  # 2_1. 올해 작년 구매 금액 비교 - 작년
     sql3 = "SELECT * FROM result_datas.payment_list"  # 3. 구매 목록
     sql4 = "SELECT * FROM result_datas.new_user"  # 4. 신규 유료 회원
-
 
     # 1. payment_method - 결제 방식
     cursor.execute(sql1)
@@ -289,37 +214,23 @@ def payment():
     return jsonify(result)
 
 
+#nlp - 클러스터링, 정회원/비회원 키워드
 @bp.route('/nlp')
 def nlp():
     cursor = db.cursor()
 
-    sql1 = "SELECT * FROM result_datas.clustering"
+    sql1 = "SELECT * FROM result_datas.clustering02"
     sql2 = "SELECT * FROM result_datas.keyword_regular"
     sql3 = "SELECT * FROM result_datas.keyword_non_regular"
 
-    # x y word category value
-    # id name symbolSize x y value category
     # 1. clustering
     cursor.execute(sql1)
 
     clustering_list = list()
-
     for i in range(0, 70):
         data = cursor.fetchone()
         new_lst = [str(i), data[2], data[4], data[0], data[1], data[4], data[3]]
         clustering_list.append(new_lst)
-
-    '''
-    clustering_list = list()
-    
-    for i in range(0, 70):
-        data = cursor.fetchone()
-        clustering_dict = OrderedDict([('id', str(i)), ('name', data[2]), ('symbolSize', data[4])
-                                       , ('x', data[0]), ('y', data[1]), ('value', data[4]), ('category', data[3])])
-        clustering_list.append(clustering_dict)
-
-    clustering = json.dumps(clustering_list, sort_keys=False, default=str)
-    '''
 
     # 2. word cloud
     cursor.execute(sql2)
@@ -336,7 +247,3 @@ def nlp():
 
     cursor.close()
     return jsonify(result)
-    #response = Response(clustering, content_type='application/json')
-    #return response
-
-    #return result
