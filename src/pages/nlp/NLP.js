@@ -173,7 +173,7 @@ class NLP extends React.Component {
       getWordColor: word => word.value < 3 ? "white" : "yellow",
       onWordClick: console.log,
       onWordMouseOver: console.log,
-      getWordTooltip: word => `${word.text} (${word.value}) [${word.value > 50 ? "good" : "bad"}]`,
+      getWordTooltip: word => `${word.text} (${word.value}) [${word.value > 3 ? "good" : "bad"}]`,
     }
     const options = {
       rotations: 2,
