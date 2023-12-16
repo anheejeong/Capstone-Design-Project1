@@ -195,7 +195,7 @@ class NLP extends React.Component {
       ],
       series: [
         {
-          name: 'Les Miserables',
+          name: 'NLP',
           type: 'graph',
           layout: 'none',
           // data: this.state.cd.echarts.nodes,
