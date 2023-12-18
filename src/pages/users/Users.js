@@ -138,7 +138,7 @@ class Users extends React.Component {
       },
       series: [
         {
-          name: 'Access From',
+          name: '정회원 비회원 비율',
           type: 'pie',
           radius: ['40%', '70%'],
           avoidLabelOverlap: false,
