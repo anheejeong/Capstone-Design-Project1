@@ -19,9 +19,9 @@ class Visitor:
         self.visit_df['regdate'] = self.visit_df['regdate'].astype('str')
         self.visit_df['regdate'] = pd.to_datetime(self.visit_df['regdate'])
         
-        #월별 방문자
+        #월별 방문자 -> !일자 문제로 변경
         start_of_year = str(self.present_date.year) + '-01-01'
-        df = self.visit_df[self.visit_df['regdate'].between(start_of_year,str(self.present_date))]
+        df = self.visit_df[self.visit_df['regdate'].between(start_of_year,str(self.present_date + relativedelta(days=1)))]
         self.v_this_year = {
             '1':[0], '2':[0], '3':[0], '4':[0], '5':[0], '6':[0], '7':[0], '8':[0], '9':[0], '10':[0], '11':[0], '12':[0]
         }
@@ -29,11 +29,6 @@ class Visitor:
             row = df[df['regdate'] == i]
             month = row.iloc[0,0].month
             self.v_this_year[str(month)][0] += row.iloc[0,1]
-        
-    #올해의 월별 방문자수
-    def visitor_this_year(self):
-        output = pd.DataFrame(self.v_this_year)
-        pf.move_to_mysql(output, 'visitor_this_year')
     
     #일년간 월별 방문자수
     def visitor_for_a_year(self):
@@ -50,25 +45,6 @@ class Visitor:
                 output_dic[str(date.month)] = [visitor_df.iloc[i,1]]
         output = pd.DataFrame(output_dic)
         pf.move_to_mysql(output, 'visitor_for_year')
-
-    #어제 대비 오늘 방문자 비율
-    def visitor_rate_date(self):
-        #어제의 방문자
-        yesterday_date = self.present_date - dt.timedelta(1)
-        yesterday_df = self.visit_df[self.visit_df['regdate'] == yesterday_date]
-        yesterday_visitor = yesterday_df.iloc[0,1]
-        #오늘의 방문자
-        today_visitor_df = self.visit_df[self.visit_df['regdate'] == self.present_date]
-        today_visitor = today_visitor_df.iloc[0,1]
-        #비율
-        rate = round(((today_visitor-yesterday_visitor)/yesterday_visitor)*100,2)
-        
-        output_dic = {
-            'today': [today_visitor], 'yesterday': [yesterday_visitor], 'rate': [rate], 
-            'this_month': [(self.v_this_year[str(self.present_date.month)][0])]
-        }
-        output = pd.DataFrame(output_dic)
-        return output
 
     #지난달 대비 이달 방문자 비율
     def visitor_rate_month(self):
@@ -88,6 +64,3 @@ class Visitor:
         }
         output = pd.DataFrame(output_dic)
         pf.move_to_mysql(output, 'visitor_month')
-
-v = Visitor()
-v.visitor_for_a_year()

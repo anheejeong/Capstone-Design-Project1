@@ -28,6 +28,6 @@ def move_to_mysql(dataframe, table_name: str):
     password = 'U6ycE],+'
     db = 'result_datas'
     connection_str = 'mysql+pymysql://{}:{}@{}:{}/{}?charset=utf8'.format(user, password, host, port, db)
-    engine = create_engine(connection_str, encoding='utf-8')
+    engine = create_engine(connection_str, encoding='utf-8', pool_recycle=3600)
     conn = engine.connect()
     dataframe.to_sql(name=table_name, con=engine, if_exists='replace', index=False)

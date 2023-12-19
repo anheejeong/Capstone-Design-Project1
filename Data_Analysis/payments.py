@@ -11,7 +11,7 @@ class Payments:
         self.present_date = dt.datetime(year=2023,month=7,day=20,hour=0,minute=0,second=0)
         
         #품목 및 가격
-        self.product = {'70568900-7384-11ed-a1eb-0242ac120002':150000, 'e2a47288-7384-11ed-a1eb-0242ac120002':100000} #워크숍, 정회원
+        self.product = {'70568900-7384-11ed-a1eb-0242ac120002':15, 'e2a47288-7384-11ed-a1eb-0242ac120002':10} #워크숍, 정회원
         
         #결제 데이터베이스
         self.payments_df = pf.sql_dataframe('knu', 'knu_log', [
@@ -30,7 +30,6 @@ class Payments:
         self.payments_method = {
             'toss_payments':[0], 'cardiomoon':[0]
         }
-        #
         
         total = len(self.payments_df)
         for i in range(0, len(self.payments_df)):
@@ -50,26 +49,53 @@ class Payments:
     #올해 월별 결제현황
     def Payments_this_year(self):
         output = pd.DataFrame(self.payments_by_month)
-        #pf.move_to_mysql(output, 'payments_this_year')
-        return output
+        pf.move_to_mysql(output, 'payment_this_year')
+    
+    #지난 해 월별 결제현황
     def Payments_last_year(self):
         output = pd.DataFrame(self.payments_month_last)
-        return output
+        pf.move_to_mysql(output, 'payment_last_year')
     
-    #이번달 결제
+    #화폐 단위 점
+    def dot(self, pay_str: str):
+        length = len(pay_str)
+        output = []
+        count = 0
+        for i in range(length-1, -1, -1):
+            output.append(pay_str[i])
+            count += 1
+            if count == 3:
+                output.append(',')
+                count = 0
+        
+        if output[len(output)-1] == ',':
+            del output[len(output)-1]
+        output.reverse()
+        return ''.join(output)
+
+    #이번달 저번달 저저번달 결제량
     def Payments_3months(self):
         total = 0
         for i in range(1, self.present_date.month):
             total += self.payments_by_month[str(i)][0]
+        
+        this_month_string = str(self.payments_by_month[str(self.present_date.month)][0]*10000)
+        last_month_string = str(self.payments_by_month[str((self.present_date-relativedelta(months=1)).month)][0]*10000)
+        month_before_last_string = str(self.payments_by_month[str((self.present_date-relativedelta(months=2)).month)][0]*10000)
+        total = total*10000
         output_dic = {
-            'this_month': [self.payments_by_month[str(self.present_date.month)][0]], 
-            'last_month': [self.payments_by_month[str((self.present_date-relativedelta(months=1)).month)][0]], 
-            'month_before_last': [self.payments_by_month[str((self.present_date-relativedelta(months=2)).month)][0]],
+            'this_month_str': [self.dot(this_month_string)], 
+            'last_month_str': [self.dot(last_month_string)], 
+            'month_before_last_str': [self.dot(month_before_last_string)],
+            'this_month': [self.payments_by_month[str(self.present_date.month)][0]*10000],
+            'last_month': [self.payments_by_month[str((self.present_date-relativedelta(months=1)).month)][0]*10000],
+            'month_before_last': [self.payments_by_month[str((self.present_date-relativedelta(months=2)).month)][0]*10000],
             'total': [total]
         }
         output = pd.DataFrame(output_dic)
         pf.move_to_mysql(output, 'payments_3months')
     
+    #이번달 결제 %로 환산
     def Payments_3months_percent(self):
         total = 0
         for i in range(1, self.present_date.month):
@@ -85,8 +111,19 @@ class Payments:
     #결제 방식
     def Payments_method(self):
         output = pd.DataFrame(self.payments_method)
-        #pf.move_to_mysql(output, 'payments_method')
-        return output
-
-p = Payments()
-print(p.Payments_last_year())
+        pf.move_to_mysql(output, 'payment_method')
+    
+    #제품 구매 목록 최근순 top5
+    def Payments_product(self):
+        sorted_payments_df =  self.payments_df.sort_values('updated_at', ascending=False)
+        payments_top5_df = sorted_payments_df.head(5).reset_index(drop=True)
+        output = pd.DataFrame(columns=['member_srl', 'product', 'price', 'date', 'product_id'])
+        output['member_srl'] = payments_top5_df['member_srl']
+        output['product'] = payments_top5_df['amount']
+        output['date'] = payments_top5_df['updated_at']
+        output['product_id'] = payments_top5_df['product_id']
+        for i in range(0,5):
+            output.iloc[i,1] = output.iloc[i,1]
+            output.iloc[i,2] = self.product[output.iloc[i,4]]
+        output = output.drop(['product_id'], axis=1)
+        pf.move_to_mysql(output, 'payment_list')

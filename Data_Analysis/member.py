@@ -32,8 +32,6 @@ class Member:
         self.member_df = pf.sql_dataframe('knu', 'knu_member', [
             'member_srl', 'regdate', 'last_login', 'birthday'
         ])
-        #전세계 ipaddress
-        self.ipaddress_df = pd.read_csv("/Users/chepi/Desktop/Codes/Python/project01/ipaddress.csv")
     
     #유료/비유료회원 비율
     def return_paid_member(self):
@@ -48,9 +46,9 @@ class Member:
         output = pd.DataFrame(output_dic)
         pf.move_to_mysql(output, 'user_percentage')
     
-    #접속 일자/시간대
+    #접속 일자/시간대 -> !일자 문제로 다시 변경
     def return_connection_date(self):
-        end_period = self.present_date
+        end_period = self.present_date + relativedelta(days=1)
         start_period = end_period - relativedelta(years=1, months=-1)
         connection_time = pd.DataFrame(
             data= [[0]*24]*7,
@@ -60,7 +58,7 @@ class Member:
         connection_date = self.counter_log[self.counter_log['n_regdate'].between(str(start_period), str(end_period))]['n_regdate']
         for i in connection_date:
             connection_time.iloc[i.weekday(), i.hour] += 1
-        
+             
         for index in range(0, 7):
             for column in range(0, 24):
                 if connection_time.iloc[index, column] < 600:
@@ -104,15 +102,16 @@ class Member:
         })
         pf.move_to_mysql(method_count_df, 'user_os')
     
-    #def return_new_user(self):
-        
-        
-    
-    #접속 국가
-    # def return_ipaddress_country(self):
-    #     country_dic = {}
-    #     for i in range(0,len(self.counter_log)):
-    #         country = self.ipaddress_df[]
-
-m = Member()
-m.return_connection_method()
+    def return_new_user(self):
+        this_end_period = self.present_date + relativedelta(days=1)
+        this_start_period = dt.datetime(year=self.present_date.year, month=1, day=1, hour=0, minute=0, second=0)
+        last_end_period = dt.datetime(year=self.present_date.year-1, month=12, day=31, hour=23, minute=59, second=59)
+        last_start_period = dt.datetime(year=self.present_date.year-1, month=1, day=1, hour=1, minute=1, second=1)
+        new_this_year = self.product_df[self.product_df['created_at'].between(str(this_start_period), str(this_end_period))]
+        new_last_year = self.product_df[self.product_df['created_at'].between(str(last_start_period), str(last_end_period))]
+        output_dic = {
+            'new_this_year':[len(new_this_year)], 'rate':[str(round(float((len(new_this_year)-len(new_last_year))/len(new_last_year))*100, 3))],
+            'total':[len(new_this_year)*10]
+        }
+        output = pd.DataFrame(output_dic)
+        pf.move_to_mysql(output, 'new_user')

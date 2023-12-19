@@ -2,25 +2,28 @@ import pandas as pd
 import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.cluster import KMeans
-from sklearn.cluster import DBSCAN
-from pyclustering.cluster import kmedoids
 import pymysql_function as pf #MySQL 데이터베이스 호출
 from eunjeon import Mecab #형태소 분석
 from bs4 import BeautifulSoup #텍스트 전처리 -> html 태그
 import re #텍스트 전처리
 import string #문자열 함수
-from sklearn.preprocessing import MinMaxScaler
+# from sklearn.preprocessing import MinMaxScaler
 import datetime as dt
 import matplotlib.pyplot as plt
-from scipy.cluster.hierarchy import linkage, dendrogram
+from scipy.cluster.hierarchy import linkage,dendrogram
 from itertools import islice
+from sklearn.decomposition import PCA
+import math
+import random
+from krwordrank.word import KRWordRank
 
 class Text:
     def __init__(self):
         #self.present_date = dt.datetime.now()
         self.present_date = dt.datetime(year=2023,month=7,day=20,hour=0,minute=0,second=0)
         
-        self.mecab = Mecab(dicpath="/opt/homebrew/lib/mecab/dic/mecab-ko-dic")
+        #형태소 분석기
+        self.mecab = Mecab(dicpath="/opt/homebrew/lib/mecab/dic/mecab-ko-dic") #형태소 분석기 경로
         
         #게시글 관련 데이터 프레임
         self.documents_df = pf.sql_dataframe('plaintext', 'documents', [
@@ -37,9 +40,8 @@ class Text:
             'uploaded_count', 'regdate', 'last_update', 'ipadress', 'list_order', 'status' 
         ])
         #유료 회원 정보
-        self.log_df = pf.sql_dataframe('payments','log',[
-            'uuid', 'status', 'product_id', 'product_name', 'amount',
-            'order_id', 'method', 'mld', 'created_at', 'updated_at', 'member_srl' 
+        self.product_df = pf.sql_dataframe('payments','product',[
+            'uuid', 'product_id', 'created_at', 'updated_at', 'expired_at','member_srl' 
         ])
         #전체 문장 전처리
         self.text_df = pd.DataFrame(columns=[
@@ -47,13 +49,11 @@ class Text:
         ])
         
         #불용어 리스트
-        with open('/Users/chepi/Desktop/Codes/Python/project01/stopwords.txt', 'r') as f:
+        with open('/Users/chepi/Desktop/web_r/Capstone-Design-Project1/Data_Analysis/stopwords.txt', 'r') as f:#불용어 텍스트 경로
             list_file = f.readlines()
         self.stopwords = []
         for i in list_file:
             self.stopwords = list_file[0].split('-')
-        
-        self.vocabulary_df = []
             
     #텍스트 전처리 함수
     def preprocess(self,text):
@@ -118,13 +118,16 @@ class Text:
         }
         output = pd.DataFrame(output_dic)
         pf.move_to_mysql(output, 'keyword_rank')
-            
+           
+    #조회수 가장 높은 게시글 best5 
     def most_read(self):
         start = str(self.present_date.year)+'0101000000'
         present = str(self.present_date.year)+str(self.present_date.month)+str(self.present_date.day)+'000000'
         documents_this_year_df = self.documents_df[self.documents_df['regdate'].between(start,present)]
         
         sorted_documents_df = documents_this_year_df.sort_values(by="readed_count", ascending=False).head(5)
+        total_read_count = documents_this_year_df['readed_count'].sum()
+        
         needed_documents_df = pd.DataFrame()
         needed_documents_df['title'] = sorted_documents_df['title']
         
@@ -139,291 +142,193 @@ class Text:
             datetime = dt.datetime(year=int(i[0:4]), month=int(i[4:6]), day=int(i[6:8]), hour=int(i[8:10]), minute=int(i[10:12]), second=int(i[12:14]))
             regdate_list.append(datetime)
         needed_documents_df['regdate'] = pd.DataFrame(regdate_list, columns=['regdate'], index=needed_documents_df.index)
-        needed_documents_df['readed_count'] = documents_this_year_df['readed_count']
+        
+        needed_documents_df['readed_count'] = sorted_documents_df['readed_count']
+        
+        read_list = []
+        for i in sorted_documents_df['readed_count']:
+            read_list.append(float(i/total_read_count)*100)
+        needed_documents_df['readed_percent'] = pd.DataFrame(read_list, columns=['readed_percent'], index=needed_documents_df.index)
         
         pf.move_to_mysql(needed_documents_df, 'hot_post')
-         # index = needed_documents_df.index
-        # output1 = needed_documents_df.loc[[index[0]]]
-        # output2 = needed_documents_df.loc[[index[0]]]
-        # output3 = needed_documents_df.loc[[index[0]]]
-        # output4 = needed_documents_df.loc[[index[0]]]
-        # output5 = needed_documents_df.loc[[index[0]]]
-        # pf.move_to_mysql(output1, 'hot_post_1')
-        # pf.move_to_mysql(output2, 'hot_post_2')
-        # pf.move_to_mysql(output3, 'hot_post_3')
-        # pf.move_to_mysql(output4, 'hot_post_4')
-        # pf.move_to_mysql(output5, 'hot_post_5')
+    
+    def cluster_size_set(self, df):
+        symbolsize = []
+        set_size, set_value = (2.6666666666666665, 7)
+        for i in range(len(df)):
+            symbolsize.append(float(df.iloc[i,4]/set_value)*set_size)
         
-    def clustering(self): #Test : 1년간 게시글/댓글을 통한 클러스터링
-            clustering_df = pd.DataFrame(columns=[
-                'content', 'words', 'group'
-            ], index=self.documents_df.index)
-            
-            today = str(self.present_date.year)+str(self.present_date.month)+
-            a_year_ago = today - relativedelta(years=1, months=-1)
-            start_period = dt.datetime(year=a_year_ago.year, month=a_year_ago.month, day=1, hour=0,minute=0,second=0)
-            
-            clustering_df['content'] = self.documents_df['content']
-            words_list = []
-            for i in clustering_df['content']:
-                text = self.finalpreprocess(i)
-                words_list.append(text)
+        for i in range(len(symbolsize)):
+            if i < 20:
+                continue
+            elif i >= 20 and i < 30:
+                i = i*0.8
+            elif i >= 30:
+                i = i*0.6
+            elif i >= 50:
+                i = i*0.3
+        df['value'] = pd.DataFrame(data=symbolsize, index=df.index, columns=['value'])
+        return df
+    
+    #좌표 조정02
+    def range_set(self, df, k):
+        pca_df = df
+        limit_range = max([abs(df['x'].max()),abs(df['x'].min()),abs(df['y'].max()),abs(df['y'].min())])
+        lr_c = 600/limit_range
+        pca_df['x'], pca_df['y'] = (pca_df['x'].mul(lr_c), pca_df['y'].mul(lr_c))
+        x_set = [x for x in range(-600, 600, 100)]
+        y_set = [y for y in range(-600, 600, 100)]
+        
+        output_df = pd.DataFrame(columns=['x', 'y', 'word', 'category', 'value'])
+        xy_list = []
+        for i1 in range(k):
+            cluster_df = pca_df[pca_df['category'] == i1]
+            x_list = []
+            y_list = []
+            word_list = []
+            category_list = []
+            value_list = []
+            for i2 in range(len(cluster_df)):
+                nx, ny, distance = (0,0,1200*math.sqrt(2))
+                cx, cy = (cluster_df.iloc[i2,0], cluster_df.iloc[i2,1])
+                for i3 in x_set:
+                    for i4 in y_set:
+                        d = math.sqrt((i3-cx)**2 + (i4-cy)**2)
+                        if (d <= distance):
+                            for xy in xy_list:
+                                if (xy[0] == i3) and (xy[1] == i4):
+                                    break
+                            else:
+                                distance = d
+                                nx, ny = (i3, i4)
+                xy_list.append([nx, ny])
+                x_list.append(nx)
+                y_list.append(ny)
+                word_list.append(cluster_df.iloc[i2, 2])
+                category_list.append(i1)
+                value_list.append(cluster_df.iloc[i2,4])
+            for i in range(len(x_list)):
+                x_list[i] = x_list[i]+random.uniform(-75, 75)
+            for i in range(len(y_list)):
+                y_list[i] = y_list[i]+random.uniform(-75, 75)
                 
-            clustering_df['words'] = pd.DataFrame(words_list, columns=['words'], index=clustering_df.index)
+            input_dic = {
+                'x':x_list,
+                'y':y_list,
+                'word':word_list,
+                'category':category_list,
+                'value':value_list
+            }
+            input_df = pd.DataFrame(input_dic)
+            output_df = pd.concat([output_df, input_df])
             
-            tfidfv = TfidfVectorizer()
+        for i in range(len(output_df)):
+            if output_df.iloc[i,3] == 2:
+                output_df.iloc[i,0] -= 500
             
-            
+        return output_df
+
+    #클러스터링
+    def clustering(self):
+        test_df = pd.DataFrame(columns=['content', 'word'])
+        test_df['content'] = self.documents_df['content']
+        word_list = []
+
+        #텍스트 전처리
+        for i in self.documents_df['content']:
+            word_list.append(self.finalpreprocess(i))
+
+        #test_df에 전처리된 어휘 column 추가
+        test_df['word'] = pd.DataFrame(word_list, index=self.documents_df.index)
+
+        ##method1 by k-means
+        tfidf_vector = TfidfVectorizer(min_df=0.01, max_df=0.9)
+        feature_vector = tfidf_vector.fit_transform(test_df['word'])
+
+        #dtm 생성
+        columns = []
+        for k, v in sorted(tfidf_vector.vocabulary_.items(), key=lambda item:item[1]):
+            columns.append(k)
+        dtm_df = pd.DataFrame(feature_vector.toarray(), columns=columns)
+        tdm_df = dtm_df.T
+
+        #어휘 df 생성
+        tdm_df['total'] = tdm_df.sum(axis=1)
+        vocabulary_df = tdm_df[tdm_df['total'].rank(ascending=False) <= 70] #tfidf 가중치 상위 100개 단어 선정
+        values = list(vocabulary_df['total'])
+        vocabulary_df = vocabulary_df.drop('total', axis=1)
+
+        #단어간 군집 경향 시각화
+        # clusters = linkage(vocabulary_df, method='ward', metric='euclidean')
+        # plt.figure(figsize=(20, 10))               # 이미지 크기 설정
+        # dendrogram(clusters,
+        #            leaf_rotation=50,               # 라벨 50% 기울이기
+        #            leaf_font_size=10,              # 라벨 폰트 크기
+        #            labels= vocabulary_df.index)          # 라벨에 사용할 변수
+        # plt.show()
+        #-> k = 4로 설정
+
+        #k-means를 통한 군집화
+        k_cluster=4
+        km = KMeans(n_clusters=k_cluster, init='k-means++', max_iter=1000, random_state=0)
+        predict = km.fit_predict(vocabulary_df)
+        vocabulary_df['predict'] = predict
+        
+        #단어에 좌표 추가
+        pca = PCA(n_components=2)
+        vocabulary_pca = pca.fit_transform(vocabulary_df.iloc[0:,:-1])
+        index_pca = [x for x in range(0,70)]
+        pca_df = pd.DataFrame(data=vocabulary_pca, index=index_pca, columns=['x', 'y'])
+        
+        pca_df['word'] = pd.DataFrame(data=list(vocabulary_df.index), index=index_pca, columns=['word'])
+        pca_df['category'] = predict
+        pca_df['value'] = pd.DataFrame(data=values, index=index_pca, columns=['value'])
+        output_df=self.cluster_size_set(pca_df)
+        #output_df=self.range_set(pca_df, k_cluster)
+        
+        plt.scatter(output_df[output_df['category']==0]['x'], output_df[output_df['category']==0]['y'],s=output_df[output_df['category']==0]['value'], c='blue')
+        plt.scatter(output_df[output_df['category']==1]['x'], output_df[output_df['category']==1]['y'],s=output_df[output_df['category']==1]['value'], c='red')
+        plt.scatter(output_df[output_df['category']==2]['x'], output_df[output_df['category']==2]['y'],s=output_df[output_df['category']==2]['value'], c='yellow')
+        plt.scatter(output_df[output_df['category']==3]['x'], output_df[output_df['category']==3]['y'],s=output_df[output_df['category']==3]['value'], c='green')
+        plt.show()
+        
+        #pf.move_to_mysql(output_df, 'clustering01')
+                    
+    def func_keyword(self, df): #문서를 통한 키워드 추출
+        wordrank_extract = KRWordRank(min_count=50, max_length=10, verbose=True)
+        texts = list(df['text'])
+        keywords, rank, graph = wordrank_extract.extract(texts, 0.85, 1000)
+        output = pd.DataFrame(data=list(keywords.keys())[:50], columns=['word'])
+        output['value'] = pd.DataFrame(data=list(keywords.values())[:50], columns=['value'])
+        return output
+        
+    #정회원/비정회원 키워드 분류
+    def keyword_by_member(self):
+        regular_srl = list(self.product_df['member_srl'])
+        regular_content = []
+        regular_text = []
+        non_regular_content = []
+        non_regular_text = []
+        
+        for i in range(len(self.documents_df)):
+            if self.documents_df.iloc[i,15] in regular_srl:
+                regular_content.append(self.documents_df.iloc[i,8])
+                regular_text.append(self.finalpreprocess(self.documents_df.iloc[i,8]))
+            else:
+                non_regular_content.append(self.documents_df.iloc[i,8])
+                non_regular_text.append(self.finalpreprocess(self.documents_df.iloc[i,8]))
+        
+        regular_df = pd.DataFrame(data={
+            'content' : regular_content, 'text' : regular_text
+        })
+        non_regular_df = pd.DataFrame(data={
+            'content' : non_regular_content, 'text' : non_regular_text
+        })
+        
+        output_regular = self.func_keyword(regular_df)
+        output_non = self.func_keyword(non_regular_df)
+        pf.move_to_mysql(output_regular, 'keyword_regular')
+        pf.move_to_mysql(output_non, 'keyword_non_regular')
         
 t = Text()
 t.clustering()
-
-
-# class Text:
-#     def __init__(self):
-#         self.mecab = Mecab(dicpath="/opt/homebrew/lib/mecab/dic/mecab-ko-dic")
-
-#         #댓글 관련 데이터 프레임
-#         self.comments_df = pf.sql_dataframe('xedb', 'xe_comments', [
-#             'comment_srl', 'module_srl', 'document_srl', 'parent_srl', 'is_secret', 
-#             'content', 'voted_count', 'blamed_count', 'notify_message', 'member_srl',
-#             'uploaded_count', 'regdate', 'last_update', 'ipadress', 'list_order', 'status' 
-#         ])
-#         #게시글 관련 데이터 프레임
-#         self.documents_df = pf.sql_dataframe('xedb', 'xe_documents', [
-#             'document_srl', 'module_srl', 'category_srl', 'lang_code', 'is_notice',
-#             'title', 'title_bold', 'title_color', 'content', 'readed_count',
-#             'voted_count', 'blamed_count', 'comment_cound', 'trackback_cound','uploaded_count',
-#             'member_srl', 'regdate', 'last_update', 'ipaddress', 'list_order', 
-#             'update_order', 'allow_trackback', 'notify_message', 'status', 'comment_status'
-#         ])
-#         #유료 회원 정보
-#         log_df = pf.sql_dataframe('payments','log',[
-#             'uuid', 'status', 'product_id', 'product_name', 'amount',
-#             'order_id', 'method', 'mld', 'created_at', 'updated_at', 'member_srl' 
-#         ])
-
-#         #회원별 데이터프레임
-#         self.text_df = pd.DataFrame(columns=[
-#             'content', 'clustered_text', 'group', 'text_category', 'member_category'
-#         ])
-
-#         #유료 회원 시리얼 넘버
-#         self.member_srl_log = list(log_df['member_srl'])
-
-#         #불용어 리스트
-#         with open('/Users/chepi/Desktop/Codes/Python/project01/stopwords.txt', 'r') as f:
-#             list_file = f.readlines()
-#         self.stopwords = []
-#         for i in list_file:
-#             self.stopwords = list_file[0].split('-')
-
-#     #텍스트 전처리 함수
-#     def preprocess(self,text):
-#         text=text.strip()  
-#         text=re.compile('<.*?>').sub('', text) 
-#         text = re.compile('[%s]' % re.escape(string.punctuation)).sub(' ', text)  
-#         text = re.sub('\s+', ' ', text)  
-#         text = re.sub(r'\[[0-9]*\]',' ',text) 
-#         text=re.sub(r'[^\w\s]', ' ', str(text).strip())
-#         text = re.sub(r'\d',' ',text) 
-#         text = re.sub(r'\s+',' ',text) 
-#         return text
-
-#     def final(self,text):
-#         n = []
-#         word = self.mecab.nouns(text) #명사 추출
-#         p = self.mecab.pos(text)
-#         for pos in p:
-#             if pos[1] in ['SL']:
-#                 word.append(pos[0])
-#         for i in word:
-#             w = i
-#             if len(w)>1 and (w not in self.stopwords):
-#                 if (w[0] >= 'A' and w[0] <= 'Z') or (w[0] >= 'a' and w[0] <= 'z'):
-#                     w = w.upper()
-#                 n.append(w)
-#         return " ".join(n)
-    
-#     def finalpreprocess(self,text):
-#         return self.final(self.preprocess(text))
-#     #-------------------------------------------
-    
-#     #문서 전처리 및 분류
-#     def text_frame(self):
-#         for i in range(0, len(self.documents_df)):
-#             text = self.documents_df.iloc[i,8].replace('\n', '')
-#             text = BeautifulSoup(text, "lxml").text
-#             tf = pd.DataFrame({'content':[text],
-#                                'clustered_text':[self.finalpreprocess(text)],
-#                                 'group':[0],
-#                                 'text_category':'document'})
-#             if self.documents_df.iloc[i,15] in self.member_srl_log:
-#                 tf['member_category'] = 'regular'
-#                 self.text_df = pd.concat([self.text_df, tf])
-#             else:
-#                 tf['member_category'] = 'non_regular'
-#                 self.text_df = pd.concat([self.text_df, tf])
-#         for i in range(0, len(self.comments_df)):
-#             text = BeautifulSoup(self.comments_df.iloc[i,5], "lxml").text
-#             tf = pd.DataFrame({'content':[text],
-#                                 'clustered_text':[self.finalpreprocess(text)],
-#                                 'group':[0],
-#                                 'text_category':'comment'})
-#             if self.comments_df.iloc[i,9] in self.member_srl_log:
-#                 tf['member_category'] = 'regular'
-#                 self.text_df = pd.concat([self.text_df, tf])
-#             else:
-#                 tf['member_category'] = 'non_regular'
-#                 self.text_df = pd.concat([self.text_df, tf])
-#         return self.text_df
-        
-#     def text_clustering(self):
-#         self.text_frame()
-#         #벡터화
-#         tfidfv = TfidfVectorizer()
-#         tfidf = tfidfv.fit_transform(self.text_df['clustered_text'])
-#         tfidf_matrix = pd.DataFrame(np.array(tfidf.todense()), columns=tfidfv.get_feature_names_out(), index=self.text_df['clustered_text'])
-#         import matplotlib.pyplot as plt
-#         from scipy.cluster.hierarchy import dendrogram, linkage
-#         method = 'ward'
-#         z = linkage(tfidf_matrix, method)
-#         plt.rcParams['font.family'] = 'AppleGothic'
-#         fig, ax = plt.subplots(figsize=(20,20))
-#         dendrogram(z, ax=ax, labels=tfidf_matrix.index, orientation='right')
-#         plt.show()
-                
-#     #일주일, 시간대별 게시글 및 댓글 작성량
-#     def write_per_week(self): #0-14 range
-#         week_time = pd.DataFrame(
-#             data= [[0]*24]*7,
-#             index=['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'],
-#             columns=['0','1','2','3','4','5','6','7','8','9','10','11','12',
-#                     '13','14','15','16','17','18','19','20','21','22','23'])
-#         documents_date = self.documents_df['regdate']
-#         comments_date = self.comments_df['regdate']
-#         for i in documents_date:
-#             datetime = dt.datetime(year=int(i[0:4]), month=int(i[4:6]), day=int(i[6:8]), hour=int(i[8:10]), minute=int(i[10:12]), second=int(i[12:14]))
-#             week_time.iloc[datetime.weekday(), datetime.hour] += 1
-#         for i in comments_date:
-#             datetime = dt.datetime(year=int(i[0:4]), month=int(i[4:6]), day=int(i[6:8]), hour=int(i[8:10]), minute=int(i[10:12]), second=int(i[12:14]))
-#             week_time.iloc[datetime.weekday(), datetime.hour] += 1
-        
-#         #pf.move_to_mysql(week_time, 'write_per_week')
-#         return week_time
-#     def 
-        
-# t = Text()
-# df = t.text_frame()
-# for i in range(0, len(df)):
-#     print(df.iloc[i,:])
-
-
-
-#댓글 내 html 태그 제거 및 어휘 추출
-# regular = [] #유료회원
-# non_regular = [] #비유료회원
-# for i in range(0, len(comments_df)):
-#     text = BeautifulSoup(comments_df.iloc[i,5], "lxml").text
-#     if comments_df.iloc[i,9] in member_srl_log:
-#         regular.append(text)
-#         texts_regular.append(finalpreprocess(text))
-#     else:
-#         non_regular.append(text)
-#         texts_non_regular.append(finalpreprocess(text))
-# for i in range(0, len(documents_df)):
-#     text = BeautifulSoup(documents_df.iloc[i,8], "lxml").text
-#     if documents_df.iloc[i,15] in member_srl_log:
-#         regular.append(text)
-#         texts_regular.append(finalpreprocess(text))
-#     else:
-#         non_regular.append(text)
-#         texts_non_regular.append(finalpreprocess(text))
-
-# 유료회원 벡터화
-# vectorizer = TfidfVectorizer(min_df=5, ngram_range=(1,3))
-# vector = vectorizer.fit_transform(texts_regular).toarray()
-# vector = np.array(vector)
-
-#DBSCAN
-# model = DBSCAN(eps=0.3, min_samples=6, metric='cosine')
-# result = model.fit_predict(vector)
-
-# regular_df['content'] = pd.DataFrame(regular)
-# regular_df['text'] = pd.DataFrame(texts_regular)
-# regular_df['cluster'] = pd.DataFrame(result)
-
-#KMeans test
-# k = 50
-# km = KMeans(n_clusters=k)
-# idx = km.fit_predict(vector)
-# for i in idx:
-#     print(i, end=' ')
-
-#KMeans
-# kmeans = KMeans(n_clusters=3)
-# predict = kmeans.fit_predict(regular_df['text'])
-# regular_df['predict'] = predict
-# print(regular_df)
-
-#clustering with graphs
-# import matplotlib.pyplot as plt
-
-# plt.figure(figsize = (8, 8))
-
-# for i in range(k):
-#     plt.scatter(regular_df.loc[regular_df['cluster'] == i, 'Annual Income (k$)'], df.loc[df['cluster'] == i, 'Spending Score (1-100)'], 
-#                 label = 'cluster ' + str(i))
-
-# plt.legend()
-# plt.title('K = %d results'%k , size = 15)
-# plt.xlabel('Annual Income', size = 12)
-# plt.ylabel('Spending Score', size = 12)
-# plt.show()
-
-# for cluster_num in set(result):
-#     if(cluster_num == -1 or cluster_num == 0): #noise 판별 or 클러스터링 처리 X의 경우
-#         continue
-#     else:
-#         print("cluster num : {}".format(cluster_num))
-#         temp_df = df[df['result'] == cluster_num] # cluster num 별로 조회
-#         for title in temp_df['title']:
-#             print(title) # 제목으로 살펴보자
-#         print()
-
-# km = KMeans(n_clusters=5, init='k-means++', max_iter=500, random_state=0)
-
-
-# 텍스트 벡터화/무료회원:1544
-
-# model = DBSCAN(eps=0.1,min_samples=1, metric = "cosine") 
-# #     거리 계산 식으로는 Cosine distance를 이용
-# #     eps이 낮을수록, min_samples 값이 높을수록 군집으로 판단하는 기준이 까다로움.
-# result = model.fit_predict(vector)
-# train_extract['cluster1st'] = result
-
-# print('군집개수 :', result.max())
-# train_extract
-
-# def print_cluster_result(train):
-#     clusters = []
-#     counts = []
-#     top_title = []
-#     top_noun = []
-#     for cluster_num in set(result):
-#         # -1,0은 노이즈 판별이 났거나 클러스터링이 안된 경우
-#         # if(cluster_num == -1 or cluster_num == 0): 
-#         #     continue
-#         # else:
-#             print("cluster num : {}".format(cluster_num))
-#             temp_df = train[train['cluster1st'] == cluster_num] # cluster num 별로 조회
-#             clusters.append(cluster_num)
-#             counts.append(len(temp_df))
-#             top_title.append(temp_df.reset_index()['Title'][0])
-#             top_noun.append(temp_df.reset_index()['noun'][0]) # 군집별 첫번째 기사를 대표기사로 ; tfidf방식
-#             for title in temp_df['Title']:
-#                 print(title)
-#             print()
-
-#     cluster_result = pd.DataFrame({'cluster_num':clusters, 'count':counts, 'top_title':top_title, 'top_noun':top_noun})
-#     return cluster_result
