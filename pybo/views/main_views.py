@@ -1,18 +1,9 @@
-<<<<<<< Updated upstream
 from flask import Blueprint, jsonify # Blueprint를 통해 라우팅 함수 관리, jsonify를 통해 반환값을 json형식으로 변환
 import pymysql  # mysql을 python에서 사용할 수 있도록 하는 라이브러리
-=======
-from flask import Blueprint, jsonify # flask - Blueprint를 통해 라우팅 함수 관리, jsonify를 통해 반환값을 json형식으로 변환
-import pymysql  # mysql 쿼리문을 python에서 사용할 수 있는 모듈
->>>>>>> Stashed changes
 import json # json 데이터 타입
 
 db = pymysql.connect(host='180.66.240.165', port=53306, user='root', password='U6ycE],+', db='xedb', charset='utf8')
 
-<<<<<<< Updated upstream
-=======
-# Blueprint - 라우팅 함수 관리
->>>>>>> Stashed changes
 bp = Blueprint('main', __name__, url_prefix='/')
 
 
@@ -159,15 +150,6 @@ def user():
     cursor.execute(sql3)
     user_os = cursor.fetchall()
 
-<<<<<<< Updated upstream
-=======
-    """
-    # 4. user_map - 접속 국가
-    cursor.execute(sql4)
-    user_map = cursor.fetchall()
-    """
-
->>>>>>> Stashed changes
     result = {
         "day": day,
         "hour": hour,
@@ -225,10 +207,6 @@ def payment():
         "payment_this_year": payment_this_year,
         "payment_last_year": payment_last_year,
         "payment_list": payment_list,
-<<<<<<< Updated upstream
-=======
-        '''
->>>>>>> Stashed changes
         "new_user": new_user
     }
 
@@ -240,7 +218,6 @@ def payment():
 @bp.route('/nlp')
 def nlp():
     cursor = db.cursor()
-<<<<<<< Updated upstream
 
     sql1 = "SELECT * FROM result_datas.clustering01"
     sql2 = "SELECT * FROM result_datas.keyword_regular"
@@ -270,6 +247,3 @@ def nlp():
 
     cursor.close()
     return jsonify(result)
-=======
-    #sql1 = "SELECT * FROM result_datas."
->>>>>>> Stashed changes
