@@ -113,14 +113,14 @@ flask run
 ```
 
 ## Developer Introducing
-1. Frontend
-안희정(eyrt6973@naver.com)
-Github : [anheejeong](developer page : #dc8204, #cf1228, #393f45)
-2. Backend
-조성호(eoblue22@naver.com)
+1. Frontend<br/>
+안희정(eyrt6973@naver.com)<br/>
+Github : [anheejeong](https://github.com/anheejeong)
+2. Backend<br/>
+조성호(eoblue22@naver.com)<br/>
 Github : [sungholion](https://github.com/sungholion)
-3. Data Analysis
-김창현(egnahckim0119@gmail.com)
+3. Data Analysis<br/>
+김창현(egnahckim0119@gmail.com)<br/>
 Github : [ChangHyeonn](https://github.com/ChangHyeonn)
 
 ## Company Technical Documents
