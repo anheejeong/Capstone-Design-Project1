@@ -124,4 +124,7 @@ Github : [sungholion](https://github.com/sungholion)
 Github : [ChangHyeonn](https://github.com/ChangHyeonn)
 
 ## Company Technical Documents
-[Tech Documents - notion](https://sharp-individual-1ab.notion.site/ce53e7d6ca804e86a85d55f5cc8b234d?pvs=4)
+[Tech Documents - Notion](https://sharp-individual-1ab.notion.site/ce53e7d6ca804e86a85d55f5cc8b234d?pvs=4)
+
+## Demo Video
+[Demo Video - Youtube](https://www.youtube.com/watch?v=H1jLMPRVIYk)
